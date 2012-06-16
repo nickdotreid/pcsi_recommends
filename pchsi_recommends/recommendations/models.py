@@ -7,7 +7,7 @@ class Screen(models.Model):
 	name = models.CharField(max_length=120)
 
 	def __unicode__(self):
-		return u"Screen"
+		return self.name
 
 class Population(models.Model):
 	"""(Population description)"""
@@ -19,7 +19,7 @@ class Population(models.Model):
 		search_fields = ('',)
 
 	def __unicode__(self):
-		return u"Population"
+		return self.name
 
 
 class Recommendation(models.Model):
