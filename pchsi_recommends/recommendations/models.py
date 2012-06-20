@@ -26,7 +26,7 @@ class Recommendation(models.Model):
 	"""(Recommendation description)"""
 	
 	screen = models.ForeignKey(Screen)
-	population = models.ForeignKey(Population)
+	populations = models.ManyToManyField(Population)
 	text = models.TextField(blank=True)
 	frequency = models.CharField(blank=True, max_length=100)
 	weight = models.IntegerField(blank=True, null=True)
