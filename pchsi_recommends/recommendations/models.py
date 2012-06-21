@@ -31,6 +31,9 @@ class Recommendation(models.Model):
 	frequency = models.CharField(blank=True, max_length=100)
 	weight = models.IntegerField(blank=True, null=True)
 	
+	min_age = models.IntegerField(blank=True, null=True)
+	max_age = models.IntegerField(blank=True, null=True)
+	
 
 	def __unicode__(self):
 		return u"Recommendation"
