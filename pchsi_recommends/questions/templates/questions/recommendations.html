@@ -2,4 +2,9 @@
 
 {%	block content	%}
 This is recommendations
+{% for recommendation in recommendations %}
+<div class="recommendation">
+	{{recommendation.text}}
+</div>
+{% endfor %}
 {%	endblock	%}
