@@ -10,16 +10,45 @@ from forms import PatientForm
 from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 
+from pchsi_recommends.recommendations.views import populations_to_recomendations
+
 def patient_form(request):
 	form = PatientForm()
 	if request.method == 'POST':
 		form = PatientForm(request.POST)
 		if form.is_valid():
 			answers = form.cleaned_data
+			populations = []
+			if answers['gender_at_birth'] == 'male':
+				populations = add_population(populations,'male')
+			if answers['gender_at_birth'] == 'female':
+				populations = add_population(populations,'male')
+			
+			if answers['gender_current'] == 'transmale' or (answers['gender_at_birth'] == 'female' and answers['gender_current'] == 'male'):
+				populations = add_population(populations,'transmale')
+			if answers['gender_current'] == 'transfemale' or (answers['gender_at_birth'] == 'male' and answers['gender_current'] == 'female'):
+				populations = add_population(populations,'transmale')
+			
+			if answers['sexual_orientation'] == 'bisexual' and answers['gender_current'] == 'male':
+				populations = add_population(populations,'msm')
+			if answers['sexual_orientation'] == 'gay':
+				populations = add_population(populations,'msm')
+				
+			for condition in answers['health_conditions']:
+				populations = add_population(populations,condition)
+			
 			# map answers to populations
-			# loop through screens and pull recommendations
-			return render_to_response('questions/recommendations.html')
+			print populations
+			return render_to_response('questions/recommendations.html',{
+				'recommendations':populations_to_recomendations(populations)
+				})
 	return render_to_response('questions/form.html',{'form':form},context_instance=RequestContext(request))
+
+def add_population(populations,term):
+	pops = Population.objects.filter(name=term)
+	if len(pops) > 0 and pops[0] not in populations:
+		populations.append(pops[0])
+	return populations
 
 def dynamic_form(request):
 	if request.method == 'POST':
@@ -33,17 +62,8 @@ def dynamic_form(request):
 						for population in answer.populations.all():
 							if population not in populations:
 								populations.append(population)
-		recommendations = []
-		if len(populations) > 0:
-			for screen in Screen.objects.all():
-				recommend = False
-				for recommendation in screen.recommendation_set.all():
-					for population in recommendation.populations.all():
-						if population in populations:
-							if not recommend or recommend.weight > recommendation.weight:
-								recommend = recommendation
-				if recommend:
-					recommendations.append(recommend)
-		return render_to_response('questions/recommendations.html',{'recommendations':recommendations})
+		return render_to_response('questions/recommendations.html',{
+			'recommendations':populations_to_recomendations(populations)
+			})
 	questions = Question.objects.all()
 	return render_to_response('questions/dynamic.html',{'questions':questions},context_instance=RequestContext(request))
