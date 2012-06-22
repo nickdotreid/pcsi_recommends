@@ -21,19 +21,21 @@ def add_population(populations,term):
 def questionnaire_form(request,questionnaire_id):
 	questionnaire = get_object_or_404(Questionnaire,pk=questionnaire_id)
 	QuestionForm = make_question_form(questionnaire.id)
+	form = QuestionForm()
 	if request.method == 'POST':
-		populations = []
-		for key in request.POST:
-			if key != 'csrfmiddlewaretoken':
-				question = Question.objects.filter(id=key)[0]
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			populations = []
+			answers = form.cleaned_data
+			for question_short in answers:
+				question = Question.objects.filter(short=question_short)[0]
 				if question:
-					answer = question.answer_set.filter(id=request.POST[key])[0]
+					answer = question.answer_set.filter(id=answers[question_short])[0]
 					if answer:
 						for population in answer.populations.all():
 							if population not in populations:
 								populations.append(population)
-		return render_to_response('questions/recommendations.html',{
-			'recommendations':populations_to_recomendations(populations)
-			})
-	form = QuestionForm()
+			return render_to_response('questions/recommendations.html',{
+				'recommendations':populations_to_recomendations(populations)
+				})
 	return render_to_response('questions/form.html',{'form':form},context_instance=RequestContext(request))

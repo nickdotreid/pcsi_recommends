@@ -3,6 +3,8 @@ from pchsi_recommends.recommendations.models import Population
 
 class Questionnaire(models.Model):
 	''' Collects questions and has description '''
+	
+	short = models.CharField(unique=True,max_length=50)
 	title = models.CharField(blank=True, max_length=100)
 	directions = models.TextField(blank=True)
 	
@@ -11,15 +13,16 @@ class Questionnaire(models.Model):
 
 class Question(models.Model):
 	"""(Question description)"""
-	
 	questionnaire = models.ForeignKey(Questionnaire)
+	
+	short = models.CharField(unique=True,max_length=50)
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
 	
 	weight = models.IntegerField(blank=True, null=True)
 	
 	def __unicode__(self):
-		return self.text
+		return self.text + ": " + self.questionnaire.title
 		
 class Answer(models.Model):
 	
