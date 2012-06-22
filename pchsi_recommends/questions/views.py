@@ -18,8 +18,8 @@ def add_population(populations,term):
 		populations.append(pops[0])
 	return populations
 
-def dynamic_form(request):
-	QuestionForm = make_question_form()
+def questionnaire_form(request,questionnaire_id):
+	QuestionForm = make_question_form() #should load form from ID or redirect to /
 	if request.method == 'POST':
 		populations = []
 		for key in request.POST:
