@@ -6,7 +6,7 @@ from django import forms
 
 from django.template import RequestContext
 
-from forms import PatientForm
+from forms import PatientForm, make_question_form
 from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 
@@ -51,6 +51,7 @@ def add_population(populations,term):
 	return populations
 
 def dynamic_form(request):
+	QuestionForm = make_question_form()
 	if request.method == 'POST':
 		populations = []
 		for key in request.POST:
@@ -65,5 +66,5 @@ def dynamic_form(request):
 		return render_to_response('questions/recommendations.html',{
 			'recommendations':populations_to_recomendations(populations)
 			})
-	questions = Question.objects.all()
-	return render_to_response('questions/dynamic.html',{'questions':questions},context_instance=RequestContext(request))
+	form = QuestionForm()
+	return render_to_response('questions/form.html',{'form':form},context_instance=RequestContext(request))
