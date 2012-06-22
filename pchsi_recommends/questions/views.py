@@ -6,7 +6,7 @@ from django import forms
 
 from django.template import RequestContext
 
-from forms import PatientForm, make_question_form
+from forms import make_question_form
 from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 
