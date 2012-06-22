@@ -1,7 +1,7 @@
 from django.db import models
 from pchsi_recommends.recommendations.models import Population
 
-class Form(models.Model):
+class Questionnaire(models.Model):
 	''' Collects questions and has description '''
 	title = models.CharField(blank=True, max_length=100)
 	directions = models.TextField(blank=True)
@@ -12,7 +12,7 @@ class Form(models.Model):
 class Question(models.Model):
 	"""(Question description)"""
 	
-	form = models.ForeignKey(Form)
+	questionnaire = models.ForeignKey(Questionnaire)
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
 	

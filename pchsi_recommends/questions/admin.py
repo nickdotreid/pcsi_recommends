@@ -1,4 +1,4 @@
-from pchsi_recommends.questions.models import Question,Answer
+from pchsi_recommends.questions.models import Questionnaire,Question,Answer
 from django.contrib import admin
 
 class AnswerInline(admin.StackedInline):
@@ -8,5 +8,5 @@ class AnswerInline(admin.StackedInline):
 class QuestionAdmin(admin.ModelAdmin):
 	inlines = [AnswerInline]
 
+admin.site.register(Questionnaire)
 admin.site.register(Question,QuestionAdmin)
-admin.site.register(Answer)
