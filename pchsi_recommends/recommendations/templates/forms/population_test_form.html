@@ -1,0 +1,12 @@
+{% extends 'recommendations/list.html' %}
+
+{%	block content	%}
+<form id="populations" action="" method="post">
+	{% csrf_token %}
+	{{form.as_p}}
+	<input type="submit" value="Get Recommendations" />
+</form>
+
+{{ block.super }}
+
+{%	endblock	%}

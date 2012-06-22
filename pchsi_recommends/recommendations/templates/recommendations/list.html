@@ -1,15 +1,11 @@
 {% extends 'base.html' %}
 
 {%	block content	%}
-<form id="populations" action="" method="post">
-	{% csrf_token %}
-	{{form.as_p}}
-	<input type="submit" value="Get Recommendations" />
-</form>
 
 {% for recommendation in recommendations %}
 	{% include "recommendations/recommendation.html" with recommendation=recommendation %}
 {%  empty  %}
 <div class="alert">No Recommendations</div>
 {% endfor %}
+
 {%	endblock	%}

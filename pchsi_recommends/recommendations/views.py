@@ -32,11 +32,11 @@ def population_test_form(request):
 				population = Population.objects.filter(id = pop_id)[0]
 				if population:
 					populations.append(population)
-			return render_to_response('recommendations/population_test_form.html',{
+			return render_to_response('forms/population_test_form.html',{
 				'form':form,
 				'recommendations':populations_to_recomendations(populations)
 				},context_instance=RequestContext(request))
-	return render_to_response('recommendations/population_test_form.html',{
+	return render_to_response('forms/population_test_form.html',{
 		'form':form,
 		'recommendations':[]
 		},context_instance=RequestContext(request))
