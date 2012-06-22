@@ -14,5 +14,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-	url(r'^$', include('pchsi_recommends.questions.urls')),
+	url(r'^questions/$', include('pchsi_recommends.questions.urls')),
+	url(r'^recomendations/$', include('pchsi_recommends.recommendations.urls')),
 )
