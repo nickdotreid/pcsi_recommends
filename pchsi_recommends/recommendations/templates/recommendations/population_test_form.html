@@ -8,9 +8,7 @@
 </form>
 
 {% for recommendation in recommendations %}
-<div class="recommendation">
-	{{recommendation.text}}
-</div>
+	{% include "recommendations/recommendation.html" with recommendation=recommendation %}
 {%  empty  %}
 <div class="alert">No Recommendations</div>
 {% endfor %}
