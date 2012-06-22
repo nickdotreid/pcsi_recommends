@@ -12,38 +12,6 @@ from pchsi_recommends.questions.models import *
 
 from pchsi_recommends.recommendations.views import populations_to_recomendations
 
-def patient_form(request):
-	form = PatientForm()
-	if request.method == 'POST':
-		form = PatientForm(request.POST)
-		if form.is_valid():
-			answers = form.cleaned_data
-			populations = []
-			if answers['gender_at_birth'] == 'male':
-				populations = add_population(populations,'male')
-			if answers['gender_at_birth'] == 'female':
-				populations = add_population(populations,'male')
-			
-			if answers['gender_current'] == 'transmale' or (answers['gender_at_birth'] == 'female' and answers['gender_current'] == 'male'):
-				populations = add_population(populations,'transmale')
-			if answers['gender_current'] == 'transfemale' or (answers['gender_at_birth'] == 'male' and answers['gender_current'] == 'female'):
-				populations = add_population(populations,'transmale')
-			
-			if answers['sexual_orientation'] == 'bisexual' and answers['gender_current'] == 'male':
-				populations = add_population(populations,'msm')
-			if answers['sexual_orientation'] == 'gay':
-				populations = add_population(populations,'msm')
-				
-			for condition in answers['health_conditions']:
-				populations = add_population(populations,condition)
-			
-			# map answers to populations
-			print populations
-			return render_to_response('questions/recommendations.html',{
-				'recommendations':populations_to_recomendations(populations)
-				})
-	return render_to_response('questions/form.html',{'form':form},context_instance=RequestContext(request))
-
 def add_population(populations,term):
 	pops = Population.objects.filter(name=term)
 	if len(pops) > 0 and pops[0] not in populations:
