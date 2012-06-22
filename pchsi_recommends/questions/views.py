@@ -19,7 +19,8 @@ def add_population(populations,term):
 	return populations
 
 def questionnaire_form(request,questionnaire_id):
-	QuestionForm = make_question_form() #should load form from ID or redirect to /
+	questionnaire = get_object_or_404(Questionnaire,pk=questionnaire_id)
+	QuestionForm = make_question_form(questionnaire.id)
 	if request.method == 'POST':
 		populations = []
 		for key in request.POST:
