@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>List of Question Forms</h2>
+<ul class="list list-questionnaire">
+{% for questionnaire in questionnaire_list %}
+	<li class="questionnaire">
+		<a href="/questions/{{questionnaire.id}}" class="title">{{questionnaire.title}}</a>
+	</li>
+{% endfor %}
+</ul>
+{% endblock %}
