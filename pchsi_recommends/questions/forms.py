@@ -5,7 +5,7 @@ def make_question_form(questionnaire_id):
 	field_list = []
 	questionnaire = Questionnaire.objects.filter(id=questionnaire_id)[0]
 	if questionnaire:
-		for question in questionnaire.question_set.order_by('weight'):
+		for question in questionnaire.question_set.all():
 			answers = []
 			for answer in question.answer_set.all():
 				answers.append((answer.id,answer.text))

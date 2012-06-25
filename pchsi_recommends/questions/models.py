@@ -19,7 +19,10 @@ class Question(models.Model):
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
 	
-	weight = models.IntegerField(blank=True, null=True)
+	position = models.PositiveSmallIntegerField("Position")
+
+	class Meta:
+		ordering = ['position']
 	
 	def __unicode__(self):
 		return self.text + ": " + self.questionnaire.title
@@ -31,6 +34,11 @@ class Answer(models.Model):
 	
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
+	
+	position = models.PositiveSmallIntegerField("Position")
+	
+	class Meta:
+		ordering = ['position']
 	
 	def __unicode__(self):
 		return self.question.text + ": " + self.text
