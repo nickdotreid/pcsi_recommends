@@ -5,6 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # url(r'^$', 'pchsi_recommends.views.home', name='home'),
+	(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^questions/', include('pchsi_recommends.questions.urls')),
 	url(r'^recomendations/', include('pchsi_recommends.recommendations.urls')),
