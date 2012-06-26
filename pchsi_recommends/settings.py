@@ -59,7 +59,6 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = 'http://pchsi-recommends.s3-website-us-west-1.amazonaws.com/'
 
-
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
 # Additional locations of static files
@@ -113,7 +112,6 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-#	'grappelli',
 	'storages',
     'django.contrib.auth',
     'django.contrib.contenttypes',
