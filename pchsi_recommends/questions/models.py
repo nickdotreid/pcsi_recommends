@@ -15,7 +15,6 @@ class Question(models.Model):
 	"""(Question description)"""
 	questionnaire = models.ForeignKey(Questionnaire)
 	
-	short = models.CharField(unique=True,max_length=50)
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
 	

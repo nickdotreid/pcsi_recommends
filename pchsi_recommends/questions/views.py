@@ -27,10 +27,10 @@ def questionnaire_form(request,questionnaire_id):
 		if form.is_valid():
 			populations = []
 			answers = form.cleaned_data
-			for question_short in answers:
-				question = Question.objects.filter(short=question_short)[0]
+			for question_id in answers:
+				question = Question.objects.filter(id=question_id)[0]
 				if question:
-					answer = question.answer_set.filter(id=answers[question_short])[0]
+					answer = question.answer_set.filter(id=answers[question_id])[0]
 					if answer:
 						for population in answer.populations.all():
 							if population not in populations:
