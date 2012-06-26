@@ -10,7 +10,7 @@ def make_question_form(questionnaire_id):
 			answers = []
 			for answer in question.answer_set.all():
 				answers.append((answer.id,answer.text))
-			field_list.append((question.id, forms.ChoiceField(
+			field_list.append((str(question.id), forms.ChoiceField(
 						widget = forms.RadioSelect,
 						label = question.text,
 						choices = answers
