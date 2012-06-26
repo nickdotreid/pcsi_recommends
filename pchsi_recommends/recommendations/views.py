@@ -66,7 +66,20 @@ def get_recommendation_for(screen,populations,age=False):
 			if population in populations:
 				rec_matches += 1
 		if ( len(recommendation.populations.all()) == 0 ) or ( not recommendation.add_populations and rec_matches ) or ( recommendation.add_populations and rec_matches == len(recommendation.populations.all()) ):
-			if (not recommendation.min_age and not recommendation.max_age ) or (age and ( (not recommendation.max_age or  not recommendation.min_age) and ( ( recommendation.max_age and age <= recommendation.max_age ) or ( recommendation.min_age and age >= recommendation.min_age ) ) ) ) :
+			if (not recommendation.min_age and not recommendation.max_age ) or age_in_range(age,recommendation.min_age,recommendation.max_age) :
 				if not recommend or recommend.weight > recommendation.weight:
 					recommend = recommendation
 	return recommend
+
+#(age and ( (not recommendation.max_age or  not recommendation.min_age) and ( ( recommendation.max_age and age <= recommendation.max_age ) or ( recommendation.min_age and age >= recommendation.min_age ) ) ) )
+def age_in_range(age,min,max):
+	if not age:
+		return False
+	if min and max:
+		if age >= min and age <= max:
+			return True
+	if min and age >= min:
+		return True
+	if max and age <= max:
+		return True
+	return False
