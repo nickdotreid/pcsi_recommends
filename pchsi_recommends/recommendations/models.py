@@ -26,15 +26,18 @@ class Recommendation(models.Model):
 	"""(Recommendation description)"""
 	
 	screen = models.ForeignKey(Screen)
+	
 	populations = models.ManyToManyField(Population,blank=True)
+	add_populations = models.BooleanField(default=False)
+	
 	weight = models.IntegerField(null=True)
-	frequency = models.CharField(blank=True, max_length=100)
-	
-	text = models.TextField(blank=True)
-	
 	min_age = models.IntegerField(blank=True, null=True)
 	max_age = models.IntegerField(blank=True, null=True)
 	
+	not_recommended = models.BooleanField(default=False)
+	
+	frequency = models.CharField(blank=True, max_length=100)
+	text = models.TextField(blank=True)	
 
 	def __unicode__(self):
 		return self.screen.name + ' (' + str(self.weight) + ') ' + self.frequency
