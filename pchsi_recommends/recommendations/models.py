@@ -37,7 +37,6 @@ class Recommendation(models.Model):
 	not_recommended = models.BooleanField(default=False)
 	
 	frequency = models.CharField(blank=True, max_length=100)
-	text = models.TextField(blank=True)	
 
 	def __unicode__(self):
 		return self.screen.name + ' (' + str(self.weight) + ') ' + self.frequency
