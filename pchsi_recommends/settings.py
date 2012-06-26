@@ -57,7 +57,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = 'http://pchsi-recommends.s3-website-us-west-1.amazonaws.com/'
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
@@ -76,6 +76,11 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = 'AKIAIW5SDMNN5CWPBQOA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'pchsi-recommends'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ')^ior-et)8a)#)in)p&amp;jg=_63rh!^+1kpqs^q2*ha++x!mt12^'
@@ -108,6 +113,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
 #	'grappelli',
+	'storages',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
