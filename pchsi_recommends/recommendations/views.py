@@ -53,9 +53,12 @@ def populations_to_recomendations(populations):
 
 def get_recommendation_for(screen,populations):
 	recommend = False
-	for recommendation in screen.recommendation_set.all():
+	recommendations = screen.recommendation_set.all()
+	for recommendation in recommendations:
+		rec_matches = 0
 		for population in recommendation.populations.all():
 			if population in populations:
-				if not recommend or recommend.weight > recommendation.weight:
-					recommend = recommendation
+				rec_matches += 1
+		if ( ( not recommendation.add_populations and rec_matches ) or ( recommendation.add_populations and rec_matches == len(recommendation.populations.all()) ) ) and ( not recommend or recommend.weight > recommendation.weight ):
+			recommend = recommendation
 	return recommend
