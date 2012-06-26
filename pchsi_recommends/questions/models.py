@@ -18,6 +18,7 @@ class Question(models.Model):
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
 	
+	multiple_choice = models.BooleanField(default=False)
 	position = models.PositiveSmallIntegerField("Position")
 
 	class Meta:
