@@ -1,3 +1,6 @@
+{% if not recommendation.not_recommended %}
+	<!-- {{recommendation.screen.name}} not recommended -->
+{% else %}
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
 	<h3 class="screen">{{recommendation.screen.name}}</h3>
 	<p>{{recommendation.text}}</p>
@@ -5,3 +8,4 @@
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
 </div>
+{% endif %}
