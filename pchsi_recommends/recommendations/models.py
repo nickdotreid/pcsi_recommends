@@ -36,4 +36,4 @@ class Recommendation(models.Model):
 	
 
 	def __unicode__(self):
-		return u"Recommendation"
+		return self.screen.name + ' (' + str(self.weight) + ') ' + self.frequency
