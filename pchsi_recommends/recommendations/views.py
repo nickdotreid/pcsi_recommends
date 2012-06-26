@@ -12,6 +12,10 @@ def make_population_form():
 	for population in Population.objects.all():
 		populations.append((population.id,population.name))
 	fields = {}
+	fields['age'] = forms.IntegerField(
+		required = False,
+		label = 'Enter Age',
+	)
 	fields['populations'] = forms.MultipleChoiceField(
 		required = False,
 		label = 'Select Populations',
@@ -32,9 +36,12 @@ def population_test_form(request):
 				population = Population.objects.filter(id = pop_id)[0]
 				if population:
 					populations.append(population)
+			age = False
+			if answers['age']:
+				age = answers['age']
 			return render_to_response('forms/population_test_form.html',{
 				'form':form,
-				'recommendations':populations_to_recomendations(populations)
+				'recommendations':populations_to_recomendations(populations,age)
 				},context_instance=RequestContext(request))
 	return render_to_response('forms/population_test_form.html',{
 		'form':form,
@@ -42,16 +49,15 @@ def population_test_form(request):
 		},context_instance=RequestContext(request))
 	
 
-def populations_to_recomendations(populations):
+def populations_to_recomendations(populations=[], age=False):
 	recommendations = []
-	if len(populations) > 0:
-		for screen in Screen.objects.all():
-			recommend = get_recommendation_for(screen,populations)
-			if recommend:
-				recommendations.append(recommend)
+	for screen in Screen.objects.all():
+		recommend = get_recommendation_for(screen,populations,age)
+		if recommend:
+			recommendations.append(recommend)
 	return recommendations
 
-def get_recommendation_for(screen,populations):
+def get_recommendation_for(screen,populations,age=False):
 	recommend = False
 	recommendations = screen.recommendation_set.all()
 	for recommendation in recommendations:
@@ -59,6 +65,8 @@ def get_recommendation_for(screen,populations):
 		for population in recommendation.populations.all():
 			if population in populations:
 				rec_matches += 1
-		if ( ( not recommendation.add_populations and rec_matches ) or ( recommendation.add_populations and rec_matches == len(recommendation.populations.all()) ) ) and ( not recommend or recommend.weight > recommendation.weight ):
-			recommend = recommendation
+		if ( len(recommendation.populations.all()) == 0 ) or ( not recommendation.add_populations and rec_matches ) or ( recommendation.add_populations and rec_matches == len(recommendation.populations.all()) ):
+			if (not recommendation.min_age and not recommendation.max_age ) or (age and ( (not recommendation.max_age or  not recommendation.min_age) and ( ( recommendation.max_age and age <= recommendation.max_age ) or ( recommendation.min_age and age >= recommendation.min_age ) ) ) ) :
+				if not recommend or recommend.weight > recommendation.weight:
+					recommend = recommendation
 	return recommend
