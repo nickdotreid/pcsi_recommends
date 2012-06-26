@@ -4,7 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # url(r'^$', 'pchsi_recommends.views.home', name='home'),
+    url(r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'static/home.html'}),
 	(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^questions/', include('pchsi_recommends.questions.urls')),
