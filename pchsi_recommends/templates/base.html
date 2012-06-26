@@ -5,7 +5,7 @@
 	<title>{% block title %}PCHSI Recommends{% endblock %}</title>
 	
 	{% block styles %}
-
+	<link rel="stylesheet" href=" {{ STATIC_URL }}css/pchsi-recommends.css" />
 	{% endblock %}
 	
 	{% block scripts %}
@@ -13,13 +13,8 @@
 	{% endblock %}
 </head>
 <body>
-	<div class="wrapper">
+	<div class="container">
 	{% block content %}
-	
-	{% endblock %}
-	</div>
-	<div id="templates">
-	{% block templates %}
 	
 	{% endblock %}
 	</div>
