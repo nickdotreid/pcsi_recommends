@@ -1814,11 +1814,22 @@ body {
   padding: 0px;
 }
 .container {
-  background-color: #FFF;
+  background-color: transparent;
+  background-image: url('../i/container-background.png');
+  background-repeat: repeat-y;
+  background-position: center top;
 }
 a {
   text-decoration: underline;
 }
-.container {
-  background-color: #FFF;
+#site-logo {
+  background-color: transparent;
+  background-image: url('../i/justask_logo.png');
+  background-repeat: no-repeat;
+  background-position: top left;
+  display: block;
+  width: 299px;
+  height: 161px;
+  overflow: hidden;
+  text-indent: -3000px;
 }
