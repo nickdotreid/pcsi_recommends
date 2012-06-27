@@ -59,8 +59,6 @@ STATIC_ROOT = ''
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = 'http://pchsi-recommends.s3-website-us-west-1.amazonaws.com/'
 
-ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
-
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -113,6 +111,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
 	'storages',
+	'crispy_forms',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
