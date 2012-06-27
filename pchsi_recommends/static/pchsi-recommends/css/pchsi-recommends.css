@@ -1822,6 +1822,9 @@ body {
 a {
   text-decoration: underline;
 }
+.content {
+  margin: 0px 49px;
+}
 #site-logo {
   background-color: transparent;
   background-image: url('../i/justask_logo.png');
