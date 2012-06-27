@@ -14,27 +14,37 @@
 <body>
 	<div id="header" class="top container">
 		<div id="site-logo">Just Ask Dr.SF</div>
-		<nav>
-			<ul>
-				<li><a href="#">For SF Community</a></li>
-				<li><a href="#">For Health Providers</a></li>
-			</ul>
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<ul class="nav nav-pills pull-right">
+					<li><a href="#">For SF Community</a></li>
+					<li><a href="#">For Health Providers</a></li>
+				</ul>
+			</div>
 		</nav>
 	</div>
 	<div class="container">
-		<div id="content" class="content">
+		<section id="content" class="content">
 			{% block content %}
 	
 			{% endblock %}
-		</div>
+		</section>
 	</div>
 	<div id="footer" class="container bottom">
-		<ul>
-			<li><a href="/questions/">Questions</a></li>
-			<li><a href="/recomendations/">Recommendations</a></li>
-			<li><a href="/admin/">Admin</a></li>
-		</ul>
-		<p>Clarifying text about copyright and cool things.</p>
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<ul class="nav nav-pills pull-left">
+					<li><a href="/questions/">Questions</a></li>
+					<li><a href="/recomendations/">Recommendations</a></li>
+				</ul>
+				<ul class="nav nav-pills pull-right">
+					<li><a href="/admin/">Admin</a></li>
+				</ul>
+			</div>
+		</nav>
+		<section class="content">
+			<p>Clarifying text about copyright and cool things.</p>
+		</section>
 	</div>
 </body>
 </html>
