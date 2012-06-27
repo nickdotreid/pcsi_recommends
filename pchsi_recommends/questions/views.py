@@ -30,12 +30,17 @@ def questionnaire_form(request,questionnaire_id):
 			for question_id in answers:
 				question = Question.objects.filter(id=question_id)[0]
 				if question:
-					answer = question.answer_set.filter(id=answers[question_id])[0]
-					if answer:
-						for population in answer.populations.all():
-							if population not in populations:
-								populations.append(population)
-			return render_to_response('questions/recommendations.html',{
+					answer_id_list = answers[question_id]
+					if type(answer_id_list) != type([]):
+						answer_id_list = [answer_id_list]
+					for answer_id in answer_id_list:
+						answer = question.answer_set.filter(id=answer_id)[0]
+						if answer:
+							for population in answer.populations.all():
+								if population not in populations:
+									populations.append(population)
+			print populations
+			return render_to_response('recommendations/list.html',{
 				'recommendations':populations_to_recomendations(populations)
 				})
 	return render_to_response('questions/form.html',{'form':form},context_instance=RequestContext(request))

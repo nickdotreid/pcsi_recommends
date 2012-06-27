@@ -10,11 +10,19 @@ def make_question_form(questionnaire_id):
 			answers = []
 			for answer in question.answer_set.all():
 				answers.append((answer.id,answer.text))
-			field_list.append((str(question.id), forms.ChoiceField(
-						widget = forms.RadioSelect,
-						label = question.text,
-						choices = answers
-					)))
+			field = forms.ChoiceField(
+							widget = forms.RadioSelect,
+							label = question.text,
+							choices = answers,
+						)
+			if question.multiple_choice:
+				field = forms.MultipleChoiceField(
+							widget = forms.CheckboxSelectMultiple,
+							label = question.text,
+							choices = answers,
+							required = False,
+						)
+			field_list.append((str(question.id),field))
 	return type('QuestionForm',(forms.BaseForm,),{
 		'base_fields':SortedDict(field_list),
 		})
