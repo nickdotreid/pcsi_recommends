@@ -13,10 +13,27 @@
 	{% endblock %}
 </head>
 <body>
+	<div id="header" class="top container">
+		<div id="site-logo">Just Ask Dr.SF</div>
+		<ul class="nav">
+			<li><a href="#">For SF Community</a></li>
+			<li><a href="#">For Health Providers</a></li>
+		</ul>
+	</div>
 	<div class="container">
-	{% block content %}
+		<div id="content">
+			{% block content %}
 	
-	{% endblock %}
+			{% endblock %}
+		</div>
+	</div>
+	<div id="footer" class="container bottom">
+		<ul>
+			<li><a href="/questions/">Questions</a></li>
+			<li><a href="/recomendations/">Recommendations</a></li>
+			<li><a href="/admin/">Admin</a></li>
+		</ul>
+		<p>Clarifying text about copyright and cool things.</p>
 	</div>
 </body>
 </html>
