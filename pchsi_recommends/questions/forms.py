@@ -39,7 +39,7 @@ def _make_question_form(questionnaire_id):
 							choices = answers,
 							required = False,
 						)
-			field_list.append((str(question.id),field))
+			field_list.append(('questions.'+str(question.id),field))
 	return type('QuestionForm',(forms.BaseForm,),{
 		'base_fields':SortedDict(field_list),
 		})

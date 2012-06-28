@@ -1,6 +1,7 @@
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.utils.datastructures import DotExpandedDict
 
 from django import forms
 
@@ -26,20 +27,21 @@ def questionnaire_form(request,questionnaire_id):
 		form = QuestionForm(request.POST)
 		if form.is_valid():
 			populations = []
-			answers = form.cleaned_data
-			for question_id in answers:
-				question = Question.objects.filter(id=question_id)[0]
-				if question:
-					answer_id_list = answers[question_id]
-					if type(answer_id_list) != type([]):
-						answer_id_list = [answer_id_list]
-					for answer_id in answer_id_list:
-						answer = question.answer_set.filter(id=answer_id)[0]
-						if answer:
-							for population in answer.populations.all():
-								if population not in populations:
-									populations.append(population)
-			print populations
+			answers = DotExpandedDict(form.cleaned_data)
+			if 'questions' in answers:
+				questions = answers['questions']
+				for question_id in questions:
+					question = Question.objects.filter(id=question_id)[0]
+					if question:
+						answer_id_list = questions[question_id]
+						if type(answer_id_list) != type([]):
+							answer_id_list = [answer_id_list]
+						for answer_id in answer_id_list:
+							answer = question.answer_set.filter(id=answer_id)[0]
+							if answer:
+								for population in answer.populations.all():
+									if population not in populations:
+										populations.append(population)
 			return render_to_response('recommendations/list.html',{
 				'recommendations':populations_to_recomendations(populations)
 				})
