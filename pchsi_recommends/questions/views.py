@@ -48,4 +48,7 @@ def questionnaire_form(request,questionnaire_id):
 			return render_to_response('recommendations/list.html',{
 				'recommendations':populations_to_recomendations(populations,age)
 				})
-	return render_to_response('questions/form.html',{'form':form},context_instance=RequestContext(request))
+	return render_to_response('questions/form.html',{
+		'form':form,
+		'questionnaire':questionnaire,
+		},context_instance=RequestContext(request))
