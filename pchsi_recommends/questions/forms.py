@@ -4,11 +4,25 @@ from django.utils.datastructures import SortedDict
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+
+def list_years(amount=10):
+	years = []
+	year = 2012
+	age = 0
+	while len(years)<amount:
+		years.append((age,year))
+		age = age + 1
+		year = year - 1
+	return years
 		
 def _make_question_form(questionnaire_id):
 	field_list = []
 	questionnaire = Questionnaire.objects.filter(id=questionnaire_id)[0]
 	if questionnaire:
+		field_list.append(('age',forms.ChoiceField(
+			label = 'What year were you born',
+			choices = list_years(100)
+		)))
 		for question in questionnaire.question_set.all():
 			answers = []
 			for answer in question.answer_set.all():
