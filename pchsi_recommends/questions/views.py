@@ -27,7 +27,10 @@ def questionnaire_form(request,questionnaire_id):
 		form = QuestionForm(request.POST)
 		if form.is_valid():
 			populations = []
+			age = False
 			answers = DotExpandedDict(form.cleaned_data)
+			if 'age' in answers:
+				age = answers['age']
 			if 'questions' in answers:
 				questions = answers['questions']
 				for question_id in questions:
@@ -43,6 +46,6 @@ def questionnaire_form(request,questionnaire_id):
 									if population not in populations:
 										populations.append(population)
 			return render_to_response('recommendations/list.html',{
-				'recommendations':populations_to_recomendations(populations)
+				'recommendations':populations_to_recomendations(populations,age)
 				})
 	return render_to_response('questions/form.html',{'form':form},context_instance=RequestContext(request))
