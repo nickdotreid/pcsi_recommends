@@ -1,0 +1,12 @@
+{% extends 'recommendations/list.html' %}
+
+{% block content %}
+	<h1>{{questionnaire.title}}</h1>
+	<p>Thank you for answering our questions. To prepare for your next doctor's visit you can:</p>
+	<ul>
+		<li><a href="#">Print this list</a></li>
+		<li><a href="#">Email this list</a></li>
+		<li><a href="#">Text this list</a></li>
+	</ul>
+	{{ block.super }}
+{% endblock %}

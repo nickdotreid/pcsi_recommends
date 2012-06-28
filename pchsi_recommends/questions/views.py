@@ -45,8 +45,9 @@ def questionnaire_form(request,questionnaire_id):
 								for population in answer.populations.all():
 									if population not in populations:
 										populations.append(population)
-			return render_to_response('recommendations/list.html',{
-				'recommendations':populations_to_recomendations(populations,age)
+			return render_to_response('questions/responses.html',{
+				'questionnaire':questionnaire,
+				'recommendations':populations_to_recomendations(populations,age),
 				})
 	return render_to_response('questions/form.html',{
 		'form':form,
