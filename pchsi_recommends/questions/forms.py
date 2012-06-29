@@ -5,6 +5,43 @@ from django.utils.datastructures import SortedDict
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
+def primary_questions(questionnaire_id):
+	questions = []
+	questions.append(('age',forms.ChoiceField(
+		label = 'What year were you born',
+		choices = list_years(100)
+	)))
+	questions.append(('birth_sex',forms.ChoiceField(
+		widget = forms.RadioSelect,
+		label = 'What sex were you assigned at birth?',
+		choices = [
+			('male','Male'),
+			('female','Female'),
+		]
+	)))
+	questions.append(('current_sex',forms.ChoiceField(
+		widget = forms.RadioSelect,
+		label = 'What sex are you currently?',
+		choices = [
+			('male','Male'),
+			('female','Female'),
+			('transmale','Transmale'),
+			('transfemale','Transfemale'),
+		]
+	)))
+	questions.append(('sex_partners',forms.MultipleChoiceField(
+		widget = forms.CheckboxSelectMultiple,
+		label = 'Which sexes are your sex partners?',
+		choices = [
+			('male','Men'),
+			('female','Women'),
+			('transmale','Transmen'),
+			('transfemale','Transwomen'),
+		],
+		required = True,
+	)))
+	return questions
+
 def list_years(amount=10):
 	years = []
 	year = 2012
@@ -19,10 +56,7 @@ def _make_question_form(questionnaire_id):
 	field_list = []
 	questionnaire = Questionnaire.objects.filter(id=questionnaire_id)[0]
 	if questionnaire:
-		field_list.append(('age',forms.ChoiceField(
-			label = 'What year were you born',
-			choices = list_years(100)
-		)))
+		field_list = primary_questions(questionnaire_id)
 		for question in questionnaire.question_set.all():
 			answers = []
 			for answer in question.answer_set.all():
