@@ -50,12 +50,6 @@ def population_test_form(request):
 		'recommendations':[]
 		},context_instance=RequestContext(request))
 		
-def is_int(string):
-	try:
-		return int(string)
-	except ValueError:
-		return False
-		
 def from_url_string(request):
 	populations = []
 	age = False
