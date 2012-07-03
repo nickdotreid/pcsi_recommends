@@ -68,21 +68,27 @@ def get_recommendation_for(screen,populations,age=False):
 	return recommend
 
 def population_relationship_matches(population_relationship,populations,age):
-	if age_in_range(age,population_relationship.min_age,population_relationship.max_age):
+	if not age or age_in_range(age,population_relationship.min_age,population_relationship.max_age):
+		relationship_populations = population_relationship.populations.all()
+		if len(relationship_populations)<1:
+			return True
 		if population_relationship.inclusive:
-			for population in population_relationship.populations.all():
+			for population in relationship_populations:
 				if population in populations:
 					return True
 		else:
-			for population in population_relationship.populations.all():
+			for population in relationship_populations:
 				if population not in populations:
 					return False
 			return True 
 	return False
 
-def age_in_range(age,min,max):
+def age_in_range(age,min=False,max=False):
+	age = int(age)
 	if not age:
 		return False
+	if not min and not max:
+		return True
 	if min and max:
 		if age >= min and age <= max:
 			return True

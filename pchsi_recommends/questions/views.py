@@ -24,22 +24,49 @@ def add_population(populations,term):
 def get_population_sex_dict():
 	sex_dict = {}
 	try:
-		sex_dict['male'] = Population.objects.get(name__iexact='male')
+		sex_dict['male'] = Population.objects.get(short__iexact='male')
 	except ObjectDoesNotExist:
 		sex_dict['male'] = False
 	try:
-		sex_dict['female'] = Population.objects.get(name__iexact='female')
+		sex_dict['female'] = Population.objects.get(short__iexact='female')
 	except ObjectDoesNotExist:
 		sex_dict['female'] = False
 	try:
-		sex_dict['transmale'] = Population.objects.get(name__iexact='transmale')
+		sex_dict['transmale'] = Population.objects.get(short__iexact='transmale')
 	except ObjectDoesNotExist:
 		sex_dict['transmale'] = False
 	try:
-		sex_dict['transfemale'] = Population.objects.get(name__iexact='transfemale')
+		sex_dict['transfemale'] = Population.objects.get(short__iexact='transfemale')
 	except ObjectDoesNotExist:
 		sex_dict['transfemale'] = False
 	return sex_dict
+
+def determine_sex(current_sex,birth_sex=False):
+	if current_sex and not birth_sex:
+		pop = Population.objects.get(short__iexact = current_sex)
+		if pop:
+			return pop
+	sex_dict = get_population_sex_dict()
+	if birth_sex == 'male' and current_sex == 'male' and sex_dict['male']:
+		return sex_dict['male']
+	if birth_sex == 'female' and current_sex == 'female' and sex_dict['female']:
+		return sex_dict['female']
+	if sex_dict['transfemale'] and (current_sex == 'transfemale' or (current_sex == 'female' and birth_sex == 'male')):
+		return sex_dict['transfemale']
+	if sex_dict['transmale'] and (current_sex == 'transmale' or (current_sex == 'male' and birth_sex == 'female')):
+		return sex_dict['transmale']
+	return False
+
+def determine_sexual_orientation(sex,sex_partners={}):
+	sex_dict = get_population_sex_dict()
+	if sex in [sex_dict['male'],sex_dict['transfemale'],sex_dict['transmale']] and ('male' in sex_partners or 'transmale' in sex_partners or 'transfemale' in sex_partners):
+		try:
+			pop = Population.objects.get(short__iexact='msm')
+			if pop:
+				return pop
+		except ObjectDoesNotExist:
+			return False
+	return False
 
 def questionnaire_form(request,questionnaire_id):
 	questionnaire = get_object_or_404(Questionnaire,pk=questionnaire_id)
@@ -55,29 +82,17 @@ def questionnaire_form(request,questionnaire_id):
 			if 'age' in answers:
 				age = answers['age']
 			if 'birth_sex' in answers and 'current_sex' in answers:
-				sex_dict = get_population_sex_dict()
-				if answers['birth_sex'] == 'male' and answers['current_sex'] == 'male' and sex_dict['male']:
-					sex = sex_dict['male']
-				if answers['birth_sex'] == 'female' and answers['current_sex'] == 'female' and sex_dict['female']:
-					sex = sex_dict['female']
-				if sex_dict['transfemale'] and (answers['current_sex'] == 'transfemale' or (answers['current_sex'] == 'female' and answers['birth_sex'] == 'male')):
-					sex = sex_dict['transfemale']
-				if sex_dict['transmale'] and (answers['current_sex'] == 'transmale' or (answers['current_sex'] == 'male' and answers['birth_sex'] == 'female')):
-					sex = sex_dict['transmale']
+				sex = determine_sex(answers['current_sex'],answers['birth_sex'])
+				if sex:
+					populations.append(sex)
 			elif 'current_sex' in answers:
-				pop = Population.objects.get(name__iexact = answers['current_sex'])
+				sex = determine_sex(answers['current_sex'])
+				if sex:
+					populations.append(sex)
+			if sex and 'sex_partners' in answers:
+				pop = determine_sexual_orientation(sex,answers['sex_partners'])
 				if pop:
-					sex = pop
-			if sex:
-				populations.append(sex)
-			if 'sex_partners' in answers:
-				if sex in [sex_dict['male'],sex_dict['transfemale'],sex_dict['transmale']] and ('male' in answers['sex_partners'] or 'transmale' in answers['sex_partners'] or 'transfemale' in answers['sex_partners']):
-					try:
-						pop = Population.objects.get(name__iexact='msm')
-						if pop:
-							populations.append(pop)
-					except ObjectDoesNotExist:
-						pop = False
+					populations.append(pop)
 			if 'questions' in answers:
 				questions = answers['questions']
 				for question_id in questions:
