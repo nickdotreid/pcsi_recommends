@@ -2,6 +2,8 @@ from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from django import forms
 from django.template import RequestContext
 
@@ -46,6 +48,29 @@ def population_test_form(request):
 	return render_to_response('forms/population_test_form.html',{
 		'form':form,
 		'recommendations':[]
+		},context_instance=RequestContext(request))
+		
+def is_int(string):
+	try:
+		return int(string)
+	except ValueError:
+		return False
+		
+def from_url_string(request):
+	populations = []
+	age = False
+	if 'age' in request.REQUEST:
+		age = int(request.REQUEST['age'])
+	if 'populations' in request.REQUEST:
+		pop_args = request.REQUEST['populations'].split(',')
+		for pop_id in pop_args:
+			try:
+				population = Population.objects.get(id = int(pop_id))
+				populations.append(population)
+			except (ObjectDoesNotExist,ValueError):
+				pass
+	return render_to_response('recommendations/list.html',{
+		'recommendations':populations_to_recomendations(populations,age)
 		},context_instance=RequestContext(request))
 	
 
