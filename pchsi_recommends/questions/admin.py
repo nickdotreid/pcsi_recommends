@@ -1,5 +1,8 @@
 from pchsi_recommends.questions.models import Questionnaire,Question,Answer
+from pchsi_recommends.recommendations.admin import PopulationRelationshipInline
 from django.contrib import admin
+from django.contrib.contenttypes.generic import GenericTabularInline, GenericStackedInline
+
 
 class AnswerInline(admin.TabularInline):
 	model = Answer
@@ -9,7 +12,7 @@ class AnswerInline(admin.TabularInline):
 	sortable_field_name = "position"
 
 class QuestionAdmin(admin.ModelAdmin):
-	inlines = [AnswerInline]
+	inlines = [AnswerInline,PopulationRelationshipInline]
 
 class QuestionInline(admin.TabularInline):
 	model = Question

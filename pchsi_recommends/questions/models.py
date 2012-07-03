@@ -1,5 +1,6 @@
 from django.db import models
-from pchsi_recommends.recommendations.models import Population
+from django.contrib.contenttypes import generic
+from pchsi_recommends.recommendations.models import Population,Population_Relationship
 
 class Questionnaire(models.Model):
 	''' Collects questions and has description '''
@@ -20,6 +21,8 @@ class Question(models.Model):
 	
 	multiple_choice = models.BooleanField(default=False)
 	position = models.PositiveSmallIntegerField("Position")
+	
+	populations = generic.GenericRelation(Population_Relationship)
 
 	class Meta:
 		ordering = ['position']
