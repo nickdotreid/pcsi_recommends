@@ -50,9 +50,15 @@ def population_test_form(request):
 		'recommendations':[]
 		},context_instance=RequestContext(request))
 		
-def from_url_string(request):
+def show_recommendations(request):
 	populations = []
 	age = False
+	if 'age' in request.session:
+		age = request.session['age']
+		del request.session['age']
+	if 'populations' in request.session:
+		populations = request.session['populations']
+		del request.session['populations']
 	if 'age' in request.REQUEST:
 		age = int(request.REQUEST['age'])
 	if 'populations' in request.REQUEST:
@@ -80,7 +86,7 @@ def get_recommendation_for(screen,populations,age=False):
 	recommend = False
 	recommendations = screen.recommendation_set.all()
 	for recommendation in recommendations:
-		for population_relationship in recommendation.population_relationship_set.all():
+		for population_relationship in recommendation.populations.all():
 			if population_relationship_matches(population_relationship,populations,age):
 				if not recommend or recommend.weight > recommendation.weight:
 					recommend = recommendation
