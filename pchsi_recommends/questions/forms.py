@@ -5,7 +5,7 @@ from django.utils.datastructures import SortedDict
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-def primary_questions(questionnaire_id):
+def primary_questions():
 	questions = []
 	questions.append(('age',forms.ChoiceField(
 		label = 'What year were you born',
@@ -52,13 +52,14 @@ def list_years(amount=10):
 		year = year - 1
 	return years
 
-def make_question_form(questionnaire_id,show_base_form=True):
+def make_base_question_form():
+	field_list = primary_questions()
+	return make_question_form_from_fields(field_list)
+
+def make_additional_question_form(populations=[],age=False,exclude_question_ids=[]):
 	field_list = []
-	questionnaire = Questionnaire.objects.filter(id=questionnaire_id)[0]
-	if questionnaire:
-		if questionnaire.use_base_form and show_base_form:
-			field_list = primary_questions(questionnaire_id)
-		for question in questionnaire.question_set.all():
+	for question in Question.objects.all():
+		if question.id not in exclude_question_ids:
 			answers = []
 			for answer in question.answer_set.all():
 				answers.append((answer.id,answer.text))
@@ -75,6 +76,9 @@ def make_question_form(questionnaire_id,show_base_form=True):
 							required = False,
 						)
 			field_list.append(('questions.'+str(question.id),field))
+	return make_question_form_from_fields(field_list)
+
+def make_question_form_from_fields(field_list):
 	QuestionForm = type('QuestionForm',(forms.BaseForm,),{
 				'base_fields':SortedDict(field_list),
 				})

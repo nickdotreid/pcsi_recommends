@@ -40,6 +40,11 @@ def answers_to_populations(answers):
 								populations.append(population)
 	return populations
 
+def add_population(populations,term):
+	pops = Population.objects.filter(name=term)
+	if len(pops) > 0 and pops[0] not in populations:
+		populations.append(pops[0])
+	return populations
 
 def get_population_sex_dict():
 	sex_dict = {}

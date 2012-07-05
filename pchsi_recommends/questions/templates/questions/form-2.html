@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{%	block content	%}
+	<h1>{{questionnaire.title}}</h1>
+	<p class="description">{{questionnaire.directions}}</p>
+	<div class="notification alert">
+		<p>Based on your responses we have more questions for you.</p>
+		<p>You can skip these questions and <a href="#">get your recommendations here</a></p>
+	</div>
+	{% crispy form %}
+	<div class="">
+		<a href="button">Get your recommendations here</a>
+	</div>
+{% endblock  %}
