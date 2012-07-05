@@ -51,12 +51,13 @@ def list_years(amount=10):
 		age = age + 1
 		year = year - 1
 	return years
-		
-def _make_question_form(questionnaire_id):
+
+def make_question_form(questionnaire_id,show_base_form=True):
 	field_list = []
 	questionnaire = Questionnaire.objects.filter(id=questionnaire_id)[0]
 	if questionnaire:
-		field_list = primary_questions(questionnaire_id)
+		if questionnaire.use_base_form and show_base_form:
+			field_list = primary_questions(questionnaire_id)
 		for question in questionnaire.question_set.all():
 			answers = []
 			for answer in question.answer_set.all():
@@ -74,12 +75,9 @@ def _make_question_form(questionnaire_id):
 							required = False,
 						)
 			field_list.append(('questions.'+str(question.id),field))
-	return type('QuestionForm',(forms.BaseForm,),{
-		'base_fields':SortedDict(field_list),
-		})
-
-def make_question_form(questionnaire_id):
-	QuestionForm = _make_question_form(questionnaire_id)
+	QuestionForm = type('QuestionForm',(forms.BaseForm,),{
+				'base_fields':SortedDict(field_list),
+				})
 	class QuestionForm(QuestionForm):
 		def __init__(self, *args, **kwargs):
 			self.helper = FormHelper()
