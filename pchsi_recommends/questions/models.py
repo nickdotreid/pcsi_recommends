@@ -5,9 +5,10 @@ from pchsi_recommends.recommendations.models import Population,Population_Relati
 class Questionnaire(models.Model):
 	''' Collects questions and has description '''
 	
-	short = models.CharField(unique=True,max_length=50)
 	title = models.CharField(blank=True, max_length=100)
 	directions = models.TextField(blank=True)
+	
+	use_base_form = models.BooleanField(default=True)
 	
 	def __unicode__(self):
 		return self.title
