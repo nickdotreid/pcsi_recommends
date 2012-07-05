@@ -2,6 +2,8 @@ from django import forms
 from pchsi_recommends.questions.models import *
 from django.utils.datastructures import SortedDict
 
+from pchsi_recommends.recommendations.views import population_relationship_matches
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -59,7 +61,7 @@ def make_base_question_form():
 def make_additional_question_form(populations=[],age=False,exclude_question_ids=[]):
 	field_list = []
 	for question in Question.objects.all():
-		if question.id not in exclude_question_ids:
+		if str(question.id) not in exclude_question_ids and question_matches_population(question,populations,age):
 			answers = []
 			for answer in question.answer_set.all():
 				answers.append((answer.id,answer.text))
@@ -77,6 +79,15 @@ def make_additional_question_form(populations=[],age=False,exclude_question_ids=
 						)
 			field_list.append(('questions.'+str(question.id),field))
 	return make_question_form_from_fields(field_list)
+
+def question_matches_population(question,populations,age):
+	if question.populations.count() < 1:
+		return True
+	for relationship in question.populations.all():
+		if population_relationship_matches(relationship,populations,age):
+			return True
+	return False
+			
 
 def make_question_form_from_fields(field_list):
 	QuestionForm = type('QuestionForm',(forms.BaseForm,),{
