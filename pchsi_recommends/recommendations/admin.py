@@ -1,6 +1,7 @@
-from pchsi_recommends.recommendations.models import Recommendation, Screen, Population, Population_Relationship
+from pchsi_recommends.recommendations.models import Recommendation, Screen
+from pchsi_recommends.populations.admin import PopulationRelationshipInline
+
 from django.contrib import admin
-from django.contrib.contenttypes.generic import GenericTabularInline, GenericStackedInline
 
 class RecommendationInline(admin.TabularInline):
 	model = Recommendation
@@ -13,11 +14,6 @@ class ScreenAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Screen,ScreenAdmin)
-admin.site.register(Population)
-
-class PopulationRelationshipInline(GenericTabularInline):
-	model = Population_Relationship
-	extra = 1
 
 class RecommendationAdmin(admin.ModelAdmin):
 	inlines = [PopulationRelationshipInline]

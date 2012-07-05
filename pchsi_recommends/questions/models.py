@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes import generic
-from pchsi_recommends.recommendations.models import Population,Population_Relationship
+from pchsi_recommends.populations.models import Population,Population_Relationship
 
 class Questionnaire(models.Model):
 	''' Collects questions and has description '''

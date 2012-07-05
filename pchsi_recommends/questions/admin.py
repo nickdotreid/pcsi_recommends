@@ -1,7 +1,7 @@
 from pchsi_recommends.questions.models import Questionnaire,Question,Answer
-from pchsi_recommends.recommendations.admin import PopulationRelationshipInline
+from pchsi_recommends.populations.admin import PopulationRelationshipInline
+
 from django.contrib import admin
-from django.contrib.contenttypes.generic import GenericTabularInline, GenericStackedInline
 
 
 class AnswerInline(admin.TabularInline):
