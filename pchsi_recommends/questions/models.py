@@ -17,7 +17,7 @@ class Question(models.Model):
 		ordering = ['position']
 	
 	def __unicode__(self):
-		return self.text + ": " + self.questionnaire.title
+		return self.text
 		
 class Answer(models.Model):
 	""" Answers that link patients to populations """
