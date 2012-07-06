@@ -9,7 +9,6 @@ import itertools
 from django.template import RequestContext
 
 from forms import make_base_question_form, make_additional_question_form
-from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 
 from logic import *

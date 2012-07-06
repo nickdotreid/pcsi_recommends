@@ -2,20 +2,8 @@ from django.db import models
 from django.contrib.contenttypes import generic
 from pchsi_recommends.populations.models import Population,Population_Relationship
 
-class Questionnaire(models.Model):
-	''' Collects questions and has description '''
-	
-	title = models.CharField(blank=True, max_length=100)
-	directions = models.TextField(blank=True)
-	
-	use_base_form = models.BooleanField(default=True)
-	
-	def __unicode__(self):
-		return self.title
-
 class Question(models.Model):
-	"""(Question description)"""
-	questionnaire = models.ForeignKey(Questionnaire)
+	""" Model for questions that are dynamically asked to patients """
 	
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
@@ -32,6 +20,7 @@ class Question(models.Model):
 		return self.text + ": " + self.questionnaire.title
 		
 class Answer(models.Model):
+	""" Answers that link patients to populations """
 	
 	question = models.ForeignKey(Question)
 	populations = models.ManyToManyField(Population)

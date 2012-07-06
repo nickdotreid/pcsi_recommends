@@ -13,14 +13,3 @@ class AnswerInline(admin.TabularInline):
 
 class QuestionAdmin(admin.ModelAdmin):
 	inlines = [AnswerInline,PopulationRelationshipInline]
-
-class QuestionInline(admin.TabularInline):
-	model = Question
-	extra = 1
-	sortable_field_name = "position"
-
-class QuestionnaireAdmin(admin.ModelAdmin):
-	inlines = [QuestionInline]
-
-admin.site.register(Questionnaire,QuestionnaireAdmin)
-admin.site.register(Question,QuestionAdmin)
