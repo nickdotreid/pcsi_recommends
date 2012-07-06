@@ -2501,4 +2501,8 @@ a {
   padding: 21px 0px;
   font-size: 11px;
   line-height: 14px;
+  clear: both;
+}
+.bottom .navbar {
+  margin: 0px 49px 14px;
 }
