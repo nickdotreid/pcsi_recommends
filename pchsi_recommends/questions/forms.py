@@ -61,7 +61,7 @@ def make_base_question_form():
 def make_additional_question_form(populations=[],age=False,exclude_question_ids=[]):
 	field_list = []
 	for question in Question.objects.all():
-		if str(question.id) not in exclude_question_ids and question_matches_population(question,populations,age):
+		if str(question.id) not in exclude_question_ids and relation_matches_population(question.populations,populations,age):
 			answers = []
 			for answer in question.answer_set.all():
 				answers.append((answer.id,answer.text))
@@ -80,10 +80,10 @@ def make_additional_question_form(populations=[],age=False,exclude_question_ids=
 			field_list.append(('questions.'+str(question.id),field))
 	return make_question_form_from_fields(field_list)
 
-def question_matches_population(question,populations,age):
-	if question.populations.count() < 1:
+def relation_matches_population(relation_query,populations,age):
+	if relation_query.count() < 1:
 		return True
-	for relationship in question.populations.all():
+	for relationship in relation_query.all():
 		if population_relationship_matches(relationship,populations,age):
 			return True
 	return False
