@@ -64,7 +64,8 @@ def make_additional_question_form(populations=[],age=False,exclude_question_ids=
 		if str(question.id) not in exclude_question_ids and relation_matches_population(question.populations,populations,age):
 			answers = []
 			for answer in question.answer_set.all():
-				answers.append((answer.id,answer.text))
+				if relation_matches_population(answer.population_relationships,populations,age):
+					answers.append((answer.id,answer.text))
 			field = forms.ChoiceField(
 							widget = forms.RadioSelect,
 							label = question.text,

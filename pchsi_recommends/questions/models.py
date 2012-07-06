@@ -30,6 +30,8 @@ class Answer(models.Model):
 	
 	position = models.PositiveSmallIntegerField("Position")
 	
+	population_relationships = generic.GenericRelation(Population_Relationship)
+	
 	class Meta:
 		ordering = ['position']
 	
