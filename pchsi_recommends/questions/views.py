@@ -61,6 +61,6 @@ def show_recommendations(request):
 	if 'populations' in request.session:
 		populations = request.session['populations']
 	reset_session(request)
-	return render_to_response('recommendations/list.html',{
+	return render_to_response('questions/responses.html',{
 		'recommendations':populations_to_recomendations(populations,age)
 		},context_instance=RequestContext(request))

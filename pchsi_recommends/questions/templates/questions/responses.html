@@ -1,18 +1,14 @@
 {% extends 'recommendations/list.html' %}
 
 {% block content %}
-	<!--
-	{{age}}
-	{% for population in populations %}
-	{{population.name}}
-	{% endfor %}
-	-->
-	<h1>{{questionnaire.title}}</h1>
-	<p>Thank you for answering our questions. To prepare for your next doctor's visit you can:</p>
+	<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
+	<p>Below is a list of recommendations for preventative screens based on health trends in San Francisco.</p>
+	<p>To prepare for your next doctor's visit you can:</p>
 	<ul>
 		<li><a href="#">Print this list</a></li>
 		<li><a href="#">Email this list</a></li>
 		<li><a href="#">Text this list</a></li>
 	</ul>
+	<p>This list is a series of recommendations, and you should discuss this with your health care provider.</p>
 	{{ block.super }}
 {% endblock %}
