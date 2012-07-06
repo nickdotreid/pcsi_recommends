@@ -1,12 +1,16 @@
 {% extends 'recommendations/list.html' %}
 
 {%	block content	%}
+<div class="row-fluid">
+	<div class="span4">
 <form id="populations" action="" method="post">
 	{% csrf_token %}
 	{{form.as_p}}
 	<input type="submit" value="Get Recommendations" />
 </form>
-
+	</div>
+	<div class="span8">
 {{ block.super }}
-
+	</div>
+</div>
 {%	endblock	%}
