@@ -15,10 +15,13 @@ from logic import *
 
 from pchsi_recommends.recommendations.views import populations_to_recomendations
 
-def base_question_form(request):
+def reset_session(request):
 	request.session['age'] = False
 	request.session['populations'] = []
 	request.session['questions_asked'] = []
+
+def base_question_form(request):
+	reset_session(request)
 	QuestionForm = make_base_question_form()
 	form = QuestionForm()
 	if request.method == 'POST':
@@ -27,7 +30,7 @@ def base_question_form(request):
 			answers = DotExpandedDict(form.cleaned_data)
 			request.session['age'] = answers_to_age(answers)
 			request.session['populations'] = answers_to_populations(answers)
-			return redirect('/questions/more')
+			return redirect('/more')
 	return render_to_response('questions/form.html',{
 		'form':form,
 		},context_instance=RequestContext(request))
@@ -45,7 +48,19 @@ def additional_question_form(request):
 			QuestionForm = make_additional_question_form(request.session['populations'],request.session['age'],request.session['questions_asked'])
 			form = QuestionForm(request.POST)
 	if len(form.fields)<1:
-		return redirect('/recomendations')
+		return redirect('/recommendations')
 	return render_to_response('questions/form-2.html',{
 		'form':form,
+		},context_instance=RequestContext(request))
+
+def show_recommendations(request):
+	populations = []
+	age = False
+	if 'age' in request.session:
+		age = request.session['age']
+	if 'populations' in request.session:
+		populations = request.session['populations']
+	reset_session(request)
+	return render_to_response('recommendations/list.html',{
+		'recommendations':populations_to_recomendations(populations,age)
 		},context_instance=RequestContext(request))
