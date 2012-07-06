@@ -2495,6 +2495,7 @@ a {
   position: absolute;
   top: 20px;
   left: 60px;
+  z-index: 10;
 }
 .bottom.container {
   padding: 21px 0px;

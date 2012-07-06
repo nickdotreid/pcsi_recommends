@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
 	<title>{% block title %}PCHSI Recommends{% endblock %}</title>
@@ -14,24 +15,24 @@
 <body>
 	<div id="header" class="top container">
 		<div id="site-logo">Just Ask Dr.SF</div>
-		<nav class="navbar">
+		<div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav nav-pills pull-right">
 					<li><a href="#">For SF Community</a></li>
 					<li><a href="#">For Health Providers</a></li>
 				</ul>
 			</div>
-		</nav>
+		</div>
 	</div>
 	<div class="container">
-		<section id="content" class="content">
+		<div id="content" class="content">
 			{% block content %}
 	
 			{% endblock %}
-		</section>
+		</div>
 	</div>
 	<div id="footer" class="container bottom">
-		<nav class="navbar">
+		<div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav nav-pills pull-left">
 					<li><a href="/questions/">Questions</a></li>
@@ -41,10 +42,10 @@
 					<li><a href="/admin/">Admin</a></li>
 				</ul>
 			</div>
-		</nav>
-		<section class="content">
+		</div>
+		<div class="content">
 			<p>Clarifying text about copyright and cool things.</p>
-		</section>
+		</div>
 	</div>
 </body>
 </html>
