@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django import forms
 from django.template import RequestContext
 
+from pchsi_recommends.populations.models import *
 from pchsi_recommends.recommendations.models import *
 
 def make_population_form():
@@ -53,12 +54,6 @@ def population_test_form(request):
 def show_recommendations(request):
 	populations = []
 	age = False
-	if 'age' in request.session:
-		age = request.session['age']
-		del request.session['age']
-	if 'populations' in request.session:
-		populations = request.session['populations']
-		del request.session['populations']
 	if 'age' in request.REQUEST:
 		age = int(request.REQUEST['age'])
 	if 'populations' in request.REQUEST:
