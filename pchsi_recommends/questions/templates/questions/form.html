@@ -2,10 +2,14 @@
 {% load crispy_forms_tags %}
 
 {%	block content	%}
-	<div class="hero-unit">
+<div class="row-fluid">
+	<div class="span7">
 		<h1>Preventative Recommendations</h1>
 		<p>For your most accurate reading, please fill out all the questions.</p>
 		<p>None of the information you enter here will be saved.</p>
 	</div>
+	<div class="span5">
 	{% crispy form %}
+	</div>
+</div>
 {% endblock  %}
