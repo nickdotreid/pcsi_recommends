@@ -16,8 +16,13 @@
 	{{ block.super }}
 		</div>
 		<div class="span5">
+			<a href="/">Reset Form</a>
 			{% if form %}
 			{% crispy form %}
+			{% else %}
+			<div class="alert">
+				<p>No Additional Questions</p>
+			</div>
 			{% endif %}
 		</div>
 	</div>
