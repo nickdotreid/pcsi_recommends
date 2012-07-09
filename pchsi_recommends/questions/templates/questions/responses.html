@@ -1,6 +1,9 @@
 {% extends 'recommendations/list.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
+	<div class="row-fluid">
+		<div class="span7">
 	<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
 	<p>Below is a list of recommendations for preventative screens based on health trends in San Francisco.</p>
 	<p>To prepare for your next doctor's visit you can:</p>
@@ -11,4 +14,11 @@
 	</ul>
 	<p>This list is a series of recommendations, and you should discuss this with your health care provider.</p>
 	{{ block.super }}
+		</div>
+		<div class="span5">
+			{% if form %}
+			{% crispy form %}
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}
