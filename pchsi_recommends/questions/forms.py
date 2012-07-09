@@ -11,7 +11,9 @@ def primary_questions():
 	questions = []
 	questions.append(('age',forms.ChoiceField(
 		label = 'What year were you born',
-		choices = list_years(100)
+		choices = list_years(100),
+		initial = "",
+		required = True,
 	)))
 	questions.append(('birth_sex',forms.ChoiceField(
 		widget = forms.RadioSelect,
@@ -45,7 +47,7 @@ def primary_questions():
 	return questions
 
 def list_years(amount=10):
-	years = []
+	years = [("",'Select a Year')]
 	year = 2012
 	age = 0
 	while len(years)<amount:
