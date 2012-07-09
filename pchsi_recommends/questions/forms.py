@@ -10,7 +10,7 @@ from crispy_forms.layout import Submit
 def primary_questions():
 	questions = []
 	questions.append(('age',forms.ChoiceField(
-		label = 'What year were you born',
+		label = 'What year were you born?',
 		choices = list_years(100),
 		initial = "",
 		required = True,
@@ -35,7 +35,7 @@ def primary_questions():
 	)))
 	questions.append(('sex_partners',forms.MultipleChoiceField(
 		widget = forms.CheckboxSelectMultiple,
-		label = 'Which sexes are your sex partners?',
+		label = 'What is the gender of your sex partners?',
 		choices = [
 			('male','Men'),
 			('female','Women'),
