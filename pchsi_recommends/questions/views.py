@@ -54,12 +54,8 @@ def additional_question_form(request):
 		},context_instance=RequestContext(request))
 
 def show_recommendations(request):
-	populations = []
-	age = False
-	if 'age' in request.session:
-		age = request.session['age']
-	if 'populations' in request.session:
-		populations = request.session['populations']
+	if 'populations' not in request.session or 'age' not in request.session:
+		return redirect('/')
 	QuestionForm = make_additional_question_form(request.session['populations'],request.session['age'],request.session['questions_asked'])
 	form = QuestionForm()
 	if request.method == 'POST':
@@ -73,8 +69,7 @@ def show_recommendations(request):
 			form = QuestionForm(request.POST)
 	if len(form.fields)<1:
 		form = False
-#	reset_session(request)
 	return render_to_response('questions/responses.html',{
-		'recommendations':populations_to_recomendations(populations,age),
+		'recommendations':populations_to_recomendations(request.session['populations'],request.session['age']),
 		'form':form,
 		},context_instance=RequestContext(request))
