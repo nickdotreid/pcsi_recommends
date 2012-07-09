@@ -4,16 +4,17 @@
 {% block content %}
 	<div class="row-fluid">
 		<div class="span7">
-	<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
-	<p>Below is a list of recommendations for preventative screens based on health trends in San Francisco.</p>
-	<p>To prepare for your next doctor's visit you can:</p>
-	<ul>
-		<li><a href="#">Print this list</a></li>
-		<li><a href="#">Email this list</a></li>
-		<li><a href="#">Text this list</a></li>
-	</ul>
-	<p>This list is a series of recommendations, and you should discuss this with your health care provider.</p>
-	{{ block.super }}
+			<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
+			<p>Below is a list of recommendations for preventative screens based on health trends in San Francisco. We recommend you take this list to your next doctor appointment. If you don't have a primary care provider, for each screen we provide information for where you can get a screen or vaccination.</p>
+			<p>You can save this list by printing, emailing or texting it to yourself.</p>
+			<div class="recommendations">
+				<ul class="actions">
+					<li><a class="button print" href="#"><i></i>Print this list</a></li>
+					<li><a class="button email" href="#"><i></i>Email this list</a></li>
+					<li><a class="button text" href="#"><i></i>Text this list</a></li>
+				</ul>
+				{{ block.super }}
+			</div>
 		</div>
 		<div class="span5">
 			<a href="/">Reset Form</a>
