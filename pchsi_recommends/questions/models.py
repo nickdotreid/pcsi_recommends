@@ -23,7 +23,7 @@ class Answer(models.Model):
 	""" Answers that link patients to populations """
 	
 	question = models.ForeignKey(Question)
-	populations = models.ManyToManyField(Population)
+	populations = models.ManyToManyField(Population,blank=True)
 	
 	text = models.CharField(max_length=250)
 	description = models.TextField(blank=True)
