@@ -8,12 +8,9 @@
 			<p>Below is a list of recommendations for preventative screens based on health trends in San Francisco. We recommend you take this list to your next doctor appointment. If you don't have a primary care provider, for each screen we provide information for where you can get a screen or vaccination.</p>
 			<p>You can save this list by printing, emailing or texting it to yourself.</p>
 			<div class="recommendations">
-				<ul class="actions">
-					<li><a class="button print" href="#"><i></i>Print this list</a></li>
-					<li><a class="button email" href="#"><i></i>Email this list</a></li>
-					<li><a class="button text" href="#"><i></i>Text this list</a></li>
-				</ul>
+				{% include 'recommendations/actions.html' %}
 				{{ block.super }}
+				{% include 'recommendations/actions.html' %}
 			</div>
 		</div>
 		<div class="span5">
