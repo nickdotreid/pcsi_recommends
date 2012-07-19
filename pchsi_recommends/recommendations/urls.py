@@ -9,6 +9,7 @@ urlpatterns = patterns('pchsi_recommends.recommendations.views',
 		ListView.as_view(
 			model=Screen,
 			context_object_name="screen_list",
+			template_name="screens/list.html",
 		)),
 	url(r'^screens/(?P<screen_id>\d+)/$','screen_detail'),
 )
