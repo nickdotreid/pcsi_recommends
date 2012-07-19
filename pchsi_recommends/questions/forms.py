@@ -56,13 +56,16 @@ def list_years(amount=10):
 		year = year - 1
 	return years
 
-def make_question_form(populations=[],age=False,exclude_question_ids=[]):
+def make_question_form(populations=[],age=False,exclude_question_ids=[],all=False):
 	if len(populations)>0 or age:
-		return make_additional_question_form(populations,age,exclude_question_ids)
-	field_list = primary_questions()
+		field_list = get_additional_questions(populations,age,exclude_question_ids)
+		if(all):
+			field_list = primary_questions() + field_list
+	else:
+		field_list = primary_questions()
 	return make_question_form_from_fields(field_list)
 
-def make_additional_question_form(populations=[],age=False,exclude_question_ids=[]):
+def get_additional_questions(populations=[],age=False,exclude_question_ids=[]):
 	field_list = []
 	for question in Question.objects.all():
 		if str(question.id) not in exclude_question_ids and relation_matches_population(question.populations,populations,age):
@@ -83,7 +86,7 @@ def make_additional_question_form(populations=[],age=False,exclude_question_ids=
 							required = False,
 						)
 			field_list.append(('questions.'+str(question.id),field))
-	return make_question_form_from_fields(field_list)
+	return field_list
 
 def relation_matches_population(relation_query,populations,age):
 	if relation_query.count() < 1:

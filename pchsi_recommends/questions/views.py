@@ -19,6 +19,7 @@ def reset_session(request):
 	request.session['age'] = False
 	request.session['populations'] = []
 	request.session['questions_asked'] = []
+	request.session['answers'] = {}
 
 def base_question_form(request):
 	reset_session(request)
@@ -49,6 +50,16 @@ def show_recommendations(request):
 		'age':request.session['age'],
 		},context_instance=RequestContext(request))
 
+def all_questions(request):
+	if 'populations' not in request.session or 'age' not in request.session or 'answers' not in request.session:
+		return redirect('/')
+	QuestionForm = make_question_form(request.session['populations'],request.session['age'],[],True)
+	form = QuestionForm(request.session['answers'])
+	return render_to_response('questions/responses.html',{
+		'recommendations':False,
+		'form':form,
+		},context_instance=RequestContext(request))
+
 def question_answer(request):
 	if request.method == 'POST':
 		if 'populations' not in request.session or 'age' not in request.session:
@@ -57,11 +68,13 @@ def question_answer(request):
 			QuestionForm = make_question_form(request.session['populations'],request.session['age'],request.session['questions_asked'])
 		form = QuestionForm(request.POST)
 		if form.is_valid():
-			print "QUESTION ANSWERS"
+			if 'answers' not in request.session:
+				request.session['answers'] = request.POST
+			else:
+				request.session['answers'] = dict( request.session['answers'].items() + request.POST.items() )
 			answers = DotExpandedDict(form.cleaned_data)
 			request.session['age'] = answers_to_age(answers)
 			request.session['populations'] = list(set(itertools.chain(request.session['populations'],answers_to_populations(answers))))
 			if 'questions' in answers:
 				request.session['questions_asked'] = list(set(itertools.chain(request.session['questions_asked'],answers['questions'].keys())))
-			print request.session['age']
 	return redirect('/recommendations')
