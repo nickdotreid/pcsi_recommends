@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{%	block content	%}
+<div class="row-fluid">
+	<div class="span7">
+		<p>This is a list of all the screens available on this website.</p>
+	</div>
+	<div class="span4">
+	{% for screen in screen_list %}
+		<div class="screen">
+			<a href="#">{{screen.name}}</a>
+		</div>
+	{%  empty  %}
+	<div class="alert">No Screens</div>
+	{% endfor %}
+	</div>
+</div>
+{%	endblock	%}
