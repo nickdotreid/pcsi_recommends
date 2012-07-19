@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{%	block content	%}
+<div class="screen">
+	<h1 class="title">{{screen.name}}</h1>
+	<!-- list any related notes -->
+	{% for recommendation in recommendations %}
+		{% include "recommendations/recommendation-full.html" with recommendation=recommendation no_screen=True %}
+	{% endfor %}
+	<!-- list recommendations in weighted order with populations -->
+</div>
+{%	endblock	%}

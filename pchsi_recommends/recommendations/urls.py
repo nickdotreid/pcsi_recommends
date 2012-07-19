@@ -10,5 +10,5 @@ urlpatterns = patterns('pchsi_recommends.recommendations.views',
 			model=Screen,
 			context_object_name="screen_list",
 		)),
-#	url(r'^(?screens/P<xls_id>\d+)/$','screen_detail'),
+	url(r'^screens/(?P<screen_id>\d+)/$','screen_detail'),
 )

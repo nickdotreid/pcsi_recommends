@@ -8,7 +8,7 @@
 	<div class="span4">
 	{% for screen in screen_list %}
 		<div class="screen">
-			<a href="#">{{screen.name}}</a>
+			<a href="/providers/screens/{{screen.id}}/">{{screen.name}}</a>
 		</div>
 	{%  empty  %}
 	<div class="alert">No Screens</div>

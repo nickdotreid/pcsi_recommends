@@ -10,6 +10,19 @@ from django.template import RequestContext
 from pchsi_recommends.populations.models import *
 from pchsi_recommends.recommendations.models import *
 
+def screen_detail(request,screen_id):
+	screen = get_object_or_404(Screen,pk=screen_id)
+	if request.is_ajax():
+		return HttpResponse(
+			json.dumps({
+				'name':screen.name,
+				}),
+			'application/json')
+	return render_to_response('recommendations/screen.html',{
+		'screen':screen,
+		'recommendations':screen.recommendation_set.all(),
+		},context_instance=RequestContext(request))
+
 def make_population_form():
 	populations = []
 	for population in Population.objects.all():
