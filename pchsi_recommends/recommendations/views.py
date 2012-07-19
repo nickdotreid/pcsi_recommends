@@ -23,6 +23,12 @@ def screen_detail(request,screen_id):
 		'recommendations':screen.recommendation_set.all(),
 		},context_instance=RequestContext(request))
 
+def recommendation_detail(request,recommendation_id):
+	recommendation = get_object_or_404(Recommendation,pk=recommendation_id)
+	return render_to_response('recommendations/detail.html',{
+		'recommendation':recommendation,
+		},context_instance=RequestContext(request))
+
 def make_population_form():
 	populations = []
 	for population in Population.objects.all():

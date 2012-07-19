@@ -4,7 +4,7 @@ from models import Screen
 
 urlpatterns = patterns('pchsi_recommends.recommendations.views',
 	url(r'^$','population_test_form'),
-#	url(r'^recommendation/$','recommendation_detail'),
+	url(r'^recommendations/(?P<recommendation_id>\d+)/$','recommendation_detail'),
 	url(r'^screens/$',
 		ListView.as_view(
 			model=Screen,

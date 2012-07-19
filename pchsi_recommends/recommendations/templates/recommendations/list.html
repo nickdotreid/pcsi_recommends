@@ -3,7 +3,7 @@
 {%	block content	%}
 
 {% for recommendation in recommendations %}
-	{% include "recommendations/recommendation.html" with recommendation=recommendation %}
+	{% include "recommendations/list-item.html" with recommendation=recommendation %}
 {%  empty  %}
 <div class="alert">No Recommendations</div>
 {% endfor %}

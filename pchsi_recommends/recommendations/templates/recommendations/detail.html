@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{%	block content	%}
+<div id="recommendation-{{recommendation.id}}" class="recommendation">
+	<h1 class="screen">{{recommendation.screen.name}}</h1>
+	{% if recommendation.frequency %}
+	<p class="frequency">{{recommendation.frequency}}</p>
+	{% endif %}
+	<!-- show notes -->
+</div>
+{%	endblock	%}
