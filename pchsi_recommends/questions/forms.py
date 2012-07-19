@@ -56,7 +56,9 @@ def list_years(amount=10):
 		year = year - 1
 	return years
 
-def make_base_question_form():
+def make_question_form(populations=[],age=False,exclude_question_ids=[]):
+	if len(populations)>0 or age:
+		return make_additional_question_form(populations,age,exclude_question_ids)
 	field_list = primary_questions()
 	return make_question_form_from_fields(field_list)
 
@@ -90,7 +92,6 @@ def relation_matches_population(relation_query,populations,age):
 		if population_relationship_matches(relationship,populations,age):
 			return True
 	return False
-			
 
 def make_question_form_from_fields(field_list):
 	QuestionForm = type('QuestionForm',(forms.BaseForm,),{
@@ -102,7 +103,7 @@ def make_question_form_from_fields(field_list):
 			self.helper.form_id = 'id-exampleForm'
 			self.helper.form_class = 'blueForms'
 			self.helper.form_method = 'post'
-			#self.helper.form_action = 'submit_survey'
+			self.helper.form_action = 'answer'
 
 			self.helper.add_input(Submit('submit', 'Submit'))
 			super(QuestionForm, self).__init__(*args, **kwargs)
