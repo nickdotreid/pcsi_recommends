@@ -43,10 +43,22 @@ def show_recommendations(request):
 	form = QuestionForm()
 	if len(form.fields)<1:
 		form = False
+	answers = []
+	if 'answers' in request.session:
+		FullQuestionForm = make_question_form(request.session['populations'],request.session['age'],[],True)
+		full_form = FullQuestionForm(request.session['answers'])
+		for key in full_form.fields.keys():
+			if not form or key not in form.fields.keys():
+				field = full_form[key]
+				answers.append({
+					'label':field.label,
+					'value':field.value(),
+				})
 	# clear session
 	return render_to_response('questions/responses.html',{
 		'recommendations':populations_to_recomendations(request.session['populations'],request.session['age']),
 		'form':form,
+		'answers':answers,
 		'age':request.session['age'],
 		},context_instance=RequestContext(request))
 
