@@ -55,4 +55,5 @@ def show_recommendations(request):
 	return render_to_response('questions/responses.html',{
 		'recommendations':populations_to_recomendations(request.session['populations'],request.session['age']),
 		'form':form,
+		'age':request.session['age'],
 		},context_instance=RequestContext(request))
