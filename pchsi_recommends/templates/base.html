@@ -19,10 +19,9 @@
 		<div id="site-logo">Just Ask Dr.SF</div>
 		<div class="navbar">
 			<div class="navbar-inner">
-				<ul class="nav nav-pills pull-right">
-					<li><a href="/">Questions</a></li>
-					<li><a href="/providers">Providers</a></li>
-				</ul>
+				{% block navigation %}
+				
+				{% endblock %}
 			</div>
 		</div>
 	</div>
@@ -47,8 +46,8 @@
 				</div>
 				<div class="span3">
 					<ul class="nav nav-list">
-						<li><a href="/">Questions</a></li>
-						<li><a href="/providers">Providers</a></li>
+						<li><a href="/">Home</a></li>
+						<li><a href="/providers">For Providers</a></li>
 						<li><a href="/admin/">Site Administration</a></li>
 					</ul>
 				</div>
