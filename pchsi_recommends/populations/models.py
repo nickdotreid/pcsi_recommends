@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
+from django_countries import CountryField
+
 class Population(models.Model):
 	""" Population model used to describe groups of people """
 	
@@ -21,6 +23,7 @@ class Population_Relationship(models.Model):
 	populations = models.ManyToManyField(Population,blank=True)
 	min_age = models.IntegerField(blank=True, null=True)
 	max_age = models.IntegerField(blank=True, null=True)
+	country = CountryField(blank=True, null=True)
 
 	content_type = models.ForeignKey(ContentType)
 	object_id = models.PositiveIntegerField()
