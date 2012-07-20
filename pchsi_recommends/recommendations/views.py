@@ -133,6 +133,7 @@ def age_in_range(age=False,min=False,max=False):
 	if min and max:
 		if age >= min and age <= max:
 			return True
+		return False
 	if min and age >= min:
 		return True
 	if max and age <= max:
