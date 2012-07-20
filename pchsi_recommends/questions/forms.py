@@ -4,6 +4,8 @@ from django.utils.datastructures import SortedDict
 
 from pchsi_recommends.recommendations.views import population_relationship_matches
 
+from django_countries.countries import COUNTRIES
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -14,6 +16,11 @@ def primary_questions():
 		choices = list_years(100),
 		initial = "",
 		required = True,
+	)))
+	questions.append(('country',forms.ChoiceField(
+		label = 'What country were you born in?',
+		choices = [("","Select a Country")] + list(COUNTRIES),
+		initial = "",
 	)))
 	questions.append(('birth_sex',forms.ChoiceField(
 		widget = forms.RadioSelect,

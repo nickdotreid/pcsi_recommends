@@ -20,6 +20,7 @@ def reset_session(request):
 	request.session['populations'] = []
 	request.session['questions_asked'] = []
 	request.session['answers'] = {}
+	request.session['country'] =False
 
 def base_question_form(request):
 	reset_session(request)
@@ -56,7 +57,7 @@ def show_recommendations(request):
 				})
 	# clear session
 	return render_to_response('questions/responses.html',{
-		'recommendations':populations_to_recomendations(request.session['populations'],request.session['age']),
+		'recommendations':populations_to_recomendations(request.session['populations'],request.session['age'],request.session['country']),
 		'form':form,
 		'answers':answers,
 		'age':request.session['age'],
@@ -87,6 +88,7 @@ def question_answer(request):
 				request.session['answers'] = dict( request.session['answers'].items() + request.POST.items() )
 			answers = DotExpandedDict(form.cleaned_data)
 			request.session['age'] = answers_to_age(answers)
+			request.session['country'] = answers_to_country(answers)
 			request.session['populations'] = list(set(itertools.chain(request.session['populations'],answers_to_populations(answers))))
 			if 'questions' in answers:
 				request.session['questions_asked'] = list(set(itertools.chain(request.session['questions_asked'],answers['questions'].keys())))

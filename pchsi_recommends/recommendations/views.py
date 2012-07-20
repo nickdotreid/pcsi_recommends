@@ -86,27 +86,29 @@ def show_recommendations(request):
 	return render_to_response('recommendations/list.html',{
 		'recommendations':populations_to_recomendations(populations,age)
 		},context_instance=RequestContext(request))
-	
 
-def populations_to_recomendations(populations=[], age=False):
+def populations_to_recomendations(populations=[], age=False, country=False):
 	recommendations = []
 	for screen in Screen.objects.all():
-		recommend = get_recommendation_for(screen,populations,age)
+		recommend = get_recommendation_for(screen,populations,age,country)
 		if recommend:
 			recommendations.append(recommend)
 	return recommendations
 
-def get_recommendation_for(screen,populations,age=False):
+def get_recommendation_for(screen,populations,age=False,country=False):
 	recommend = False
 	recommendations = screen.recommendation_set.all()
 	for recommendation in recommendations:
 		for population_relationship in recommendation.populations.all():
-			if population_relationship_matches(population_relationship,populations,age):
+			if population_relationship_matches(population_relationship,populations,age,country):
 				if not recommend or recommend.weight > recommendation.weight:
 					recommend = recommendation
 	return recommend
 
-def population_relationship_matches(population_relationship,populations,age):
+def population_relationship_matches(population_relationship,populations,age,country):
+	if population_relationship.country:
+		if not country or country != population_relationship.country.code:
+			return False
 	if age_in_range(age,population_relationship.min_age,population_relationship.max_age):
 		relationship_populations = population_relationship.populations.all()
 		if len(relationship_populations)<1:

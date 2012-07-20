@@ -3,6 +3,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 
+def answers_to_country(answers):
+	country = False
+	if 'country' in answers:
+		country = answers['country']
+	return country
+
 def answers_to_age(answers):
 	age = False
 	if 'age' in answers:
