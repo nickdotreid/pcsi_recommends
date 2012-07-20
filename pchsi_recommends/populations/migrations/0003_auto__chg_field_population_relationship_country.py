@@ -10,12 +10,12 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
 
         # Changing field 'Population_Relationship.country'
-        db.alter_column('populations_population_relationship', 'country', self.gf('django_countries.fields.CountryField')(max_length=2, null=True))
+        db.alter_column('populations_population_relationship', 'country', self.gf('django_countries.fields.CountryField')(max_length=2, null=True, blank=True))
 
     def backwards(self, orm):
 
         # Changing field 'Population_Relationship.country'
-        db.alter_column('populations_population_relationship', 'country', self.gf('django_countries.fields.CountryField')(default='', max_length=2))
+        db.alter_column('populations_population_relationship', 'country', self.gf('django_countries.fields.CountryField')(default=None, max_length=2))
 
     models = {
         'contenttypes.contenttype': {
