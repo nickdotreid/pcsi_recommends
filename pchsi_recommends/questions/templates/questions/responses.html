@@ -3,34 +3,40 @@
 
 {% block content %}
 	<div class="row-fluid">
-		<div class="span7">
+		<div class="span6">
 			<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
-			<p>According to your answers, you are <strong>{{age}} years old.</strong></p>
-			<p>Below is a list of recommendations for preventative screens based on health trends in San Francisco. We recommend you take this list to your next doctor appointment. If you don't have a primary care provider, for each screen we provide information for where you can get a screen or vaccination.</p>
-			<p>You can save this list by printing, emailing or texting it to yourself.</p>
+			<p>According to your answers, you are a <strong>{{age}} year old {{gender}}.</strong></p>
+			<p>If you want to change your answers, click here.</p>
+			<p>Our recommendations for you are below.</p>
+			<p>Our recommendations are for you to discuss with your doctor, and are not medically binding.</p>
+			<p>Each test,and vaccination has additional information about the condition and links to places to get that service.</p>
 			<div class="recommendations">
+				You can take your recommendations with you to your doctor by printing, emailing or texting this list to your self.
 				{% include 'recommendations/actions.html' %}
 				{{ block.super }}
 				{% include 'recommendations/actions.html' %}
 			</div>
 		</div>
-		<div class="span5">
+		<div class="span6">
 			{% if form %}
+			<p>We have more questions that will further personalize our recommendations for you.</p>
+			<p>Answer a question and our recommendations will be adjusted.</p>
 			{% crispy form %}
 			{% else %}
 			<div class="alert">
-				<p>No Additional Questions</p>
+				<p>We don’t have any more questions for you.</p>
 			</div>
 			{% endif %}
-			<a href="/">Reset Form</a>
-			<a href="/change">Change Answers</a>
 			<div class="answers">
+				<h3>Questions You Have Answered</h3>
 			{% for answer in answers %}			
 			<div class="answer">
 				<span class="label">{{answer.label}}</span>
 				<span class="value">{{answer.value}}</span>
 			</div>
 			{% endfor %}
+			<a href="/">Reset Form</a>
+			<a href="/change">Change Answers</a>
 			</div>
 		</div>
 	</div>
