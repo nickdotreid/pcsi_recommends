@@ -30,6 +30,8 @@ def recommendation_detail(request,recommendation_id):
 		},context_instance=RequestContext(request))
 
 def make_population_form():
+	from django_countries.countries import COUNTRIES
+	
 	populations = []
 	for population in Population.objects.all():
 		populations.append((population.id,population.name))
@@ -37,6 +39,12 @@ def make_population_form():
 	fields['age'] = forms.IntegerField(
 		required = False,
 		label = 'Enter Age',
+	)
+	fields['country'] = forms.ChoiceField(
+		required = False,
+		label = 'Country of Birth',
+		choices = [("","Select a Country")] + list(COUNTRIES),
+		initial = "",
 	)
 	fields['populations'] = forms.MultipleChoiceField(
 		required = False,
