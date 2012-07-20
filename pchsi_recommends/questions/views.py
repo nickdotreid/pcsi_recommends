@@ -67,6 +67,7 @@ def all_questions(request):
 		return redirect('/')
 	QuestionForm = make_question_form(request.session['populations'],request.session['age'],[],True)
 	form = QuestionForm(request.session['answers'])
+	reset_session(request)
 	return render_to_response('questions/responses.html',{
 		'recommendations':False,
 		'form':form,
