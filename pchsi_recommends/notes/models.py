@@ -12,7 +12,3 @@ class Note(models.Model):
 	weight = models.IntegerField(blank=True, null=True)
 	
 	populations = generic.GenericRelation(Population_Relationship)
-	
-	content_type = models.ForeignKey(ContentType)
-	object_id = models.PositiveIntegerField(blank=True)
-	content_object = generic.GenericForeignKey('content_type','object_id')
