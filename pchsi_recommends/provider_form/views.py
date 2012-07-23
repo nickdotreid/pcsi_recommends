@@ -56,9 +56,12 @@ def population_test_form(request):
 			age = False
 			if answers['age']:
 				age = answers['age']
+			country = False
+			if answers['country']:
+				country = answers['country']
 			return render_to_response('forms/population_test_form.html',{
 				'form':form,
-				'recommendations':populations_to_recomendations(populations,age)
+				'recommendations':populations_to_recomendations(populations,age,country)
 				},context_instance=RequestContext(request))
 	return render_to_response('forms/population_test_form.html',{
 		'form':form,
