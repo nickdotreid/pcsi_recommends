@@ -1,0 +1,34 @@
+[
+	{
+		"model": "populations.population",
+	    "pk": 1,
+	    "fields": {
+	      "short": "male",
+	      "name": "Male"
+	    }
+	},
+	{
+		"model": "populations.population",
+	    "pk": 2,
+	    "fields": {
+	      "short": "female",
+	      "name": "Female"
+	    }
+	},
+	{
+		"model": "populations.population",
+	    "pk": 3,
+	    "fields": {
+	      "short": "transmale",
+	      "name": "Trans Male"
+	    }
+	},
+	{
+		"model": "populations.population",
+	    "pk": 4,
+	    "fields": {
+	      "short": "transfemale",
+	      "name": "Trans Female"
+	    }
+	}
+]
