@@ -12,6 +12,11 @@ from pchsi_recommends.recommendations.models import *
 
 from pchsi_recommends.recommendations.views import *
 
+def home_page(request):
+	return render_to_response('providers/home.html',{
+		'screens':Screen.objects.all(),
+		},context_instance=RequestContext(request))
+
 def make_population_form():
 	from django_countries.countries import COUNTRIES
 	
@@ -58,21 +63,4 @@ def population_test_form(request):
 	return render_to_response('forms/population_test_form.html',{
 		'form':form,
 		'recommendations':[]
-		},context_instance=RequestContext(request))
-
-def show_recommendations(request):
-	populations = []
-	age = False
-	if 'age' in request.REQUEST:
-		age = int(request.REQUEST['age'])
-	if 'populations' in request.REQUEST:
-		pop_args = request.REQUEST['populations'].split(',')
-		for pop_id in pop_args:
-			try:
-				population = Population.objects.get(id = int(pop_id))
-				populations.append(population)
-			except (ObjectDoesNotExist,ValueError):
-				pass
-	return render_to_response('recommendations/list.html',{
-		'recommendations':populations_to_recomendations(populations,age)
 		},context_instance=RequestContext(request))

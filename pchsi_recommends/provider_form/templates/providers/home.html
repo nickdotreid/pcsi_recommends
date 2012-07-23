@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{%	block content	%}
+<div class="row-fluid">
+	<div class="span4">
+		<h3>Online Form</h3>
+		<p>To ease medical providers duties while working with clients, we made <a href="/providers/form/">a web form for providers</a> to use while screening clients for treatment.</p>
+	</div>
+	<div class="span4">
+		<h3>Printable Tables</h3>
+		<p>Download the latest <a href="#">table of recommendations for screening and vaccination here.</a></p>
+	</div>
+	<div class="span4">
+		<h3>Screens and Vaccines</h3>
+		<p>Find out more about each screen and vaccine that we recommend on this website.</p>
+		<ul>
+		{% for screen in screens %}
+		<li class="screen screen-list"><a href="/screens/{{screen.id}}">{{screen.name}}</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+</div>
+{%	endblock	%}
