@@ -6,8 +6,17 @@ from pchsi_recommends.populations.models import Population_Relationship
 
 class Note(models.Model):
 	""" Reusable Notes Field That can be filtered by population types """
+	
+	NOTE_TYPES = (
+		('information','Information'),
+		('direction','Direction'),
+		('warning','Warning')
+	)
+	
 	title = models.CharField(blank=True, max_length=100)
 	text = models.TextField(blank=True)
+	
+	note_type = models.CharField(blank=True, null=True, max_length=20, choices=NOTE_TYPES)
 	
 	weight = models.IntegerField(blank=True, null=True)
 	
