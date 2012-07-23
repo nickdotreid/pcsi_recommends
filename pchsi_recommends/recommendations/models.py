@@ -3,11 +3,14 @@ from django.contrib.contenttypes import generic
 
 from pchsi_recommends.populations.models import Population_Relationship
 
+from pchsi_recommends.notes.models import Note
+
 # Create your models here.
 class Screen(models.Model):
 	"""(Types of screens and vaccines offered at Clinics)"""
 	
 	name = models.CharField(max_length=120)
+	notes = generic.GenericRelation(Note)
 
 	def __unicode__(self):
 		return self.name

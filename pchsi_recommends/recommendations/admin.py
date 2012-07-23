@@ -1,5 +1,6 @@
 from pchsi_recommends.recommendations.models import Recommendation, Screen
 from pchsi_recommends.populations.admin import PopulationRelationshipInline
+from pchsi_recommends.notes.admin import NoteInline
 
 from django.contrib import admin
 
@@ -10,7 +11,7 @@ class RecommendationInline(admin.TabularInline):
 	extra = 1
 
 class ScreenAdmin(admin.ModelAdmin):
-	inlines = [RecommendationInline]
+	inlines = [RecommendationInline,NoteInline]
 
 
 admin.site.register(Screen,ScreenAdmin)
