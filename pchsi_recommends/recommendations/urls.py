@@ -3,7 +3,6 @@ from django.views.generic import DetailView, ListView
 from models import Screen
 
 urlpatterns = patterns('pchsi_recommends.recommendations.views',
-	url(r'^$','population_test_form'),
 	url(r'^recommendations/(?P<recommendation_id>\d+)/$','recommendation_detail'),
 	url(r'^screens/$',
 		ListView.as_view(

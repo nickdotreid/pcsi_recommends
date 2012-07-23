@@ -128,6 +128,7 @@ INSTALLED_APPS = (
 	'pchsi_recommends.notes',
 	'pchsi_recommends.recommendations',
 	'pchsi_recommends.questions',
+	'pchsi_recommends.provider_form'
 )
 
 # A sample logging configuration. The only tangible logging
