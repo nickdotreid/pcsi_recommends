@@ -1,13 +1,24 @@
 {% extends 'base.html' %}
 
 {%	block content	%}
-<div class="screen">
-	<h1 class="title">{{screen.name}}</h1>
-	<!-- list any related notes -->
-	{% for recommendation in recommendations %}
-		<p>{{recommendation.frequency}}</p>
-		<!-- List population relationships -->
-	{% endfor %}
-	<!-- list recommendations in weighted order with populations -->
+<div class="screen screen-detail">
+	<div class="row-fluid">
+		<div class="span6">
+			<h1 class="title">{{screen.name}}</h1>
+			{% for note in notes %}
+			<div class="note {{note.type}}">
+				{% if note.title %}<h2>{{note.title}}</h2>{% endif %}
+				{{note.text}}
+			</div>
+			{% endfor %}
+		</div>
+		<div class="span6">
+		<h2>Recommendation for Population</h2>
+		{% for recommendation in recommendations %}
+			<p>{{recommendation.frequency}}</p>
+			<!-- List population relationships -->
+		{% endfor %}
+		</div>
+	</div>
 </div>
 {%	endblock	%}
