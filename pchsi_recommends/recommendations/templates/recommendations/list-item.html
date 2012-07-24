@@ -3,7 +3,6 @@
 {% else %}
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
 	<h3 class="screen">{{recommendation.screen.name}}</h3>
-	<p>{{recommendation.text}}</p>
 	{% if recommendation.frequency %}
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
