@@ -6,7 +6,7 @@
 		<div class="span6">
 			<h1 class="title">{{screen.name}}</h1>
 			{% for note in notes %}
-			<div class="note {{note.type}}">
+			<div id="note-id" class="note {{note.type}}">
 				{% if note.title %}<h2>{{note.title}}</h2>{% endif %}
 				{{note.text}}
 			</div>

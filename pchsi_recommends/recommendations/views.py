@@ -28,6 +28,7 @@ def recommendation_detail(request,recommendation_id):
 	recommendation = get_object_or_404(Recommendation,pk=recommendation_id)
 	return render_to_response('recommendations/detail.html',{
 		'recommendation':recommendation,
+		'notes':recommendation.screen.notes.all(),
 		},context_instance=RequestContext(request))
 
 def populations_to_recomendations(populations=[], age=False, country=False):
