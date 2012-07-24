@@ -60,22 +60,22 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'use_base_form': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
-        'recommendations.population': {
-            'Meta': {'object_name': 'Population'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '120'}),
-            'short': ('django.db.models.fields.CharField', [], {'max_length': '25'})
-        },
-        'recommendations.population_relationship': {
-            'Meta': {'object_name': 'Population_Relationship'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'inclusive': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'max_age': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'min_age': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'populations': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['recommendations.Population']", 'symmetrical': 'False', 'blank': 'True'})
-        }
+#        'recommendations.population': {
+#            'Meta': {'object_name': 'Population'},
+#            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+#            'name': ('django.db.models.fields.CharField', [], {'max_length': '120'}),
+#            'short': ('django.db.models.fields.CharField', [], {'max_length': '25'})
+#        },
+#        'recommendations.population_relationship': {
+#            'Meta': {'object_name': 'Population_Relationship'},
+#            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
+#            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+#            'inclusive': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+#            'max_age': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+#            'min_age': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+#            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
+#            'populations': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['recommendations.Population']", 'symmetrical': 'False', 'blank': 'True'})
+#        }
     }
 
     complete_apps = ['questions']

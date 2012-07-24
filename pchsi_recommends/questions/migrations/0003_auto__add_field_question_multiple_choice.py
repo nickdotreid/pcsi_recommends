@@ -45,11 +45,11 @@ class Migration(SchemaMigration):
             'short': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'})
         },
-        'recommendations.population': {
-            'Meta': {'object_name': 'Population'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '120'})
-        }
+#        'recommendations.population': {
+#            'Meta': {'object_name': 'Population'},
+#           'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+#            'name': ('django.db.models.fields.CharField', [], {'max_length': '120'})
+#        }
     }
 
     complete_apps = ['questions']
