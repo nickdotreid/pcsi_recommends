@@ -10,6 +10,9 @@ class Population(models.Model):
 	short = models.CharField(max_length=25)
 	name = models.CharField(max_length=120)
 
+	class Meta:
+		ordering = ['short']
+	
 	class Admin:
 		list_display = ('',)
 		search_fields = ('',)

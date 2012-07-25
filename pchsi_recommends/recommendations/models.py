@@ -11,6 +11,9 @@ class Screen(models.Model):
 	
 	name = models.CharField(max_length=120)
 	notes = generic.GenericRelation(Note)
+	
+	class Meta:
+		ordering = ['name']
 
 	def __unicode__(self):
 		return self.name
