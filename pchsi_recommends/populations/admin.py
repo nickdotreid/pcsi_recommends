@@ -4,8 +4,6 @@ from django.contrib.contenttypes.generic import GenericTabularInline, GenericSta
 
 admin.site.register(Population)
 
-admin.site.register(Population_Relationship)
-
 class PopulationRelationshipInline(GenericTabularInline):
 	model = Population_Relationship
 	extra = 1
