@@ -4,16 +4,16 @@ from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 
 def answers_to_country(answers):
-	country = False
-	if 'country' in answers:
-		country = answers['country']
-	return country
+	if 'birth_country' in answers:
+		return answers['birth_country']
+	return False
 
 def answers_to_age(answers):
-	age = False
 	if 'age' in answers:
-		age = answers['age']
-	return age
+		return answers['age']
+	if 'birth_year' in answers:
+		return 2012-int(answers['birth_year'])
+	return False
 
 def answers_to_populations(answers):
 	populations = []

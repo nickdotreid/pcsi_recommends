@@ -26,63 +26,41 @@ def default_person_obj():
 		'populations':[],
 		'questions_asked':[],
 	}
-
-def base_question_form(request):
-	reset_session(request)
-	QuestionForm = make_question_form(settings = {
-		'form_action':reverse(base_question_form),
-	})
-	form = QuestionForm()
+	
+def question_form(request):
+	person_obj = False
 	if request.method == 'POST':
+		QuestionForm = make_question_form(
+			person_obj = person_obj_from_(request.POST),
+			settings = {},
+		)
 		form = QuestionForm(request.POST)
 		if form.is_valid():
-			request.session['person_obj'] = question_answer(form,request.POST)
-			return redirect('/recommendations')
+			person_obj = question_answer(form,request.POST)
+			QuestionForm = make_question_form(person_obj)
+			form = QuestionForm()
+	else:
+		QuestionForm = make_question_form()
+		form = QuestionForm()
+	# if ajax return object
+	if len(form.visible_fields()) < 1:
+		form = False
+	if person_obj:
+		populations = []
+		if 'populations' in person_obj:
+			populations = person_obj['populations']
+		age = False
+		if 'age' in person_obj:
+			age = person_obj['age']
+		country = False
+		if 'country' in person_obj:
+			country = person_obj['country']
+		return render_to_response('questions/responses.html',{
+			'recommendations':populations_to_recomendations(populations,age,country),
+			'form':form,
+			},context_instance=RequestContext(request))
 	return render_to_response('questions/form.html',{
 		'form':form,
-		},context_instance=RequestContext(request))
-
-def show_recommendations(request):
-	person_obj = default_person_obj()
-	if 'person_obj' in request.session:
-		person_obj = request.session['person_obj']
-	QuestionForm = make_question_form(person_obj,{
-		'form_action':reverse(show_recommendations),
-		'exclude_question_ids':request.session['questions_asked'],
-		})
-	form = QuestionForm()
-	if request.method == 'POST':
-		form = QuestionForm(request.POST)
-		if form.is_valid():
-			person_obj = question_answer(form,request.POST,person_obj)
-			request.session['person_obj'] = person_obj
-	# recreate form so it asks new questions
-	QuestionForm = make_question_form(person_obj,{
-		'form_action':reverse(show_recommendations),
-		'exclude_question_ids':request.session['questions_asked'],
-		})
-	form = QuestionForm()
-	if len(form.fields)<1:
-		form = False
-	answers = show_answered_questions(person_obj)
-	age = False
-	if 'age' in person_obj:
-		age = person_obj['age']
-	gender = False
-	populations = False
-	if 'populations' in person_obj:
-		populations = person_obj['populations']
-		gender = determine_gender(person_obj['populations'])
-	country = False
-	if 'country' in person_obj:
-		country = person_obj['country']
-	# clear session
-	return render_to_response('questions/responses.html',{
-		'recommendations':populations_to_recomendations(populations,age,country),
-		'form':form,
-		'answers':answers,
-		'age':age,
-		'gender':gender
 		},context_instance=RequestContext(request))
 		
 def show_answered_questions(person_obj=default_person_obj()):
@@ -104,10 +82,11 @@ def show_answered_questions(person_obj=default_person_obj()):
 					'value':field.value(),
 				})
 		
-def determine_gender(populations=[]):
-	for population in populations:
-		if population.short in ['male','female','transfemale','transmale']:
-			return population.name
+def determine_gender(person_obj):
+	if 'populations' in person_obj:
+		for population in person_obj['populations']:
+			if population.short in ['male','female','transfemale','transmale']:
+				return population.name
 	return False
 
 def all_questions(request):
@@ -125,6 +104,20 @@ def all_questions(request):
 		'recommendations':False,
 		'form':form,
 		},context_instance=RequestContext(request))
+		
+def person_obj_from_(post_data):
+	person_obj = {}
+	if 'age' in post_data:
+		# check age is number
+		person_obj['age'] = post_data['age']
+	if 'populations' in post_data:
+		# explode by commas
+		# look up populations in db
+		person_obj['populations'] = []
+	if 'country' in post_data:
+		# check country so that it is in list
+		person_obj['country'] = post_data['country']
+	return person_obj
 
 def question_answer(form,post_data,person_obj=default_person_obj()):
 	if 'answers' not in person_obj:
@@ -136,5 +129,5 @@ def question_answer(form,post_data,person_obj=default_person_obj()):
 	person_obj['country'] = answers_to_country(answers)
 	person_obj['populations'] = list(set(itertools.chain(person_obj['populations'],answers_to_populations(answers))))
 	if 'questions' in answers:
-		request.session['questions_asked'] = list(set(itertools.chain(person_obj['questions_asked'],answers['questions'].keys())))
+		person_obj['questions_asked'] = list(set(itertools.chain(person_obj['questions_asked'],answers['questions'].keys())))
 	return person_obj
