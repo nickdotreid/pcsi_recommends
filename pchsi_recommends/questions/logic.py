@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
+from pchsi_recommends.populations.models import Population
 
 def answers_to_country(answers):
 	if 'country' in answers:
@@ -16,6 +17,17 @@ def answers_to_age(answers):
 	if 'birth_year' in answers:
 		return 2012-int(answers['birth_year'])
 	return False
+
+def get_if_population_from_(pdict):
+	populations = []
+	for index in pdict:
+		population = pdict[index]
+		try:
+			pop = Population.objects.get(short=population)
+			populations.append(pop)
+		except ObjectDoesNotExist:
+			population = False
+	return populations
 
 def answers_to_populations(answers):
 	populations = []
@@ -32,26 +44,21 @@ def answers_to_populations(answers):
 		pop = determine_sexual_orientation(sex,answers['sex_partners'])
 		if pop:
 			populations.append(pop)
+	if 'populations' in answers:
+		populations = populations + get_if_population_from_(answers['populations'])
 	if 'questions' in answers:
-		questions = answers['questions']
-		for question_id in questions:
+		for question_id in answers['questions']:
 			question = Question.objects.filter(id=question_id)[0]
 			if question:
-				answer_id_list = questions[question_id]
+				answer_id_list = answers['questions'][question_id]
 				if type(answer_id_list) != type([]):
 					answer_id_list = [answer_id_list]
 				for answer_id in answer_id_list:
 					answer = question.answer_set.filter(id=answer_id)[0]
 					if answer:
 						for population in answer.populations.all():
-							if population not in populations:
+							if population not in populations and not population_is_sex(population):
 								populations.append(population)
-	return populations
-
-def add_population(populations,term):
-	pops = Population.objects.filter(name=term)
-	if len(pops) > 0 and pops[0] not in populations:
-		populations.append(pops[0])
 	return populations
 
 def get_population_sex_dict():
@@ -73,6 +80,14 @@ def get_population_sex_dict():
 	except ObjectDoesNotExist:
 		sex_dict['transfemale'] = False
 	return sex_dict
+
+def population_is_sex(population):
+	sex_dict = get_population_sex_dict()
+	for sex_index in sex_dict:
+		sex = sex_dict[sex_index]
+		if population.id == sex.id:
+			return True
+	return False
 
 def determine_sex(current_sex,birth_sex=False):
 	if current_sex and not birth_sex:

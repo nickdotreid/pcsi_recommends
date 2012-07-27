@@ -39,7 +39,7 @@ def question_form(request):
 		)
 		form = QuestionForm(request.POST)
 		if form.is_valid():
-			person_obj = question_answer(form,request.POST)
+			person_obj = question_answer(DotExpandedDict(form.cleaned_data))
 			settings = form_settings_from_(DotExpandedDict(request.POST))
 			QuestionForm = make_question_form(person_obj,settings)
 			form = QuestionForm()
@@ -50,18 +50,27 @@ def question_form(request):
 	if len(form.visible_fields()) < 1:
 		form = False
 	if person_obj:
+		
+		########
+		
 		populations = []
 		if 'populations' in person_obj:
 			populations = person_obj['populations']
+		print populations
 		age = False
 		if 'age' in person_obj:
 			age = person_obj['age']
 		country = False
 		if 'country' in person_obj:
 			country = person_obj['country']
+			
+		#########
+			
 		return render_to_response('questions/responses.html',{
 			'recommendations':populations_to_recomendations(populations,age,country),
 			'form':form,
+			'age':age,
+			'gender':determine_gender(populations),
 			},context_instance=RequestContext(request))
 	return render_to_response('questions/form.html',{
 		'form':form,
@@ -115,28 +124,30 @@ def person_obj_from_(post_data):
 		# check age is number
 		person_obj['age'] = post_data['age']
 	if 'populations' in post_data:
-		person_obj['populations'] = []
-		for population in post_data['populations']:
-			try:
-				pop = Population.objects.get(short=population)
-				person_obj['population'].append(pop)
-			except ObjectDoesNotExist:
-				population = False
+		person_obj['populations'] = get_if_population_from_(post_data['populations'])
 	if 'country' in post_data:
 		# check country so that it is in list
 		person_obj['country'] = post_data['country']
 	return person_obj
+
 def form_settings_from_(post_data):
 	return {}
-def question_answer(form,post_data,person_obj=default_person_obj()):
-	if 'answers' not in person_obj:
-		person_obj['answers'] = post_data
-	else:
-		person_obj['answers'] = dict( person_obj['answers'].items() + post_data.items() )
-	answers = DotExpandedDict(form.cleaned_data)
+
+def question_answer(answers):
+	person_obj = {}
 	person_obj['age'] = answers_to_age(answers)
 	person_obj['country'] = answers_to_country(answers)
-	person_obj['populations'] = list(set(itertools.chain(person_obj['populations'],answers_to_populations(answers))))
-	if 'questions' in answers:
-		person_obj['questions_asked'] = list(set(itertools.chain(person_obj['questions_asked'],answers['questions'].keys())))
+	person_obj['populations'] = answers_to_populations(answers)
 	return person_obj
+	
+	
+"""
+if 'answers' not in person_obj:
+	person_obj['answers'] = post_data
+else:
+	person_obj['answers'] = dict( person_obj['answers'].items() + post_data.items() )
+
+if 'questions' in answers:
+	person_obj['questions_asked'] = list(set(itertools.chain(person_obj['questions_asked'],answers['questions'].keys())))
+
+"""
