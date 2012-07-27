@@ -4,6 +4,8 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils.datastructures import DotExpandedDict
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from django import forms
 import itertools
 
@@ -27,17 +29,19 @@ def default_person_obj():
 		'questions_asked':[],
 	}
 	
+	
 def question_form(request):
 	person_obj = False
 	if request.method == 'POST':
 		QuestionForm = make_question_form(
-			person_obj = person_obj_from_(request.POST),
-			settings = {},
+			person_obj = person_obj_from_(DotExpandedDict(request.POST)),
+			settings = form_settings_from_(DotExpandedDict(request.POST)),
 		)
 		form = QuestionForm(request.POST)
 		if form.is_valid():
 			person_obj = question_answer(form,request.POST)
-			QuestionForm = make_question_form(person_obj)
+			settings = form_settings_from_(DotExpandedDict(request.POST))
+			QuestionForm = make_question_form(person_obj,settings)
 			form = QuestionForm()
 	else:
 		QuestionForm = make_question_form()
@@ -111,14 +115,19 @@ def person_obj_from_(post_data):
 		# check age is number
 		person_obj['age'] = post_data['age']
 	if 'populations' in post_data:
-		# explode by commas
-		# look up populations in db
 		person_obj['populations'] = []
+		for population in post_data['populations']:
+			try:
+				pop = Population.objects.get(short=population)
+				person_obj['population'].append(pop)
+			except ObjectDoesNotExist:
+				population = False
 	if 'country' in post_data:
 		# check country so that it is in list
 		person_obj['country'] = post_data['country']
 	return person_obj
-
+def form_settings_from_(post_data):
+	return {}
 def question_answer(form,post_data,person_obj=default_person_obj()):
 	if 'answers' not in person_obj:
 		person_obj['answers'] = post_data

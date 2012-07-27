@@ -4,6 +4,8 @@ from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 
 def answers_to_country(answers):
+	if 'country' in answers:
+		return answers['country']
 	if 'birth_country' in answers:
 		return answers['birth_country']
 	return False

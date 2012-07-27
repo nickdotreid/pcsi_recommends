@@ -84,14 +84,12 @@ def make_person_fields(person_obj):
 		)
 		field_list.append(('age',field))
 	if 'populations' in person_obj and len(person_obj['populations'])>0:
-		population_ids = []
-		for population in person_obj['populations']:
-			population_ids.append(population.id)
-		field = forms.CharField(
-			widget = forms.HiddenInput,
-			initial = ','.join( map(str,population_ids) ),
-		)
-		field_list.append(('populations',field))
+		for index,population in enumerate(person_obj['populations']):
+			field = forms.CharField(
+				widget = forms.HiddenInput,
+				initial = population.short,
+			)
+			field_list.append(('populations.'+str(index),field))
 	if 'country' in person_obj:
 		field = forms.CharField(
 			widget = forms.HiddenInput,
