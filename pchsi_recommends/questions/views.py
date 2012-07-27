@@ -1,6 +1,7 @@
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.utils.datastructures import DotExpandedDict
 
 from django import forms
@@ -24,7 +25,9 @@ def reset_session(request):
 
 def base_question_form(request):
 	reset_session(request)
-	QuestionForm = make_question_form()
+	QuestionForm = make_question_form(settings = {
+		'form_action':reverse(base_question_form),
+	})
 	form = QuestionForm()
 	if request.method == 'POST':
 		form = QuestionForm(request.POST)
@@ -40,13 +43,24 @@ def base_question_form(request):
 def show_recommendations(request):
 	if 'populations' not in request.session or 'age' not in request.session:
 		return redirect('/')
-	QuestionForm = make_question_form(request.session['populations'],request.session['age'],request.session['questions_asked'])
+	QuestionForm = make_question_form({
+		'populations':request.session['populations'],
+		'age':request.session['age'],
+		},{
+		'form_action':reverse(all_questions),
+		'exclude_question_ids':request.session['questions_asked'],
+		})
 	form = QuestionForm()
 	if len(form.fields)<1:
 		form = False
 	answers = []
 	if 'answers' in request.session:
-		FullQuestionForm = make_question_form(request.session['populations'],request.session['age'],[],True)
+		FullQuestionForm = make_question_form({
+			'populations':request.session['populations'],
+			'age':request.session['age'],
+			},{
+			'all':True,
+			})
 		full_form = FullQuestionForm(request.session['answers'])
 		for key in full_form.fields.keys():
 			if not form or key not in form.fields.keys():
@@ -61,12 +75,24 @@ def show_recommendations(request):
 		'form':form,
 		'answers':answers,
 		'age':request.session['age'],
+		'gender':determine_gender(request.session['populations'])
 		},context_instance=RequestContext(request))
+		
+def determine_gender(populations=[]):
+	for population in populations:
+		if population.short in ['male','female','transfemale','transmale']:
+			return population.name
+	return False
 
 def all_questions(request):
 	if 'populations' not in request.session or 'age' not in request.session or 'answers' not in request.session:
 		return redirect('/')
-	QuestionForm = make_question_form(request.session['populations'],request.session['age'],[],True)
+	QuestionForm = make_question_form({
+		'populations':request.session['populations'],
+		'age':request.session['age']
+		},{
+		'all':True
+		})
 	form = QuestionForm(request.session['answers'])
 	reset_session(request)
 	return render_to_response('questions/responses.html',{

@@ -21,6 +21,7 @@ def primary_questions():
 		label = 'What country were you born in?',
 		choices = [("","Select a Country")] + list(COUNTRIES),
 		initial = "",
+		required = True,
 	)))
 	questions.append(('birth_sex',forms.ChoiceField(
 		widget = forms.RadioSelect,
@@ -63,14 +64,18 @@ def list_years(amount=10):
 		year = year - 1
 	return years
 
-def make_question_form(populations=[],age=False,exclude_question_ids=[],all=False):
-	if len(populations)>0 or age:
-		field_list = get_additional_questions(populations,age,exclude_question_ids)
-		if(all):
+def make_question_form(person_obj={},settings={}):
+	if ( 'populations' in person_obj and len(person_obj['populations'])>0 ) or 'age' in person_obj:
+		exclude_question_ids = []
+		if 'exclude_question_ids' in settings:
+			exclude_question_ids = settings['exclude_question_ids']
+		field_list = get_additional_questions(person_obj['populations'],person_obj['age'],exclude_question_ids)
+		if('all' in settings):
 			field_list = primary_questions() + field_list
+		# make person form fields
 	else:
 		field_list = primary_questions()
-	return make_question_form_from_fields(field_list)
+	return make_question_form_from_fields(field_list,settings)
 
 def get_additional_questions(populations=[],age=False,exclude_question_ids=[]):
 	field_list = []
@@ -103,7 +108,7 @@ def relation_matches_population(relation_query,populations,age):
 			return True
 	return False
 
-def make_question_form_from_fields(field_list):
+def make_question_form_from_fields(field_list,settings):
 	QuestionForm = type('QuestionForm',(forms.BaseForm,),{
 				'base_fields':SortedDict(field_list),
 				})
@@ -113,7 +118,8 @@ def make_question_form_from_fields(field_list):
 			self.helper.form_id = 'id-exampleForm'
 			self.helper.form_class = 'blueForms'
 			self.helper.form_method = 'post'
-			self.helper.form_action = 'answer'
+			if 'form_action' in settings:
+				self.helper.form_action = settings['form_action']
 
 			self.helper.add_input(Submit('submit', 'Submit'))
 			super(QuestionForm, self).__init__(*args, **kwargs)
