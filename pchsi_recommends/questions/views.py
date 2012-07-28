@@ -17,66 +17,61 @@ from pchsi_recommends.questions.models import *
 from logic import *
 
 from pchsi_recommends.recommendations.views import populations_to_recomendations
-
-def reset_session(request):
-	request.session['person_obj'] = default_person_obj()
-	request.session['questions_asked'] = []
-	request.session['answers'] = {}
-
-def default_person_obj():
-	return {
-		'populations':[],
-		'questions_asked':[],
-	}
 	
-	
-def question_form(request):
-	person_obj = False
+def initial_page(request):
+	request.session.flush()
+	QuestionForm = make_question_form()
+	form = QuestionForm()
 	if request.method == 'POST':
-		QuestionForm = make_question_form(
-			person_obj = person_obj_from_(DotExpandedDict(request.POST)),
-			settings = form_settings_from_(DotExpandedDict(request.POST)),
-		)
 		form = QuestionForm(request.POST)
 		if form.is_valid():
-			person_obj = question_answer(DotExpandedDict(form.cleaned_data))
+			request.session['person_obj'] = question_answer(DotExpandedDict(form.cleaned_data))
 			settings = form_settings_from_(DotExpandedDict(request.POST))
-			QuestionForm = make_question_form(person_obj,settings)
-			form = QuestionForm()
-	else:
-		QuestionForm = make_question_form()
-		form = QuestionForm()
-	# if ajax return object
-	if len(form.visible_fields()) < 1:
-		form = False
-	if person_obj:
-		
-		########
-		
-		populations = []
-		if 'populations' in person_obj:
-			populations = person_obj['populations']
-		print populations
-		age = False
-		if 'age' in person_obj:
-			age = person_obj['age']
-		country = False
-		if 'country' in person_obj:
-			country = person_obj['country']
-			
-		#########
-			
-		return render_to_response('questions/responses.html',{
-			'recommendations':populations_to_recomendations(populations,age,country),
-			'form':form,
-			'age':age,
-			'gender':determine_gender(populations),
-			},context_instance=RequestContext(request))
+			return redirect(reverse(recommendations_page))
 	return render_to_response('questions/form.html',{
 		'form':form,
 		},context_instance=RequestContext(request))
+
+def recommendations_page(request):
+	person_obj = False
+	if 'person_obj' in request.session:
+		person_obj = request.session['person_obj']
+	elif request.method == 'POST':
+		person_obj = person_obj_from_(DotExpandedDict(request.POST))
+	if not person_obj:
+		return redirect(reverse(initial_page))
+	QuestionForm = make_question_form(
+		person_obj = person_obj,
+		settings = {},
+	)
+	form = QuestionForm()
+	if request.method == 'POST':
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			request.session['person_obj'] = question_answer(DotExpandedDict(form.cleaned_data))
+			settings = {}
+			return redirect(reverse(recommendations_page))
+	request.session.flush()	
+	return render_to_response('questions/responses.html',{
+		'recommendations':fake_populations_to_recommendations(person_obj),
+		'form':form,
+		'age':person_obj['age'],
+		'gender':determine_gender(person_obj),
+		},context_instance=RequestContext(request))
+			
+def fake_populations_to_recommendations(person_obj):
+	populations = []
+	if 'populations' in person_obj:
+		populations = person_obj['populations']
+	age = False
+	if 'age' in person_obj:
+		age = person_obj['age']
+	country = False
+	if 'country' in person_obj:
+		country = person_obj['country']
+	return populations_to_recomendations(populations,age,country)	
 		
-def show_answered_questions(person_obj=default_person_obj()):
+def show_answered_questions(person_obj):
 	return []
 	answers = []
 	if 'answers' in request.session:
