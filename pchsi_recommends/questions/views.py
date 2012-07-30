@@ -25,37 +25,52 @@ def initial_page(request):
 	if request.method == 'POST':
 		form = QuestionForm(request.POST)
 		if form.is_valid():
-			request.session['person_obj'] = person_obj_from_(DotExpandedDict(form.cleaned_data))
-			settings = form_settings_from_(DotExpandedDict(request.POST))
+			request.session['person_obj'] = person_obj_from_(form.cleaned_data)
 			return redirect(reverse(recommendations_page))
 	return render_to_response('questions/form.html',{
 		'form':form,
 		},context_instance=RequestContext(request))
 
 def recommendations_page(request):
-	person_obj = False
-	if 'person_obj' in request.session:
-		person_obj = request.session['person_obj']
-	elif request.method == 'POST':
-		person_obj = person_obj_from_(DotExpandedDict(request.POST))
-	if not person_obj:
+	if 'person_obj' not in request.session:
 		return redirect(reverse(initial_page))
-	QuestionForm = make_question_form(
-		person_obj = person_obj,
-		settings = {},
-	)
-	form = QuestionForm()
+	person_obj = request.session['person_obj']
+	QuestionForm = make_question_form(person_obj,{
+		'exclude_question_ids':person_obj['question_ids'],
+	})
 	if request.method == 'POST':
 		form = QuestionForm(request.POST)
 		if form.is_valid():
-			request.session['person_obj'] = person_obj_from_(DotExpandedDict(request.POST))
+			request.session['person_obj'] = person_obj_from_(form.cleaned_data,person_obj)
 			return redirect(reverse(recommendations_page))
-	request.session.flush()
+	form = QuestionForm()
+	if len(form.fields) < 1:
+		form = False
 	return render_to_response('questions/responses.html',{
 		'recommendations':fake_populations_to_recommendations(person_obj),
 		'form':form,
 		'age':person_obj['age'],
 		'gender':determine_gender(person_obj),
+		'answers':show_answered_questions(person_obj),
+		},context_instance=RequestContext(request))
+		
+def all_questions(request):
+	if 'person_obj' not in request.session:
+		return redirect('/')
+	person_obj = request.session['person_obj']
+	QuestionForm = make_question_form(person_obj,{
+		'include_question_ids':person_obj['question_ids'],
+		'primary':True,
+		})
+	if request.method == 'POST':
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			request.session['person_obj'] = person_obj_from_(form.cleaned_data,person_obj)
+			return redirect(reverse(recommendations_page))
+	form = QuestionForm(person_obj['answers'])
+	return render_to_response('questions/responses.html',{
+		'recommendations':False,
+		'form':form,
 		},context_instance=RequestContext(request))
 			
 def fake_populations_to_recommendations(person_obj):
@@ -71,23 +86,38 @@ def fake_populations_to_recommendations(person_obj):
 	return populations_to_recomendations(populations,age,country)	
 		
 def show_answered_questions(person_obj):
-	return []
-	answers = []
-	if 'answers' in request.session:
-		FullQuestionForm = make_question_form({
-			'populations':request.session['populations'],
-			'age':request.session['age'],
-			},{
-			'all':True,
+	if 'answers' in person_obj:
+		FullQuestionForm = make_question_form(person_obj,{
+			'primary':True,
+			'include_question_ids':person_obj['question_ids'],
 			})
-		full_form = FullQuestionForm(request.session['answers'])
-		for key in full_form.fields.keys():
-			if not form or key not in form.fields.keys():
-				field = full_form[key]
-				answers.append({
-					'label':field.label,
-					'value':field.value(),
-				})
+		return answers_for_form(FullQuestionForm(person_obj['answers']))
+	return []
+
+def answers_for_form(form):
+	answers = []
+	for key in form.fields.keys():
+		field = form[key]
+		ans = []
+		values = field.value()
+		if not isinstance(values,list):
+			values = [values]
+		for value in values:
+			for val,text in field.field.choices:
+				if str(val) == str(value):
+					if isinstance(text,str) or isinstance(text,unicode):
+						ans.append(text)
+					elif isinstance(text,int):
+						ans.append(str(text))
+					else:
+						ans.append(value)
+		if ans>1:
+			ans = ",".join(ans)
+		answers.append({
+			'label':field.label,
+			'value':ans,
+		})
+	return answers
 		
 def determine_gender(person_obj):
 	if 'populations' in person_obj:
@@ -96,82 +126,29 @@ def determine_gender(person_obj):
 				return population.name
 	return False
 
-def all_questions(request):
-	if 'populations' not in request.session or 'age' not in request.session or 'answers' not in request.session:
-		return redirect('/')
-	QuestionForm = make_question_form({
-		'populations':request.session['populations'],
-		'age':request.session['age']
-		},{
-		'all':True
-		})
-	form = QuestionForm(request.session['answers'])
-	reset_session(request)
-	return render_to_response('questions/responses.html',{
-		'recommendations':False,
-		'form':form,
-		},context_instance=RequestContext(request))
-
-def form_settings_from_(post_data):
-	return {}
-
-def person_obj_from_(answers):
-	person_obj = {}
-	person_obj['age'] = answers_to_age(answers)
-	person_obj['country'] = answers_to_country(answers)
-	person_obj['populations'] = answers_to_populations(answers)
-	person_obj['answer_ids'] = []
-	person_obj['question_ids'] = []
-	if 'question_ids' in answers:
-		for index,question_id in answers['question_ids'].items():
-			if question_id != '':
-				if not isinstance(question_id,int):
-					question_id = int(question_id)
-				if question_id not in person_obj['question_ids']:
-					person_obj['question_ids'].append(question_id)
-	if 'answer_ids' in answers:
-		for index,answer_id in answers['answer_ids'].items():
-			if answer_id != '':
-				if not isinstance(answer_id,int):
-					answer_id = int(answer_id)
-				try:
-					answer = Answer.objects.filter(id=answer_id).get()
-					if answer.id not in person_obj['answer_ids']:
-						person_obj['answer_ids'].append(answer.id)
-					if answer.question.id not in person_obj['question_ids']:
-						person_obj['question_ids'].append(answer.question.id)
-				except ObjectDoesNotExist,ValueError:
-					answer_id = False
+def person_obj_from_(org_answers,person_obj = False):
+	answers = DotExpandedDict(org_answers)
+	if not person_obj:
+		#set defaults
+		person_obj = {}
+		person_obj['age'] = False
+		person_obj['country'] = False
+		person_obj['populations'] = []
+		person_obj['answers'] = {}
+		person_obj['question_ids'] = []
+	person_obj['answers'] = dict( person_obj['answers'].items() + org_answers.items() )
+	age = answers_to_age(answers)
+	if age:
+		person_obj['age'] = age
+	country = answers_to_country(answers)
+	if country:
+		person_obj['country'] = country
+	for population in answers_to_populations(answers):
+		if population not in person_obj['populations']:
+			person_obj['populations'].append(population)
 	if 'questions' in answers:
-		for question_id in answers['questions']:
-			answer_id_list = answers['questions'][question_id]
-			if not isinstance(answer_id_list,list):
-				answer_id = [answer_id_list]
-			for answer_id in answer_id_list:
-				if not isinstance(answer_id,int):
-					answer_id = int(answer_id)
-				try:
-					answer = Answer.objects.filter(id=answer_id).get()
-					if answer.id not in person_obj['answer_ids']:
-						person_obj['answer_ids'].append(answer.id)
-					if answer.question.id not in person_obj['question_ids']:
-						person_obj['question_ids'].append(answer.question.id)
-				except ObjectDoesNotExist:
-					answer_id = False
-			if not isinstance(question_id,int):
-				question_id = int(question_id)
-			if question_id not in person_obj['question_ids']:
-				person_obj['question_ids'].append(question_id)
+		for qid in answers['questions'].keys():
+			qid = int(qid)
+			if qid not in person_obj['question_ids']:
+				person_obj['question_ids'].append(qid)
 	return person_obj
-	
-	
-"""
-if 'answers' not in person_obj:
-	person_obj['answers'] = post_data
-else:
-	person_obj['answers'] = dict( person_obj['answers'].items() + post_data.items() )
-
-if 'questions' in answers:
-	person_obj['questions_asked'] = list(set(itertools.chain(person_obj['questions_asked'],answers['questions'].keys())))
-
-"""

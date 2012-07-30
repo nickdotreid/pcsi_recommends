@@ -4,10 +4,33 @@ from django.utils.datastructures import SortedDict
 
 from pchsi_recommends.recommendations.views import population_relationship_matches
 
-from django_countries.countries import COUNTRIES
+from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+
+def make_question_form(person_obj={},settings={}):
+	field_list = []
+	if ( 'populations' in person_obj and len(person_obj['populations'])>0 ) or 'age' in person_obj:
+		questions = []
+		if 'include_question_ids' in settings:
+			for qid in settings['include_question_ids']:
+				try:
+					questions.append(Question.objects.filter(id=qid).get())
+				except ObjectDoesNotExist:
+					qid = False
+		else:
+			questions = get_questions_for_(person_obj)
+		if 'exclude_question_ids' in settings:
+			new_questions = []
+			for question in questions:
+				if question.id not in settings['exclude_question_ids']:
+					new_questions.append(question)
+			questions = new_questions
+		field_list = questions_to_fields(questions,person_obj)
+	if ( 'populations' not in person_obj or 'age' not in person_obj or 'country' not in person_obj ) or 'primary' in settings:
+		field_list = primary_questions() + field_list
+	return make_question_form_from_fields(field_list,settings)
 
 def primary_questions():
 	questions = []
@@ -17,6 +40,7 @@ def primary_questions():
 		initial = "",
 		required = True,
 	)))
+	from django_countries.countries import COUNTRIES
 	questions.append(('birth_country',forms.ChoiceField(
 		label = 'What country were you born in?',
 		choices = [("","Select a Country")] + list(COUNTRIES),
@@ -61,62 +85,34 @@ def list_years(amount=10):
 		years.append((year,year))
 		year = year - 1
 	return years
-
-def make_question_form(person_obj={},settings={}):
-	if ( 'populations' in person_obj and len(person_obj['populations'])>0 ) or 'age' in person_obj:
-		exclude_question_ids = []
-		if 'exclude_question_ids' in settings:
-			exclude_question_ids = exclude_question_ids + settings['exclude_question_ids']
-		if 'question_ids' in person_obj:
-			exclude_question_ids = exclude_question_ids + person_obj['question_ids']
-		field_list = get_additional_questions(person_obj,exclude_question_ids)
-		if('all' in settings):
-			field_list = primary_questions() + field_list
-		field_list = make_person_fields(person_obj) + field_list
-	else:
-		field_list = primary_questions()
-	return make_question_form_from_fields(field_list,settings)
-
-def make_person_fields(person_obj):
+	
+def get_questions_for_(person_obj):
+	questions = []
+	for question in Question.objects.all():
+		if relation_matches_population(question.populations,person_obj):
+			questions.append(question)
+	return questions
+	
+def questions_to_fields(questions=[],person_obj=False):
 	field_list = []
-	if 'age' in person_obj:
-		field = forms.CharField(
-			widget = forms.HiddenInput,
-			initial = person_obj['age'],
-			required = False,
-		)
-		field_list.append(('age',field))
-	if 'populations' in person_obj and len(person_obj['populations'])>0:
-		for index,population in enumerate(person_obj['populations']):
-			field = forms.CharField(
-				widget = forms.HiddenInput,
-				initial = population.short,
-				required = False,
-			)
-			field_list.append(('populations.'+str(index),field))
-	if 'country' in person_obj:
-		field = forms.CharField(
-			widget = forms.HiddenInput,
-			initial = person_obj['country'],
-			required = False,
-		)
-		field_list.append(('country',field))
-	if 'answer_ids' in person_obj:
-		for index,answer_id in enumerate(person_obj['answer_ids']):
-			field = forms.CharField(
-				widget = forms.HiddenInput,
-				initial = str(answer_id),
-				required = False,
-			)
-			field_list.append(('answer_ids.'+str(index),field))
-	if 'question_ids' in person_obj:
-		for index,question_id in enumerate(person_obj['question_ids']):
-			field = forms.CharField(
-				widget = forms.HiddenInput,
-				initial = str(question_id),
-				required = False,
-			)
-			field_list.append(('question_ids.'+str(index),field))
+	for question in questions:
+		answers = []
+		for answer in question.answer_set.all():
+			if not person_obj or relation_matches_population(answer.population_relationships,person_obj):
+				answers.append((answer.id,answer.text))
+		field = forms.ChoiceField(
+						widget = forms.RadioSelect,
+						label = question.text,
+						choices = answers,
+					)
+		if question.multiple_choice:
+			field = forms.MultipleChoiceField(
+						widget = forms.CheckboxSelectMultiple,
+						label = question.text,
+						choices = answers,
+						required = False,
+					)
+		field_list.append(('questions.'+str(question.id),field))
 	return field_list
 
 def get_additional_questions(person_obj,exclude_question_ids=[]):
@@ -140,12 +136,6 @@ def get_additional_questions(person_obj,exclude_question_ids=[]):
 							required = False,
 						)
 			field_list.append(('questions.'+str(question.id),field))
-			hidden_field = forms.CharField(
-				widget = forms.HiddenInput,
-				initial = str(question.id),
-				required = False,
-			)
-			field_list.append(('question_ids.'+str(100+question.id),hidden_field))
 	return field_list
 
 def relation_matches_population(relation_query,person_obj):
