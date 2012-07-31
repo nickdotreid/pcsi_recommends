@@ -109,7 +109,7 @@ def ajax_answer_questions(request):
 	return HttpResponseBadRequest(json.dumps("answered"),
 	                mimetype="application/json")
 
-def ajax_update_answer(request):
+def ajax_save_answer(request):
 	if 'person_obj' not in request.session or request.method != 'POST':
 		return HttpResponseBadRequest(json.dumps({"message":"Bad Input"}),
 		                mimetype="application/json")
@@ -128,7 +128,7 @@ def ajax_update_answer(request):
 	                mimetype="application/json")
 	
 
-def ajax_more_questions(request):
+def ajax_get_questions(request):
 	if 'person_obj' not in request.session:
 		return HttpResponseBadRequest(json.dumps({"message":"No Session"}),
 		                mimetype="application/json")
@@ -138,20 +138,49 @@ def ajax_more_questions(request):
 		'form_class':'questions ajax',
 		'form_tag':False,
 	})
+	from django.forms.fields import MultipleChoiceField
+	questions = []
 	form = QuestionForm()
-	if len(form.fields) < 1:
-		return HttpResponseBadRequest(json.dumps({"message":"No Questions"}),
+	for name in form.fields:
+		field = form.fields[name]
+#		import pdb; pdb.set_trace()
+		answers = []
+		for value,text in field.choices:
+			answers.append({
+				'value':value,
+				'text':text,
+			})
+		questions.append({
+			'answers':answers,
+			'label':field.label,
+			'name':name,
+			'required':field.required,
+			'multiple_choice':isinstance(field,MultipleChoiceField)
+		})
+	if len(questions) < 1:
+		return HttpResponseBadRequest(json.dumps({"message":"No More Questions"}),
 		                mimetype="application/json")
 	return HttpResponse(json.dumps({
-		"questions":render_to_string("questions/form_solo.html",{
-			"form":form,
-			}),
+		"questions":questions,
 		}),
 	    mimetype="application/json")
 
-def ajax_update_recommendations(request):
-	return HttpResponse(json.dumps("answered"),
-	                mimetype="application/json")
+def ajax_get_recommendations(request):
+	if 'person_obj' not in request.session:
+		return HttpResponseBadRequest(json.dumps({"message":"No Session"}),
+		                mimetype="application/json")
+	person_obj = request.session['person_obj']
+	recommendations = []
+	for recommendation in fake_populations_to_recommendations(person_obj):
+		recommendations.append({
+			'screen-id':recommendation.screen.id,
+			'screen-name':recommendation.screen.name,
+			'frequency':recommendation.frequency,
+			'not-recommended':recommendation.not_recommended,
+		})
+	return HttpResponse(json.dumps({
+		'recommendations':recommendations,
+	}),mimetype="application/json")
 			
 def fake_populations_to_recommendations(person_obj):
 	populations = []

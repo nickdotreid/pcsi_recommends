@@ -12,12 +12,12 @@
 			<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
 			<p>According to your answers, you are a <strong>{{age}} year old {{gender}}.</strong></p>
 			<p>Our recommendations are for you to discuss with your doctor, and are not medically binding.</p>
+			<p class="description">You can take your recommendations with you to your doctor by printing, emailing or texting this list to your self.</p>
+			{% include 'recommendations/actions.html' %}
 			<div class="recommendations">
-				<p class="description">You can take your recommendations with you to your doctor by printing, emailing or texting this list to your self.</p>
-				{% include 'recommendations/actions.html' %}
 				{{ block.super }}
-				{% include 'recommendations/actions.html' %}
 			</div>
+			{% include 'recommendations/actions.html' %}
 		</div>
 		<div class="span6">
 			<a href="/">Reset Form</a>
@@ -39,6 +39,36 @@
 			</div>
 			<a href="/">Reset Form</a>
 			<a href="/change">Change Answers</a>
+		</div>
+	</div>
+	<div class="templates" style="display:none;">
+		<div id="question-template">
+			<div class="question clearfix control-group">
+				<div class="control-label"></div>
+				<div class="controls">
+				</div>
+			</div>
+		</div>
+		<div id="checkbox-template">
+			<label class="checkbox"><input type="checkbox" name="" value="" /></label>
+		</div>
+		<div id="radio-template">
+			<label class="radio"><input type="radio" name="" value="" /></label>
+		</div>
+		<div id="question-answered-template">
+			<div class="question question-answered">
+				<span class="label"></span>
+				<span class="answer"></span>
+				<a href="#" class="undo"><i></i>undo</a>
+			</div>
+		</div>
+		<div id="recommendation-template">
+			<div class="recommendation">
+				<h3 class="screen"></h3>
+				<p class="frequency"></p>
+				<div class="nav">
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
