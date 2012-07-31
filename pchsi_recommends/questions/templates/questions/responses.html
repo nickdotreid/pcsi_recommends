@@ -34,14 +34,11 @@
 			<div class="answers">
 				<h3>Questions You Have Answered</h3>
 			{% for answer in answers %}			
-			<div class="answer">
-				<span class="label">{{answer.label}}</span>
-				<span class="value">{{answer.value}}</span>
-			</div>
+				{% include "questions/answered.html" with answer=answer %}
 			{% endfor %}
+			</div>
 			<a href="/">Reset Form</a>
 			<a href="/change">Change Answers</a>
-			</div>
 		</div>
 	</div>
 {% endblock %}

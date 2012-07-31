@@ -162,12 +162,16 @@ def make_question_form_from_fields(field_list,settings):
 	class QuestionForm(QuestionForm):
 		def __init__(self, *args, **kwargs):
 			self.helper = FormHelper()
-			self.helper.form_id = 'id-exampleForm'
-			self.helper.form_class = 'blueForms'
 			self.helper.form_method = 'post'
+			if 'form_id' in settings:
+				self.helper.form_id = settings['form_id']
+			if 'form_class' in settings:
+				self.helper.form_class = settings['form_class']
 			if 'form_action' in settings:
 				self.helper.form_action = settings['form_action']
-
-			self.helper.add_input(Submit('submit', 'Submit'))
+			if 'form_tag' in settings:
+				self.helper.form_tag = settings['form_tag']
+			if 'no_submit' not in settings:
+				self.helper.add_input(Submit('submit', 'Submit'))
 			super(QuestionForm, self).__init__(*args, **kwargs)
 	return QuestionForm

@@ -1,6 +1,7 @@
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
+from django.utils import simplejson as json
 from django.core.urlresolvers import reverse
 from django.utils.datastructures import DotExpandedDict
 
@@ -10,6 +11,7 @@ from django import forms
 import itertools
 
 from django.template import RequestContext
+from django.template.loader import render_to_string
 
 from forms import make_question_form
 from pchsi_recommends.questions.models import *
@@ -32,11 +34,14 @@ def initial_page(request):
 		},context_instance=RequestContext(request))
 
 def recommendations_page(request):
+	if request.is_ajax():
+		return ajax_answer_questions(request)
 	if 'person_obj' not in request.session:
 		return redirect(reverse(initial_page))
 	person_obj = request.session['person_obj']
 	QuestionForm = make_question_form(person_obj,{
 		'exclude_question_ids':person_obj['question_ids'],
+		'form_class':'questions ajax',
 	})
 	if request.method == 'POST':
 		form = QuestionForm(request.POST)
@@ -72,6 +77,81 @@ def all_questions(request):
 		'recommendations':False,
 		'form':form,
 		},context_instance=RequestContext(request))
+		
+def ajax_answer_questions(request):
+	if 'person_obj' not in request.session:
+		return HttpResponseBadRequest(json.dumps({"message":"No Session"}),
+		                mimetype="application/json")
+	person_obj = request.session['person_obj']
+	post_data = DotExpandedDict(request.POST)
+	if 'questions' not in post_data:
+		return HttpResponseBadRequest(json.dumps({"message":"No Questions"}),
+		                mimetype="application/json")
+	QuestionForm = make_question_form(person_obj,{
+		'include_question_ids':list(map(int,post_data['questions'].keys())),
+	})
+	if request.method == 'POST':
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			answers = []
+			for question,answer in form.cleaned_data.items():
+				answers.append(answer)
+			message = ""
+			for answer in answers_for_form(form):
+				message = render_to_string("questions/answered.html",{
+					"answer":answer,
+					})
+			return HttpResponse(json.dumps({
+				"answers":answers,
+				"message":message,
+				}),
+			                mimetype="application/json")
+	return HttpResponseBadRequest(json.dumps("answered"),
+	                mimetype="application/json")
+
+def ajax_update_answer(request):
+	if 'person_obj' not in request.session or request.method != 'POST':
+		return HttpResponseBadRequest(json.dumps({"message":"Bad Input"}),
+		                mimetype="application/json")
+	person_obj = request.session['person_obj']
+	post_data = DotExpandedDict(request.POST)
+	QuestionForm = make_question_form(person_obj,{
+		'include_question_ids':list(map(int,post_data['questions'].keys())),
+	})
+	if request.method == 'POST':
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			request.session['person_obj'] = person_obj_from_(form.cleaned_data,person_obj)
+			return HttpResponse(json.dumps({"message":"Saved"}),
+				mimetype="application/json")
+	return HttpResponseBadRequest(json.dumps({"message":"Fail"}),
+	                mimetype="application/json")
+	
+
+def ajax_more_questions(request):
+	if 'person_obj' not in request.session:
+		return HttpResponseBadRequest(json.dumps({"message":"No Session"}),
+		                mimetype="application/json")
+	person_obj = request.session['person_obj']
+	QuestionForm = make_question_form(person_obj,{
+		'exclude_question_ids':person_obj['question_ids'],
+		'form_class':'questions ajax',
+		'form_tag':False,
+	})
+	form = QuestionForm()
+	if len(form.fields) < 1:
+		return HttpResponseBadRequest(json.dumps({"message":"No Questions"}),
+		                mimetype="application/json")
+	return HttpResponse(json.dumps({
+		"questions":render_to_string("questions/form_solo.html",{
+			"form":form,
+			}),
+		}),
+	    mimetype="application/json")
+
+def ajax_update_recommendations(request):
+	return HttpResponse(json.dumps("answered"),
+	                mimetype="application/json")
 			
 def fake_populations_to_recommendations(person_obj):
 	populations = []
