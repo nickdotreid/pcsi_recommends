@@ -73,7 +73,7 @@ def all_questions(request):
 			request.session['person_obj'] = person_obj_from_(form.cleaned_data,person_obj)
 			return redirect(reverse(recommendations_page))
 	form = QuestionForm(person_obj['answers'])
-	return render_to_response('questions/responses.html',{
+	return render_to_response('questions/change.html',{
 		'recommendations':False,
 		'form':form,
 		},context_instance=RequestContext(request))

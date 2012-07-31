@@ -1,0 +1,13 @@
+{% extends 'recommendations/list.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+	<div class="row-fluid">
+		<div class="span6">
+			<p>Reenter your information and we will recalculate your recommendations.</p>
+		</div>
+		<div class="span6">
+			{% crispy form %}
+		</div>
+	</div>
+{% endblock %}
