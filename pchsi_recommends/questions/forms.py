@@ -6,9 +6,17 @@ from django.utils.datastructures import SortedDict
 from pchsi_recommends.recommendations.views import population_relationship_matches
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+
+class YearField(forms.IntegerField):
+	def clean(self,value):
+		value = forms.IntegerField.clean(self,value)
+		if len(str(value)) != 4:
+			raise ValidationError("Please enter full year")
+		return value
 
 def make_question_form(person_obj={},settings={}):
 	field_list = []
@@ -43,7 +51,7 @@ def get_objects_where_matches(objects=[],match_values=[]):
 
 def primary_questions():
 	questions = []
-	questions.append(('birth_year',forms.CharField(
+	questions.append(('birth_year',YearField(
 		label = 'What year were you born?',
 		initial = "",
 		required = True,
