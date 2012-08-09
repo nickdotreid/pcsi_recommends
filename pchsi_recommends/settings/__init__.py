@@ -53,41 +53,20 @@ FIXTURE_DIRS = (
 	os.getcwd()+'/pchsi_recommends/fixtures',
 )
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = ''
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = 'http://pchsi-recommends.s3-website-us-west-1.amazonaws.com/'
-
-# Additional locations of static files
+STATIC_URL = 'static/'
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 	os.getcwd()+'/pchsi_recommends/static',
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = 'AKIAIW5SDMNN5CWPBQOA'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'pchsi-recommends'
-
-# Make this unique, and don't share it with anybody.
 SECRET_KEY = ')^ior-et)8a)#)in)p&amp;jg=_63rh!^+1kpqs^q2*ha++x!mt12^'
 
-# List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
@@ -164,5 +143,7 @@ LOGGING = {
     }
 }
 
-if 'DEVELOPMENT' in os.environ:
-	from settings_development import *
+if 'PRODUCTION' in os.environ:
+	from production import *
+else:
+	from development import *
