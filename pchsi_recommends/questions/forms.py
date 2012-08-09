@@ -1,4 +1,5 @@
 from django import forms
+from highlightselectwidget import HighlightedSelect
 from pchsi_recommends.questions.models import *
 from django.utils.datastructures import SortedDict
 
@@ -41,8 +42,12 @@ def primary_questions():
 	)))
 	from django_countries.countries import COUNTRIES
 	questions.append(('birth_country',forms.ChoiceField(
+		widget = HighlightedSelect( highlighted = [
+			COUNTRIES[12],
+			COUNTRIES[99],
+		]),
 		label = 'What country were you born in?',
-		choices = [("","Select a Country")] + list(COUNTRIES),
+		choices = [("","Select a Country")]+list(COUNTRIES),
 		initial = "",
 		required = True,
 	)))
