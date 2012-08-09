@@ -34,9 +34,8 @@ def make_question_form(person_obj={},settings={}):
 
 def primary_questions():
 	questions = []
-	questions.append(('birth_year',forms.ChoiceField(
+	questions.append(('birth_year',forms.CharField(
 		label = 'What year were you born?',
-		choices = list_years(100),
 		initial = "",
 		required = True,
 	)))

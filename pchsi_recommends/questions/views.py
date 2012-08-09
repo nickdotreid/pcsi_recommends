@@ -212,14 +212,17 @@ def answers_for_form(form):
 		if not isinstance(values,list):
 			values = [values]
 		for value in values:
-			for val,text in field.field.choices:
-				if str(val) == str(value):
-					if isinstance(text,str) or isinstance(text,unicode):
-						ans.append(text)
-					elif isinstance(text,int):
-						ans.append(str(text))
-					else:
-						ans.append(value)
+			if not hasattr(field.field,'choices'):
+				ans.append(value)
+			else:
+				for val,text in field.field.choices:
+					if str(val) == str(value):
+						if isinstance(text,str) or isinstance(text,unicode):
+							ans.append(text)
+						elif isinstance(text,int):
+							ans.append(str(text))
+						else:
+							ans.append(value)
 		if ans>1:
 			ans = ",".join(ans)
 		answers.append({
