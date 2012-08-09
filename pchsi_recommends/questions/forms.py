@@ -32,6 +32,14 @@ def make_question_form(person_obj={},settings={}):
 	if ( 'populations' not in person_obj or 'age' not in person_obj or 'country' not in person_obj ) or 'primary' in settings:
 		field_list = primary_questions() + field_list
 	return make_question_form_from_fields(field_list,settings)
+	
+def get_objects_where_matches(objects=[],match_values=[]):
+	to_return = []
+	for value in match_values:
+		for obj in objects:
+			if obj[0] == value:
+				to_return.append(obj)
+	return to_return
 
 def primary_questions():
 	questions = []
@@ -42,10 +50,8 @@ def primary_questions():
 	)))
 	from django_countries.countries import COUNTRIES
 	questions.append(('birth_country',forms.ChoiceField(
-		widget = HighlightedSelect( highlighted = [
-			COUNTRIES[12],
-			COUNTRIES[99],
-		]),
+		widget = HighlightedSelect( 
+			highlighted = get_objects_where_matches(list(COUNTRIES),['US','HK'])),
 		label = 'What country were you born in?',
 		choices = [("","Select a Country")]+list(COUNTRIES),
 		initial = "",
