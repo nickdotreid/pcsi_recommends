@@ -3,63 +3,40 @@ $(document).ready(function(){
 	$(".recommendations,.questions.ajax").html("")
 	
 	// set up event triggers for question form input click
-	$("#content").delegate(".questions.ajax input","click",function(){
+	$("#content").delegate(".questions.ajax .question input[type='submit']","click",function(event){
+		event.preventDefault();
 		var input = $(this);
 		var question = input.parents(".question:first");
-		var container = input.parents(".question:first");
-		if(input.attr("type")=="checkbox"){
-			container = input.parents("label:first");
-		}
-		timeout = setTimeout(function(){
-			container.remove();
-			$(".answers").append(a);
-		},2000);
-		var a = $("#question-answered-template .question").clone();
-		$(".label",a).html($(".control-label",question).html());
-		$(".answer",a).html($("span",input.parents("label:first")).html());
-		timeout = setTimeout(function(){
-			var _data = {}
-			_data[input.attr("name")] = input.attr("value");
-			container.remove();
-			$(".answers").append(a);
-			$(".undo",a).remove();
-			if(input.attr("type")=="checkbox"){
-				if($(".controls .checkbox,.controls .question",question).length < 1){
-					question.hide();
-				}
-			}
-			$.ajax({
-				url:"/ajax/save",
-				data:_data,
-				type:"POST",
-				success:function(data){
-					$.ajax({
-						url:"/ajax/questions",
-						type:"POST",
-						success:function(data){
-							load_questions(data['questions'],after=question);
-						},
-						error:handle_error
-					});
-					$.ajax({
-						url:"/ajax/update",
-						type:"POST",
-						success:function(data){
-							load_recommendations(data['recommendations']);
-						},
-						error:handle_error
-					});
-				},
-				error:handle_error
-			});
-		},2000);
-		container.hide().after(a);
-		$(".undo",a).click(function(event){
-			event.preventDefault();
-			clearTimeout(timeout);
-			container.show();
-			a.remove();
+		question.trigger("question-loading");
+		_data = {}
+		$("input:checked,input:selected",question).each(function(){
+			_data[this.name] = this.value;
 		})
+		$.ajax({
+			url:"/ajax/save",
+			data:_data,
+			type:"POST",
+			success:function(data){
+				question.hide();
+				$.ajax({
+					url:"/ajax/questions",
+					type:"POST",
+					success:function(data){
+						load_questions(data['questions'],after=question);
+					},
+					error:handle_error
+				});
+				$.ajax({
+					url:"/ajax/update",
+					type:"POST",
+					success:function(data){
+						load_recommendations(data['recommendations']);
+					},
+					error:handle_error
+				});
+			},
+			error:handle_error
+		});
 	});
 	
 	$.ajax({
@@ -145,6 +122,7 @@ function add_question(question,after){
 		a.append('<span>'+answer['text']+'</span>');
 		$(".controls",q).append(a);
 	}
+	q.append('<div class="controls"><input type="submit" value="Update Recommendations" /></div>');
 	if(after){
 		after.after(q);
 	}else{
