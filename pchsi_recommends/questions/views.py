@@ -213,7 +213,7 @@ def answers_for_form(form):
 			values = [values]
 		for value in values:
 			if not hasattr(field.field,'choices'):
-				ans.append(value)
+				ans.append(unicode(value))
 			else:
 				for val,text in field.field.choices:
 					if str(val) == str(value):
@@ -222,7 +222,7 @@ def answers_for_form(form):
 						elif isinstance(text,int):
 							ans.append(str(text))
 						else:
-							ans.append(value)
+							ans.append(unicode(value))
 		if ans>1:
 			ans = ",".join(ans)
 		answers.append({
