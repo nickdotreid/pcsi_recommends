@@ -28,4 +28,4 @@ class Note(models.Model):
 	
 	
 	def __unicode__(self):
-		return self.subject.title
+		return "%s: %s" % (self.subject.title,self.title)
