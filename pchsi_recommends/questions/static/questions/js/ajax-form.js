@@ -82,6 +82,10 @@ function add_recommendation(recommendation){
 	if(recommendation['not-recommended']){
 		r.hide();
 	}
+	for(var i=0;i<recommendation['notes'].length;i++){
+		var note = recommendation['notes'][i];
+		$(".nav",r).append('<a id="note-'+note['id']+'" href="#">'+note['subject']+'</a>');
+	}
 	$(".recommendations").append(r);
 	return true;
 }
@@ -95,6 +99,11 @@ function update_recommendation(recommendation){
 		r.hide();
 	}else{
 		r.show();
+	}
+	$(".nav a",r).remove();
+	for(var i=0;i<recommendation['notes'].length;i++){
+		var note = recommendation['notes'][i];
+		$(".nav",r).append('<a id="note-'+note['id']+'" href="#">'+note['subject']+'</a>');
 	}
 }
 

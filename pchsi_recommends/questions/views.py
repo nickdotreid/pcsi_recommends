@@ -172,11 +172,19 @@ def ajax_get_recommendations(request):
 	person_obj = request.session['person_obj']
 	recommendations = []
 	for recommendation in fake_populations_to_recommendations(person_obj):
+		_notes = []
+		for note in recommendation.screen.select_notes():
+			_notes.append({
+				'id':note.id,
+				'subject':note.subject.title,
+				'title':note.title,
+			})
 		recommendations.append({
 			'screen-id':recommendation.screen.id,
 			'screen-name':recommendation.screen.name,
 			'frequency':recommendation.frequency,
 			'not-recommended':recommendation.not_recommended,
+			'notes':_notes,
 		})
 	return HttpResponse(json.dumps({
 		'recommendations':recommendations,
