@@ -24,7 +24,10 @@ class Recommendation(models.Model):
 	screen = models.ForeignKey(Screen)
 	weight = models.IntegerField(null=True)
 	not_recommended = models.BooleanField(default=False)
+	
+	now = models.BooleanField(default=False)
 	frequency = models.CharField(blank=True, max_length=100)
+	
 	populations = generic.GenericRelation(Population_Relationship)
 
 	def __unicode__(self):
