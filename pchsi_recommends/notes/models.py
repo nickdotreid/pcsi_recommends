@@ -6,6 +6,9 @@ from pchsi_recommends.populations.models import Population_Relationship
 
 class Subject(models.Model):
 	title = models.CharField(blank=True, max_length=100)
+	
+	def __unicode__(self):
+		return self.title
 
 class Note(models.Model):
 	""" Reusable Notes Field That can be filtered by population types """
@@ -22,3 +25,7 @@ class Note(models.Model):
 	content_type = models.ForeignKey(ContentType, blank=True, null=True)
 	object_id = models.PositiveIntegerField(blank=True, null=True)
 	content_object = generic.GenericForeignKey('content_type','object_id')
+	
+	
+	def __unicode__(self):
+		return self.subject.title
