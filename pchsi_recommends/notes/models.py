@@ -4,19 +4,16 @@ from django.contrib.contenttypes import generic
 
 from pchsi_recommends.populations.models import Population_Relationship
 
+class Subject(models.Model):
+	title = models.CharField(blank=True, max_length=100)
+
 class Note(models.Model):
 	""" Reusable Notes Field That can be filtered by population types """
-	
-	NOTE_TYPES = (
-		('information','Information'),
-		('direction','Direction'),
-		('warning','Warning')
-	)
-	
+
 	title = models.CharField(blank=True, max_length=100)
 	text = models.TextField(blank=True)
 	
-	note_type = models.CharField(blank=True, null=True, max_length=20, choices=NOTE_TYPES)
+	subject = models.ForeignKey(Subject)
 	
 	weight = models.IntegerField(blank=True, null=True)
 	
