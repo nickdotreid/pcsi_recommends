@@ -7,7 +7,23 @@
 {% endblock %}
 
 {% block content %}
+	<div class="nav sticky">
+		<a href="/">Reset Form</a>
+		<a href="/change">Change Answers</a>
+	</div>
 	<div class="row-fluid">
+		<div class="span6">
+			{% for answer in answers %}			
+				{% include "questions/answered.html" with answer=answer %}
+			{% endfor %}
+			{% if form %}
+			{% crispy form %}
+			{% else %}
+			<div class="alert">
+				<p>We don’t have any more questions for you.</p>
+			</div>
+			{% endif %}
+		</div>
 		<div class="span6">
 			<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
 			<p>According to your answers, you are a <strong>{{age}} year old {{gender}}.</strong></p>
@@ -18,27 +34,6 @@
 				{{ block.super }}
 			</div>
 			{% include 'recommendations/actions.html' %}
-		</div>
-		<div class="span6">
-			<a href="/">Reset Form</a>
-			<a href="/change">Change Answers</a>
-			{% if form %}
-			<p>We have more questions that will further personalize our recommendations for you.</p>
-			<p>Answer a question and our recommendations will be adjusted.</p>
-			{% crispy form %}
-			{% else %}
-			<div class="alert">
-				<p>We don’t have any more questions for you.</p>
-			</div>
-			{% endif %}
-			<div class="answers">
-				<h3>Questions You Have Answered</h3>
-			{% for answer in answers %}			
-				{% include "questions/answered.html" with answer=answer %}
-			{% endfor %}
-			</div>
-			<a href="/">Reset Form</a>
-			<a href="/change">Change Answers</a>
 		</div>
 	</div>
 	<div class="templates" style="display:none;">
