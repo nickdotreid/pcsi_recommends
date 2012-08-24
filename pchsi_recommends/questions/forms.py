@@ -3,8 +3,6 @@ from highlightselectwidget import HighlightedSelect
 from pchsi_recommends.questions.models import *
 from django.utils.datastructures import SortedDict
 
-from pchsi_recommends.recommendations.views import population_relationship_matches
-
 from django.core.exceptions import ObjectDoesNotExist
 
 from datetime import datetime
@@ -166,7 +164,10 @@ def relation_matches_population(relation_query,person_obj):
 	if 'country' in person_obj:
 		country = person_obj['country']
 	for relationship in relation_query.all():
-		if population_relationship_matches(relationship,populations,age,country):
+		if relationship.matches(
+				populations = populations,
+				age = age,
+				country = country):
 			return True
 	return False
 
