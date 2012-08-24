@@ -31,3 +31,38 @@ class Population_Relationship(models.Model):
 	content_type = models.ForeignKey(ContentType)
 	object_id = models.PositiveIntegerField()
 	content_object = generic.GenericForeignKey('content_type','object_id')
+	
+	def matches(self, age=False, populations=[], country=False):
+		if self.country:
+			if not country or country != self.country.code:
+				return False
+		if age_in_range(age,self.min_age,self.max_age):
+			relationship_populations = self.populations.all()
+			if len(relationship_populations)<1:
+				return True
+			if self.inclusive:
+				for population in relationship_populations:
+					if population in populations:
+						return True
+			else:
+				for population in relationship_populations:
+					if population not in populations:
+						return False
+				return True
+		return False
+
+def age_in_range(age=False,min=False,max=False):
+	if not min and not max:
+		return True
+	age = int(age)
+	if not age:
+		return False
+	if min and max:
+		if age >= min and age <= max:
+			return True
+		return False
+	if min and age >= min:
+		return True
+	if max and age <= max:
+		return True
+	return False
