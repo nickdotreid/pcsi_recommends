@@ -1,11 +1,6 @@
 {% extends 'recommendations/list.html' %}
 {% load crispy_forms_tags %}
 
-{% block scripts %}
-{{ block.super }}
-<script type="text/javascript" src="{{ STATIC_URL }}questions/js/ajax-form.js"></script>
-{% endblock %}
-
 {% block content %}
 	<div class="nav sticky">
 		<a href="/">Reset Form</a>
