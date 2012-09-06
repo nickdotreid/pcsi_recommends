@@ -1,0 +1,13 @@
+<!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
+<p>According to your answers, you are a <strong>{{age}} year old {{gender}}.</strong></p>
+<p>Our recommendations are for you to discuss with your doctor, and are not medically binding.</p>
+<p class="description">You can take your recommendations with you to your doctor by printing, emailing or texting this list to your self.</p>
+{% include 'recommendations/actions.html' %}
+<div class="recommendations">
+	{{% for recommendation in recommendations %}
+		{% include "recommendations/list-item.html" with recommendation=recommendation %}
+	{%  empty  %}
+	<div class="alert">No Recommendations</div>
+	{% endfor %}
+</div>
+{% include 'recommendations/actions.html' %}
