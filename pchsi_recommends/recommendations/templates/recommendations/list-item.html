@@ -1,13 +1,13 @@
-{% if recommendation.not_recommended %}
-	<!-- {{recommendation.screen.name}} not recommended -->
-{% else %}
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
 	<h3 class="screen">{{recommendation.screen.name}}</h3>
+	{% if recommendation.not_recommended %}
+	<p>Not Recommended</p>
+	{% else %}
 	{% if recommendation.frequency %}
 	<p class="frequency">{{recommendation.frequency}}</p>
+	{% endif %}
 	{% endif %}
 	<div class="nav">
 	<a href="/recommendations/{{recommendation.id}}">More Information</a>
 	</div>
 </div>
-{% endif %}
