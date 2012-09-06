@@ -4,7 +4,7 @@
 <p class="description">You can take your recommendations with you to your doctor by printing, emailing or texting this list to your self.</p>
 {% include 'recommendations/actions.html' %}
 <div class="recommendations">
-	{{% for recommendation in recommendations %}
+	{% for recommendation in recommendations %}
 		{% include "recommendations/list-item.html" with recommendation=recommendation %}
 	{%  empty  %}
 	<div class="alert">No Recommendations</div>
