@@ -69,7 +69,11 @@ def recommendation_detail(request,recommendation_id):
 		'age':person_obj['age'],
 		'gender':determine_gender(person_obj),
 		'recommendation':recommendation,
-		'notes':recommendation.screen.select_notes(),
+		'notes':recommendation.screen.select_notes(
+			age = person_obj['age'],
+			country = person_obj['country'],
+			populations = person_obj['populations'],
+			),
 		},context_instance=RequestContext(request))
 		
 def all_questions(request):

@@ -12,17 +12,22 @@ class Screen(models.Model):
 	name = models.CharField(max_length=120)
 	notes = generic.GenericRelation(Note)
 	
-	def select_notes(self):
+	def select_notes(self, age=False, populations=[], country=False):
 		notes = []
 		for note in self.notes.all():
-			found = False
-			for num,n in enumerate(notes):
-				if n.subject == note.subject:
-					found = True
-					if note.weight < n.weight:
-						notes[num] = note
-			if not found:
-				notes.append(note)
+			matches = False
+			for pop in note.populations.all():
+				if pop.matches(age=age, populations=populations, country=country):
+					matches = True
+			if matches or note.populations.count() < 1:
+				found = False
+				for num,n in enumerate(notes):
+					if n.subject == note.subject:
+						found = True
+						if note.weight < n.weight:
+							notes[num] = note
+				if not found:
+					notes.append(note)
 		return notes
 			
 	class Meta:
