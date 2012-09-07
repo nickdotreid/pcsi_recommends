@@ -15,6 +15,7 @@ from django.template.loader import render_to_string
 
 from forms import make_question_form
 from pchsi_recommends.questions.models import *
+from pchsi_recommends.recommendations.models import Recommendation
 
 from logic import *
 
@@ -56,6 +57,19 @@ def recommendations_page(request):
 		'age':person_obj['age'],
 		'gender':determine_gender(person_obj),
 		'answers':show_answered_questions(person_obj),
+		},context_instance=RequestContext(request))
+
+def recommendation_detail(request,recommendation_id):
+	if 'person_obj' not in request.session:
+		return redirect(reverse(initial_page))
+	person_obj = request.session['person_obj']
+	recommendation = get_object_or_404(Recommendation,pk=recommendation_id)
+	return render_to_response('questions/recommendation-detail.html',{
+		'recommendations':fake_populations_to_recommendations(person_obj),
+		'age':person_obj['age'],
+		'gender':determine_gender(person_obj),
+		'recommendation':recommendation,
+		'notes':recommendation.screen.notes.all(),
 		},context_instance=RequestContext(request))
 		
 def all_questions(request):
