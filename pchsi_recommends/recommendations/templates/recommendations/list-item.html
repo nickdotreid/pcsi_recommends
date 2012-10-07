@@ -8,6 +8,8 @@
 	{% endif %}
 	{% endif %}
 	<div class="nav">
-	<a href="/recommendations/{{recommendation.id}}">More Information</a>
+	{% for note in recommendation.screen.select_notes %}
+		<a href="/recommendations/{{recommendation.id}}#note-{{note.id}}">{{note.title}}</a>
+	{% endfor %}
 	</div>
 </div>
