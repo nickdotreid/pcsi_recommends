@@ -2,21 +2,20 @@ from pchsi_recommends.questions.models import Question,Answer
 from pchsi_recommends.populations.admin import PopulationRelationshipInline
 
 from django.contrib import admin
+from adminsortable.admin import SortableAdmin,SortableTabularInline
 
 
-class AnswerInline(admin.TabularInline):
+class AnswerInline(SortableTabularInline):
 	model = Answer
 	extra = 2
-	fields = ("position","populations","text")
-	# define the sortable
-	sortable_field_name = "position"
+	fields = ("populations","text")
 
-class QuestionAdmin(admin.ModelAdmin):
+class QuestionAdmin(SortableAdmin):
 	inlines = [AnswerInline,PopulationRelationshipInline]
 	
 admin.site.register(Question,QuestionAdmin)
 
-class AnswerAdmin(admin.ModelAdmin):
+class AnswerAdmin(SortableAdmin):
 	inlines = [PopulationRelationshipInline]
 
 admin.site.register(Answer,AnswerAdmin)
