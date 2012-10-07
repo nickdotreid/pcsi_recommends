@@ -1,5 +1,4 @@
 from pchsi_recommends.notes.models import Note,Subject
-from django.contrib.contenttypes.generic import GenericTabularInline, GenericStackedInline
 from adminsortable.admin import SortableAdmin,SortableTabularInline
 from pchsi_recommends.populations.admin import PopulationRelationshipInline
 
@@ -7,7 +6,7 @@ from django.contrib import admin
 
 admin.site.register(Subject)
 
-class NoteInline(GenericTabularInline):
+class NoteInline(SortableTabularInline):
 	model = Note
 	fields = ("title","subject","text")
 	extra = 1

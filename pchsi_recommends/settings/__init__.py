@@ -93,6 +93,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+	'adminsortable',
 	'storages',
 	'crispy_forms',
     'django.contrib.auth',
