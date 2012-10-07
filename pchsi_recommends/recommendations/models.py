@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.contenttypes import generic
 
+from adminsortable.models import Sortable
+
 from pchsi_recommends.populations.models import Population_Relationship
 
 # Create your models here.
@@ -15,14 +17,15 @@ class Screen(models.Model):
 	def __unicode__(self):
 		return self.name
 
-class Recommendation(models.Model):
+class Recommendation(Sortable):
 	"""(Recommendation description)"""
 	
+	class Meta(Sortable.Meta):
+		pass
+	
 	screen = models.ForeignKey(Screen)
-	weight = models.IntegerField(null=True)
 	not_recommended = models.BooleanField(default=False)
 	
-	now = models.BooleanField(default=False)
 	frequency = models.CharField(blank=True, max_length=100)
 	
 	populations = generic.GenericRelation(Population_Relationship)
