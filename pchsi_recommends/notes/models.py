@@ -45,4 +45,6 @@ class Note(Sortable):
 		return notes
 	
 	def __unicode__(self):
+		if self.screen:
+			return "(%s) %s: %s" % (self.screen.name, self.subject.title,self.title)
 		return "%s: %s" % (self.subject.title,self.title)
