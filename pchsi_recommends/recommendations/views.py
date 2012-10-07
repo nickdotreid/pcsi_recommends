@@ -40,15 +40,8 @@ def populations_to_recomendations(populations=[], age=False, country=False):
 	return recommendations
 
 def get_recommendation_for(screen,populations,age=False,country=False):
-	recommend = False
-	recommendations = screen.recommendation_set.all()
-	for recommendation in recommendations:
-		for population_relationship in recommendation.populations.all():
-			if population_relationship.matches(
-					populations = populations,
-					age = age,
-					country = country
-					):
-				if not recommend or recommend.weight > recommendation.weight:
-					recommend = recommendation
-	return recommend
+	return screen.get_recommendation(
+		populations=populations,
+		age=age,
+		country=country
+		)

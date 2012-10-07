@@ -13,6 +13,17 @@ class Screen(models.Model):
 			
 	class Meta:
 		ordering = ['name']
+		
+	def get_recommendation(self,populations=[],age=False,country=False):
+		recommendations = self.recommendation_set.all()
+		for recommendation in recommendations:
+			for population_relationship in recommendation.populations.all():
+				if population_relationship.matches(
+						populations = populations,
+						age = age,
+						country = country
+						):
+						return recommendation
 
 	def __unicode__(self):
 		return self.name
