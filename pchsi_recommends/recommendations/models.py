@@ -31,4 +31,6 @@ class Recommendation(Sortable):
 	populations = generic.GenericRelation(Population_Relationship)
 
 	def __unicode__(self):
-		return self.screen.name + ' (' + str(self.weight) + ') ' + self.frequency
+		if self.not_recommended:
+			return self.screen.name + " NOT RECOMMENDED"
+		return self.screen.name + self.frequency
