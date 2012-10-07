@@ -1,6 +1,9 @@
 import os
 
 DEBUG = False
+if 'DEBUG' in os.environ:
+	DEBUG = True
+	
 TEMPLATE_DEBUG = DEBUG
 
 if False not in ( 'STATIC_URL', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_STORAGE_BUCKET_NAME' in os.environ ):
