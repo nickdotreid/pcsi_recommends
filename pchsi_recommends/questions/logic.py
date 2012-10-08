@@ -4,18 +4,23 @@ from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.populations.models import Population
 
-def answers_to_country(answers):
+def get_gender(answers):
+	return 'male'
+
+def get_country(answers):
 	if 'country' in answers:
 		return answers['country']
 	if 'birth_country' in answers:
 		return answers['birth_country']
 	return False
 
-def answers_to_age(answers):
+def get_age(answers):
 	if 'age' in answers:
 		return answers['age']
 	if 'birth_year' in answers:
-		return 2012-int(answers['birth_year'])
+		from datetime import datetime
+		current_year = datetime.now().timetuple().tm_year
+		return current_year - int(answers['birth_year'])
 	return False
 
 def get_if_population_from_(pdict):
@@ -29,7 +34,7 @@ def get_if_population_from_(pdict):
 			population = False
 	return populations
 
-def answers_to_populations(answers):
+def get_populations(answers):
 	populations = []
 	sex = False
 	if 'birth_sex' in answers and 'current_sex' in answers:
@@ -40,7 +45,7 @@ def answers_to_populations(answers):
 		sex = determine_sex(answers['current_sex'])
 		if sex:
 			populations.append(sex)
-	if sex and 'sex_partners' in answers:
+	if sex and 'sex_partners' in answers and answers['sex_partners']:
 		pop = determine_sexual_orientation(sex,answers['sex_partners'])
 		if pop:
 			populations.append(pop)

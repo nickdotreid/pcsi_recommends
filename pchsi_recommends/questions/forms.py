@@ -10,28 +10,55 @@ from datetime import datetime
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-def make_question_form(person_obj={},settings={}):
-	field_list = []
-	if ( 'populations' in person_obj and len(person_obj['populations'])>0 ) or 'age' in person_obj:
-		questions = []
-		if 'include_question_ids' in settings:
-			for qid in settings['include_question_ids']:
-				try:
-					questions.append(Question.objects.filter(id=qid).get())
-				except ObjectDoesNotExist:
-					qid = False
-		else:
-			questions = get_questions_for_(person_obj)
-		if 'exclude_question_ids' in settings:
-			new_questions = []
-			for question in questions:
-				if question.id not in settings['exclude_question_ids']:
-					new_questions.append(question)
-			questions = new_questions
-		field_list = questions_to_fields(questions,person_obj)
-	if ( 'populations' not in person_obj or 'age' not in person_obj or 'country' not in person_obj ) or 'primary' in settings:
-		field_list = primary_questions() + field_list
-	return make_question_form_from_fields(field_list,settings)
+from logic import *
+
+def get_questions_for(answers={},settings={}):
+	questions = []
+	if 'birth_year' not in answers or not answers['birth_year']:
+		questions.append(('birth_year',get_question_field('birth_year')))
+	if 'birth_country' not in answers or not answers['birth_country']:
+		questions.append(('birth_country',get_question_field('birth_country')))
+	if 'birth_sex' not in answers or not answers['birth_sex']:
+		questions.append(('birth_sex',get_question_field('birth_sex')))
+	if 'current_sex' not in answers or not answers['current_sex']:
+		questions.append(('current_sex',get_question_field('current_sex')))
+	if 'sex_partners' not in answers or not answers['sex_partners']:
+		questions.append(('sex_partners',get_question_field('sex_partners')))
+	
+	if 'primary' in settings:
+		return questions
+	
+	populations = get_populations(answers)
+	age = get_age(answers)
+	country = get_country(answers)
+	
+	for question in get_questions_for_(
+		populations = populations,
+		age = age,
+		country = country,
+		):
+		print question.id
+		if question.id not in answers or not answers[question.id]:
+			questions.append((question.id,question_to_field(question,
+				populations=populations, 
+				age=age, 
+				country=country)))
+	return questions
+
+def make_form_for(questions=[],settings={}):
+	return make_question_form_from_fields(questions,settings)
+	
+def get_questions_for_(populations=[], age=False, country=False):
+	questions = []
+	for question in Question.objects.all():
+		if relation_matches_population(question.populations,
+			populations = populations,
+			age = age,
+			country = country
+			):
+			questions.append(question)
+	return questions
+
 	
 def get_objects_where_matches(objects=[],match_values=[]):
 	to_return = []
@@ -40,129 +67,98 @@ def get_objects_where_matches(objects=[],match_values=[]):
 			if obj[0] == value:
 				to_return.append(obj)
 	return to_return
-
-def primary_questions():
-	questions = []
-	now = datetime.now()
-	questions.append(('birth_year',forms.IntegerField(
-		label = 'What year were you born?',
-		initial = "",
-		required = True,
-		max_value = now.year,
-		min_value = now.year - 120,
-	)))
-	from django_countries.countries import COUNTRIES
-	questions.append(('birth_country',forms.ChoiceField(
-		widget = HighlightedSelect( 
-			highlighted = get_objects_where_matches(list(COUNTRIES),['US','HK'])),
-		label = 'What country were you born in?',
-		choices = [("","Select a Country")]+list(COUNTRIES),
-		initial = "",
-		required = True,
-	)))
-	questions.append(('birth_sex',forms.ChoiceField(
-		widget = forms.RadioSelect,
-		label = 'What sex were you assigned at birth?',
-		choices = [
-			('male','Male'),
-			('female','Female'),
-		]
-	)))
-	questions.append(('current_sex',forms.ChoiceField(
-		widget = forms.RadioSelect,
-		label = 'What sex are you currently?',
-		choices = [
-			('male','Male'),
-			('female','Female'),
-			('transmale','Transmale'),
-			('transfemale','Transfemale'),
-		]
-	)))
-	questions.append(('sex_partners',forms.MultipleChoiceField(
-		widget = forms.CheckboxSelectMultiple,
-		label = 'What is the gender of your sex partners?',
-		choices = [
-			('male','Men'),
-			('female','Women'),
-			('transmale','Transmen'),
-			('transfemale','Transwomen'),
-		],
-		required = True,
-	)))
-	return questions
-
+	
 def list_years(amount=10):
 	years = [("",'Select a Year')]
-	year = 2012 #this should be dynamic
+	from datetime import datetime
+	year = datetime.now().timetuple().tm_year
 	while len(years)<amount:
 		years.append((year,year))
 		year = year - 1
 	return years
 	
-def get_questions_for_(person_obj):
-	questions = []
-	for question in Question.objects.all():
-		if relation_matches_population(question.populations,person_obj):
-			questions.append(question)
-	return questions
-	
-def questions_to_fields(questions=[],person_obj=False):
-	field_list = []
-	for question in questions:
-		answers = []
-		for answer in question.answer_set.all():
-			if not person_obj or relation_matches_population(answer.population_relationships,person_obj):
-				answers.append((answer.id,answer.text))
-		field = forms.ChoiceField(
-						widget = forms.RadioSelect,
-						label = question.text,
-						choices = answers,
-					)
-		if question.multiple_choice:
-			field = forms.MultipleChoiceField(
-						widget = forms.CheckboxSelectMultiple,
-						label = question.text,
-						choices = answers,
-						required = False,
-					)
-		field_list.append(('questions.'+str(question.id),field))
-	return field_list
+def get_question_field(key="",settings={}):
+	if key == 'birth_year':
+		now = datetime.now()
+		return forms.IntegerField(
+			label = 'What year were you born?',
+			initial = "",
+			required = True,
+			max_value = now.year,
+			min_value = now.year - 120,
+		)
+	if key == 'birth_country':
+		from django_countries.countries import COUNTRIES
+		return forms.ChoiceField(
+			widget = HighlightedSelect( 
+				highlighted = get_objects_where_matches(list(COUNTRIES),['US','HK'])),
+			label = 'What country were you born in?',
+			choices = [("","Select a Country")]+list(COUNTRIES),
+			initial = "",
+			required = True,
+		)
+	if key == 'birth_sex':
+		return forms.ChoiceField(
+			widget = forms.RadioSelect,
+			label = 'What sex were you assigned at birth?',
+			choices = [
+				('male','Male'),
+				('female','Female'),
+			],
+			required = True
+		)
+	if key == 'current_sex':
+		return forms.ChoiceField(
+			widget = forms.RadioSelect,
+			label = 'What sex are you currently?',
+			choices = [
+				('male','Male'),
+				('female','Female'),
+				('transmale','Transmale'),
+				('transfemale','Transfemale'),
+			],
+			required = True
+		)
+	if key == 'sex_partners':
+		return forms.MultipleChoiceField(
+			widget = forms.CheckboxSelectMultiple,
+			label = 'What is the gender of your sex partners?',
+			choices = [
+				('male','Men'),
+				('female','Women'),
+				('transmale','Transmen'),
+				('transfemale','Transwomen'),
+			],
+			required = True,
+		)
+	return False
 
-def get_additional_questions(person_obj,exclude_question_ids=[]):
-	field_list = []
-	for question in Question.objects.all():
-		if question.id not in exclude_question_ids and relation_matches_population(question.populations,person_obj):
-			answers = []
-			for answer in question.answer_set.all():
-				if relation_matches_population(answer.population_relationships,person_obj):
-					answers.append((answer.id,answer.text))
-			field = forms.ChoiceField(
-							widget = forms.RadioSelect,
-							label = question.text,
-							choices = answers,
-						)
-			if question.multiple_choice:
-				field = forms.MultipleChoiceField(
-							widget = forms.CheckboxSelectMultiple,
-							label = question.text,
-							choices = answers,
-							required = False,
-						)
-			field_list.append(('questions.'+str(question.id),field))
-	return field_list
+def question_to_field(question, populations=[], age=False, country=False):
+	answers = []
+	for answer in question.answer_set.all():
+		if relation_matches_population(answer.population_relationships,
+			populations = populations,
+			age = age,
+			country = country
+			):
+			answers.append((answer.id,answer.text))
+	field = forms.ChoiceField(
+					widget = forms.RadioSelect,
+					label = question.text,
+					choices = answers,
+				)
+	if question.multiple_choice:
+		field = forms.MultipleChoiceField(
+					widget = forms.CheckboxSelectMultiple,
+					label = question.text,
+					choices = answers,
+					required = False,
+				)
+	return field
 
-def relation_matches_population(relation_query,person_obj):
+def relation_matches_population(relation_query, populations=[], age=False, country=False):
 	if relation_query.count() < 1:
 		return True
-	populations = []
-	if 'populations' in person_obj:
-		populations = person_obj['populations']
-	age = False
-	if 'age' in person_obj:
-		age = person_obj['age']
-	country = False
-	if 'country' in person_obj:
-		country = person_obj['country']
 	for relationship in relation_query.all():
 		if relationship.matches(
 				populations = populations,
