@@ -70,7 +70,7 @@ def recommendation_detail(request,recommendation_id):
 		'age':person_obj['age'],
 		'gender':determine_gender(person_obj),
 		'recommendation':recommendation,
-		'notes':recommendation.screen.select_notes(
+		'notes':notes_for_screen(recommendation.screen,
 			age = person_obj['age'],
 			country = person_obj['country'],
 			populations = person_obj['populations'],
