@@ -6,5 +6,11 @@
 	{% if recommendation.frequency %}
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
+	{% for note in notes %}
+	<div id="note-{{note.id}}" class="note {{note.type}}">
+		{% if note.title %}<h2>{{note.title}}</h2>{% endif %}
+		{{note.text|safe}}
+	</div>
+	{% endfor %}
 </div>
 {%	endblock	%}

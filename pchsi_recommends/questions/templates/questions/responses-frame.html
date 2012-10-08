@@ -6,11 +6,6 @@
 <div class="recommendations">
 	{% for recommendation in recommendations %}
 		{% include "recommendations/list-item.html" with recommendation=recommendation %}
-		<div class="nav">
-		{% for note in recommendation.screen.select_notes %}
-			<a href="/recommendations/{{recommendation.id}}#note-{{note.id}}">{{note.title}}</a>
-		{% endfor %}
-		</div>
 	{%  empty  %}
 	<div class="alert">No Recommendations</div>
 	{% endfor %}
