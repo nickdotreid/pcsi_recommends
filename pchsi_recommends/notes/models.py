@@ -26,25 +26,25 @@ class Note(Sortable):
 	
 	screen = models.ForeignKey(Screen, blank=True, null=True,related_name='notes')
 	
-	def screen_notes(screen, age=False, populations=[], country=False):
-		notes = []
-		for note in screen.notes.all():
-			matches = False
-			for pop in note.populations.all():
-				if pop.matches(age=age, populations=populations, country=country):
-					matches = True
-			if matches or note.populations.count() < 1:
-				found = False
-				for num,n in enumerate(notes):
-					if n.subject == note.subject:
-						found = True
-						if note.weight < n.weight:
-							notes[num] = note
-				if not found:
-					notes.append(note)
-		return notes
-	
 	def __unicode__(self):
 		if self.screen:
 			return "(%s) %s: %s" % (self.screen.name, self.subject.title,self.title)
 		return "%s: %s" % (self.subject.title,self.title)
+		
+def notes_for_screen(screen, age=False, populations=[], country=False):
+	notes = []
+	for note in screen.notes.all():
+		matches = False
+		for pop in note.populations.all():
+			if pop.matches(age=age, populations=populations, country=country):
+				matches = True
+		if matches or note.populations.count() < 1:
+			found = False
+			for num,n in enumerate(notes):
+				if n.subject == note.subject:
+					found = True
+					if note.order < n.order:
+						notes[num] = note
+			if not found:
+				notes.append(note)
+	return notes

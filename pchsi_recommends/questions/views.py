@@ -16,6 +16,7 @@ from django.template.loader import render_to_string
 from forms import make_question_form
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.recommendations.models import Recommendation
+from pchsi_recommends.notes.models import notes_for_screen
 
 from logic import *
 
@@ -105,7 +106,10 @@ def fake_populations_to_recommendations(person_obj):
 	country = False
 	if 'country' in person_obj:
 		country = person_obj['country']
-	return populations_to_recomendations(populations,age,country)	
+	recommendations = populations_to_recomendations(populations,age,country)
+	for rec in recommendations:
+		rec.notes = notes_for_screen(rec.screen,populations=populations,age=age,country=country)
+	return recommendations	
 		
 def show_answered_questions(person_obj):
 	if 'answers' in person_obj:
