@@ -59,7 +59,6 @@ def recommendations_page(request):
 			_answers.append(answer)
 	if len(form.fields) < 1:
 		form = False
-	print _answers
 	return render_to_response('questions/responses.html',{
 		'answers': _answers,
 		'recommendations':fake_populations_to_recommendations(
@@ -84,9 +83,10 @@ def answer_questions(request,question_id=False):
 	form = QuestionForm(request.POST)
 	for key,field in form.fields.items():
 		valid = False
-		if key in request.POST:
+		if str(key) in request.POST:
 			try:
-				clean = field.clean(request.POST[key])
+				value = field.widget.value_from_datadict(request.POST,True,str(key))
+				clean = field.clean(value)
 				answers[key] = clean
 				valid = True
 			except ValidationError:
