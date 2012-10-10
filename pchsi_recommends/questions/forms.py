@@ -98,6 +98,24 @@ def get_static_question_object(key=""):
 			text = 'What is the gender of your sex partners?'
 		)
 	return False
+
+def get_static_questions_choices(key=""):
+	if key == 'birth_country':
+		from django_countries.countries import COUNTRIES
+		return [("","Select a Country")]+list(COUNTRIES)
+	if key == 'birth_sex':
+		return [
+			('male','Male'),
+			('female','Female'),
+		]
+	if key == 'current_sex' or key == 'sex_partners':
+		return [
+			('male','Male'),
+			('female','Female'),
+			('transmale','Transmale'),
+			('transfemale','Transfemale'),
+		]
+	return []
 	
 def get_question_field(key="",settings={}):
 	if key == 'birth_year':
@@ -112,12 +130,12 @@ def get_question_field(key="",settings={}):
 		)
 	if key == 'birth_country':
 		obj = get_static_question_object(key=key)
-		from django_countries.countries import COUNTRIES
+		choices = get_static_questions_choices(key=key)
 		return forms.ChoiceField(
 			widget = HighlightedSelect( 
-				highlighted = get_objects_where_matches(list(COUNTRIES),['US','HK'])),
+				highlighted = get_objects_where_matches(choices,['US','HK'])),
 			label = obj.text,
-			choices = [("","Select a Country")]+list(COUNTRIES),
+			choices = choices,
 			initial = "",
 			required = True,
 		)
@@ -126,10 +144,7 @@ def get_question_field(key="",settings={}):
 		return forms.ChoiceField(
 			widget = forms.RadioSelect,
 			label = obj.text,
-			choices = [
-				('male','Male'),
-				('female','Female'),
-			],
+			choices = get_static_questions_choices(key=key),
 			required = True
 		)
 	if key == 'current_sex':
@@ -137,12 +152,7 @@ def get_question_field(key="",settings={}):
 		return forms.ChoiceField(
 			widget = forms.RadioSelect,
 			label = obj.text,
-			choices = [
-				('male','Male'),
-				('female','Female'),
-				('transmale','Transmale'),
-				('transfemale','Transfemale'),
-			],
+			choices = get_static_questions_choices(key=key),
 			required = True
 		)
 	if key == 'sex_partners':
@@ -150,12 +160,7 @@ def get_question_field(key="",settings={}):
 		return forms.MultipleChoiceField(
 			widget = forms.CheckboxSelectMultiple,
 			label = obj.text,
-			choices = [
-				('male','Men'),
-				('female','Women'),
-				('transmale','Transmen'),
-				('transfemale','Transwomen'),
-			],
+			choices = get_static_questions_choices(key=key),
 			required = True,
 		)
 	return False

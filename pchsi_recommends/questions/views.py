@@ -15,7 +15,7 @@ import itertools
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
-from forms import get_questions_for, make_form_for, get_static_question_object
+from forms import get_questions_for, make_form_for, get_static_question_object, get_static_questions_choices
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.recommendations.models import Recommendation
 from pchsi_recommends.notes.models import notes_for_screen
@@ -150,6 +150,18 @@ def get_answered_question_object(key,answers):
 			answer = get_object_or_None(Answer, id=answer_id)
 			if answer:
 				_answers.append(answer.text)
+		answers = _answers
+	else:
+		choices = get_static_questions_choices(key)
+		_answers = []
+		for answer_short in answers:
+			found = False
+			for short, name in choices:
+				if short == answer_short:
+					_answers.append(name)
+					found = True
+			if not found:
+				_answers.append(answer_short)
 		answers = _answers
 	return {
 		'text':question.text,
