@@ -134,14 +134,23 @@ def all_questions(request):
 		
 def get_answered_question_object(key,answers):
 	question = None
+	from_model = False
 	if type(key) == int:
 		question = get_object_or_None(Question, id=key)
+		from_model = True
 	if type(key) == str:
 		question = get_static_question_object(key)
 	if not question:
 		return False
 	if type(answers) != list:
 		answers = [answers]
+	if from_model:
+		_answers = []
+		for answer_id in answers:
+			answer = get_object_or_None(Answer, id=answer_id)
+			if answer:
+				_answers.append(answer.text)
+		answers = _answers
 	return {
 		'text':question.text,
 		'values':answers,
