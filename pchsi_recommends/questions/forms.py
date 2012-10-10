@@ -37,7 +37,6 @@ def get_questions_for(answers={},settings={}):
 		age = age,
 		country = country,
 		):
-		print question.id
 		if question.id not in answers or not answers[question.id]:
 			questions.append((question.id,question_to_field(question,
 				populations=populations, 
@@ -76,31 +75,57 @@ def list_years(amount=10):
 		years.append((year,year))
 		year = year - 1
 	return years
+
+def get_static_question_object(key=""):
+	if key == 'birth_year':
+		return Question(
+			text = 'What year were you born?'
+		)
+	if key == 'birth_country':
+		return Question(
+			text = 'What country were you born in?'
+		)
+	if key == 'birth_sex':
+		return Question(
+			text = 'What sex were you assigned at birth?'
+		)
+	if key == 'current_sex':
+		return Question(
+			text = 'What sex are you currently?'
+		)
+	if key == 'sex_partners':
+		return Question(
+			text = 'What is the gender of your sex partners?'
+		)
+	return False
 	
 def get_question_field(key="",settings={}):
 	if key == 'birth_year':
+		obj = get_static_question_object(key=key)
 		now = datetime.now()
 		return forms.IntegerField(
-			label = 'What year were you born?',
+			label = obj.text,
 			initial = "",
 			required = True,
 			max_value = now.year,
 			min_value = now.year - 120,
 		)
 	if key == 'birth_country':
+		obj = get_static_question_object(key=key)
 		from django_countries.countries import COUNTRIES
 		return forms.ChoiceField(
 			widget = HighlightedSelect( 
 				highlighted = get_objects_where_matches(list(COUNTRIES),['US','HK'])),
-			label = 'What country were you born in?',
+			label = obj.text,
 			choices = [("","Select a Country")]+list(COUNTRIES),
 			initial = "",
 			required = True,
 		)
 	if key == 'birth_sex':
+		obj = get_static_question_object(key=key)
 		return forms.ChoiceField(
 			widget = forms.RadioSelect,
-			label = 'What sex were you assigned at birth?',
+			label = obj.text,
 			choices = [
 				('male','Male'),
 				('female','Female'),
@@ -108,9 +133,10 @@ def get_question_field(key="",settings={}):
 			required = True
 		)
 	if key == 'current_sex':
+		obj = get_static_question_object(key=key)
 		return forms.ChoiceField(
 			widget = forms.RadioSelect,
-			label = 'What sex are you currently?',
+			label = obj.text,
 			choices = [
 				('male','Male'),
 				('female','Female'),
@@ -120,9 +146,10 @@ def get_question_field(key="",settings={}):
 			required = True
 		)
 	if key == 'sex_partners':
+		obj = get_static_question_object(key=key)
 		return forms.MultipleChoiceField(
 			widget = forms.CheckboxSelectMultiple,
-			label = 'What is the gender of your sex partners?',
+			label = obj.text,
 			choices = [
 				('male','Men'),
 				('female','Women'),

@@ -8,7 +8,7 @@
 	</div>
 	<div class="row-fluid">
 		<div class="span6">
-			{% for answer in answers %}			
+			{% for answer in answers %}
 				{% include "questions/answered.html" with answer=answer %}
 			{% endfor %}
 			{% if form %}

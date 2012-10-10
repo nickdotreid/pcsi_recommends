@@ -1,5 +1,6 @@
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404, redirect
+from annoying.functions import get_object_or_None
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
 from django.utils import simplejson as json
 from django.core.urlresolvers import reverse
@@ -14,7 +15,7 @@ import itertools
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
-from forms import get_questions_for, make_form_for
+from forms import get_questions_for, make_form_for, get_static_question_object
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.recommendations.models import Recommendation
 from pchsi_recommends.notes.models import notes_for_screen
@@ -22,6 +23,8 @@ from pchsi_recommends.notes.models import notes_for_screen
 from logic import *
 
 from pchsi_recommends.recommendations.views import populations_to_recomendations
+
+from django.forms.util import ErrorList
 	
 def initial_page(request):
 #	request.session.flush()
@@ -46,9 +49,19 @@ def recommendations_page(request):
 		"form_action":reverse(answer_questions)
 	})
 	form = QuestionForm()
+	for key,field in form.fields.items():
+		if key in answers and not answers[key]:
+			pass # this would be a good place to set an error message (this field is required, please give answer)
+	_answers = []
+	for key,items in answers.items():
+		if items:
+			answer = get_answered_question_object(key,items)
+			_answers.append(answer)
 	if len(form.fields) < 1:
 		form = False
+	print _answers
 	return render_to_response('questions/responses.html',{
+		'answers': _answers,
 		'recommendations':fake_populations_to_recommendations(
 			populations=get_populations(answers),
 			age = get_age(answers),
@@ -68,7 +81,6 @@ def answer_questions(request,question_id=False):
 	QuestionForm = make_form_for(questions,{
 		"form_action":reverse(answer_questions)
 	})
-	print request.POST
 	form = QuestionForm(request.POST)
 	for key,field in form.fields.items():
 		valid = False
@@ -119,6 +131,21 @@ def all_questions(request):
 		'recommendations':False,
 		'form':form,
 		},context_instance=RequestContext(request))
+		
+def get_answered_question_object(key,answers):
+	question = None
+	if type(key) == int:
+		question = get_object_or_None(Question, id=key)
+	if type(key) == str:
+		question = get_static_question_object(key)
+	if not question:
+		return False
+	if type(answers) != list:
+		answers = [answers]
+	return {
+		'text':question.text,
+		'values':answers,
+	}
 			
 def fake_populations_to_recommendations(populations=[], age=False, country=False):
 	recommendations = populations_to_recomendations(populations,age,country)
