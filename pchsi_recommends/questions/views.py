@@ -90,6 +90,11 @@ def answer_questions(request,question_id=False):
 				value = field.widget.value_from_datadict(request.POST,True,str(key))
 				clean = field.clean(value)
 				answers[key] = clean
+				if type(key) == int and type(clean) == list:
+					new_clean = []
+					for item in clean:
+						new_clean.append(int(item))
+					clean = new_clean
 				valid = True
 			except ValidationError:
 				valid = False
@@ -133,11 +138,21 @@ def all_questions(request):
 	QuestionForm = make_form_for(questions = questions, settings = {
 		"form_action":reverse(answer_questions)
 	})
-	form = QuestionForm(answers)
+	form = QuestionForm(format_answers(answers))
 	return render_to_response('questions/change.html',{
 		'recommendations':False,
 		'form':form,
 		},context_instance=RequestContext(request))
+
+def format_answers(answers):
+	for key in answers:
+		answer = answers[key]
+		if type(key) == int and type(answer) == list:
+			_answer = []
+			for item in answer:
+				_answer.append(int(item))
+			answers[key] = _answer
+	return answers
 		
 def get_answered_question_object(key,answers):
 	question = None
