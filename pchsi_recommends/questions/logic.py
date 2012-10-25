@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from annoying.functions import get_object_or_None
 
 from pchsi_recommends.recommendations.models import *
 from pchsi_recommends.questions.models import *
@@ -49,21 +50,23 @@ def get_populations(answers):
 		pop = determine_sexual_orientation(sex,answers['sex_partners'])
 		if pop:
 			populations.append(pop)
-	if 'populations' in answers:
-		populations = populations + get_if_population_from_(answers['populations'])
-	if 'questions' in answers:
-		for question_id in answers['questions']:
-			question = Question.objects.filter(id=question_id)[0]
-			if question:
-				answer_id_list = answers['questions'][question_id]
-				if type(answer_id_list) != type([]):
-					answer_id_list = [answer_id_list]
-				for answer_id in answer_id_list:
-					answer = question.answer_set.filter(id=answer_id)[0]
-					if answer:
-						for population in answer.populations.all():
-							if population not in populations and not population_is_sex(population):
-								populations.append(population)
+	for key in answers:
+		question = False
+		try:
+			question_id = int(key)
+			question = get_object_or_None(Question,id=question_id)
+		except ValueError:
+			pass
+		if question:
+			answer_id_list = answers[question_id]
+			if type(answer_id_list) != type([]):
+				answer_id_list = [answer_id_list]
+			for answer_id in answer_id_list:
+				answer = get_object_or_None(Answer,id=answer_id)
+				if answer:
+					for population in answer.populations.all():
+						if population not in populations and not population_is_sex(population):
+							populations.append(population)
 	return populations
 
 def get_population_sex_dict():
