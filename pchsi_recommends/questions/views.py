@@ -97,19 +97,27 @@ def answer_questions(request,question_id=False):
 	return redirect(reverse(recommendations_page))
 
 def recommendation_detail(request,recommendation_id):
-	if 'person_obj' not in request.session:
-		return redirect(reverse(initial_page))
-	person_obj = request.session['person_obj']
 	recommendation = get_object_or_404(Recommendation,pk=recommendation_id)
+	answers = {}
+	if 'answers' in request.session:
+		answers = request.session['answers']
+	populations = get_populations(answers)
+	age = get_age(answers)
+	country = get_country(answers)
+	# should bounce if recomendation is not for user??
 	return render_to_response('questions/recommendation-detail.html',{
-		'recommendations':fake_populations_to_recommendations(person_obj),
-		'age':person_obj['age'],
-		'gender':determine_gender(person_obj),
+		'recommendations':fake_populations_to_recommendations(
+			populations=populations,
+			age = age,
+			country = country,
+			),
+		'age':age,
+		'gender':get_gender(answers),
 		'recommendation':recommendation,
 		'notes':notes_for_screen(recommendation.screen,
-			age = person_obj['age'],
-			country = person_obj['country'],
-			populations = person_obj['populations'],
+			age = age,
+			country = country,
+			populations = populations,
 			),
 		},context_instance=RequestContext(request))
 		
