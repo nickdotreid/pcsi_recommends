@@ -76,7 +76,9 @@ def answer_questions(request,question_id=False):
 	if 'answers' not in request.session:
 		return redirect(reverse(initial_page))
 	answers = request.session['answers']
-	questions = get_questions_for(answers)
+	questions = get_questions_for(answers, settings={
+		'include_answered':True,
+	})
 	QuestionForm = make_form_for(questions,{
 		"form_action":reverse(answer_questions)
 	})
@@ -91,7 +93,7 @@ def answer_questions(request,question_id=False):
 				valid = True
 			except ValidationError:
 				valid = False
-		if not valid:
+		if not valid and key not in answers:
 			answers[key] = False
 	request.session['answers'] = answers
 	return redirect(reverse(recommendations_page))
