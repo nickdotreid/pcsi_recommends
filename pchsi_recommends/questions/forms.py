@@ -46,17 +46,6 @@ def get_questions_for(answers={},settings={}):
 
 def make_form_for(questions=[],settings={}):
 	return make_question_form_from_fields(questions,settings)
-	
-def get_questions_for_(populations=[], age=False, country=False):
-	questions = []
-	for question in Question.objects.all():
-		if relation_matches_population(question.populations,
-			populations = populations,
-			age = age,
-			country = country
-			):
-			questions.append(question)
-	return questions
 
 	
 def get_objects_where_matches(objects=[],match_values=[]):
