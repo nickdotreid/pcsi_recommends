@@ -122,19 +122,16 @@ def recommendation_detail(request,recommendation_id):
 		},context_instance=RequestContext(request))
 		
 def all_questions(request):
-	if 'person_obj' not in request.session:
-		return redirect(reverse(initial_page))
-	person_obj = request.session['person_obj']
-	QuestionForm = make_question_form(person_obj,{
-		'include_question_ids':person_obj['question_ids'],
-		'primary':True,
-		})
-	if request.method == 'POST':
-		form = QuestionForm(request.POST)
-		if form.is_valid():
-			request.session['person_obj'] = person_obj_from_(form.cleaned_data,person_obj)
-			return redirect(reverse(recommendations_page))
-	form = QuestionForm(person_obj['answers'])
+	answers = {}
+	if 'answers' in request.session:
+		answers = request.session['answers']
+	questions = get_questions_for(answers = answers, settings = {
+		'include_answered': True
+	})
+	QuestionForm = make_form_for(questions = questions, settings = {
+		"form_action":reverse(answer_questions)
+	})
+	form = QuestionForm(answers)
 	return render_to_response('questions/change.html',{
 		'recommendations':False,
 		'form':form,

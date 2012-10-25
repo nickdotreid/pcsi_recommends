@@ -14,15 +14,15 @@ from logic import *
 
 def get_questions_for(answers={},settings={}):
 	questions = []
-	if 'birth_year' not in answers or not answers['birth_year']:
+	if 'birth_year' not in answers or not answers['birth_year'] or 'include_answered' in settings:
 		questions.append(('birth_year',get_question_field('birth_year')))
-	if 'birth_country' not in answers or not answers['birth_country']:
+	if 'birth_country' not in answers or not answers['birth_country'] or 'include_answered' in settings:
 		questions.append(('birth_country',get_question_field('birth_country')))
-	if 'birth_sex' not in answers or not answers['birth_sex']:
+	if 'birth_sex' not in answers or not answers['birth_sex'] or 'include_answered' in settings:
 		questions.append(('birth_sex',get_question_field('birth_sex')))
-	if 'current_sex' not in answers or not answers['current_sex']:
+	if 'current_sex' not in answers or not answers['current_sex'] or 'include_answered' in settings:
 		questions.append(('current_sex',get_question_field('current_sex')))
-	if 'sex_partners' not in answers or not answers['sex_partners']:
+	if 'sex_partners' not in answers or not answers['sex_partners'] or 'include_answered' in settings:
 		questions.append(('sex_partners',get_question_field('sex_partners')))
 	
 	if 'primary' in settings:
@@ -37,15 +37,23 @@ def get_questions_for(answers={},settings={}):
 		age = age,
 		country = country,
 		):
-		if question.id not in answers or not answers[question.id]:
+		if question.id not in answers or not answers[question.id] or 'include_answered' in settings:
 			questions.append((question.id,question_to_field(question,
 				populations=populations, 
 				age=age, 
 				country=country)))
 	return questions
-
-def make_form_for(questions=[],settings={}):
-	return make_question_form_from_fields(questions,settings)
+	
+def get_questions_for_(populations=[], age=False, country=False):
+	questions = []
+	for question in Question.objects.all():
+		if relation_matches_population(question.populations,
+			populations = populations,
+			age = age,
+			country = country
+			):
+			questions.append(question)
+	return questions
 
 	
 def get_objects_where_matches(objects=[],match_values=[]):
@@ -187,6 +195,9 @@ def relation_matches_population(relation_query, populations=[], age=False, count
 				country = country):
 			return True
 	return False
+
+def make_form_for(questions=[],settings={}):
+	return make_question_form_from_fields(questions,settings)
 
 def make_question_form_from_fields(field_list,settings):
 	QuestionForm = type('QuestionForm',(forms.BaseForm,),{
