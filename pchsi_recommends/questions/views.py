@@ -15,7 +15,7 @@ import itertools
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
-from forms import get_questions_for, make_form_for, get_static_question_object, get_static_questions_choices
+from forms import get_questions_for, make_form_for, get_static_question_object, get_static_questions_choices, remove_unneeded_answers
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.recommendations.models import Recommendation
 from pchsi_recommends.notes.models import notes_for_screen
@@ -102,7 +102,7 @@ def answer_questions(request,question_id=False):
 				valid = False
 		if not valid and (value or (type(value) == list and len(value) < 1)):
 			answers[key] = False
-	request.session['answers'] = answers
+	request.session['answers'] = remove_unneeded_answers(answers)
 	return redirect(reverse(recommendations_page))
 
 def recommendation_detail(request,recommendation_id):

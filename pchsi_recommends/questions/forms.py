@@ -55,6 +55,31 @@ def get_questions_for_(populations=[], age=False, country=False):
 			):
 			questions.append(question)
 	return questions
+	
+def remove_unneeded_answers(answers):
+	to_remove = []
+
+	populations = get_populations(answers)
+	age = get_age(answers)
+	country = get_country(answers)
+
+	for key in answers:
+		question = False
+		try:
+			question_id = int(key)
+			question = get_object_or_None(Question,id=question_id)
+		except ValueError:
+			pass
+		if question:
+			if not relation_matches_population(question.populations,
+				populations = populations,
+				age = age,
+				country = country
+				):
+				to_remove.append(key)
+	for key in to_remove:
+		del answers[key]
+	return answers
 
 	
 def get_objects_where_matches(objects=[],match_values=[]):
