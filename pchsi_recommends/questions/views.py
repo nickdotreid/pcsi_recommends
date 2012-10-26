@@ -85,20 +85,22 @@ def answer_questions(request,question_id=False):
 	form = QuestionForm(request.POST)
 	for key,field in form.fields.items():
 		valid = False
-		if str(key) in request.POST:
+		value = field.widget.value_from_datadict(request.POST,True,str(key))
+		if value or (type(value) == list and len(value) < 1):
 			try:
-				value = field.widget.value_from_datadict(request.POST,True,str(key))
 				clean = field.clean(value)
-				answers[key] = clean
 				if type(key) == int and type(clean) == list:
 					new_clean = []
 					for item in clean:
 						new_clean.append(int(item))
 					clean = new_clean
+				if type(value) == list and len(value) < 1:
+					clean = [False]
+				answers[key] = clean
 				valid = True
 			except ValidationError:
 				valid = False
-		if not valid and key not in answers:
+		if not valid and (value or (type(value) == list and len(value) < 1)):
 			answers[key] = False
 	request.session['answers'] = answers
 	return redirect(reverse(recommendations_page))
