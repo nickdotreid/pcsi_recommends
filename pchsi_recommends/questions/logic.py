@@ -6,7 +6,15 @@ from pchsi_recommends.questions.models import *
 from pchsi_recommends.populations.models import Population
 
 def get_gender(answers):
-	return 'male'
+	if 'birth_sex' in answers and 'current_sex' in answers:
+		sex = determine_sex(answers['current_sex'],answers['birth_sex'])
+		if sex:
+			return sex
+	if 'current_sex' in answers:
+		sex = determine_sex(answers['current_sex'])
+		if sex:
+			return sex
+	return False
 
 def get_country(answers):
 	if 'country' in answers:
@@ -37,15 +45,7 @@ def get_if_population_from_(pdict):
 
 def get_populations(answers):
 	populations = []
-	sex = False
-	if 'birth_sex' in answers and 'current_sex' in answers:
-		sex = determine_sex(answers['current_sex'],answers['birth_sex'])
-		if sex:
-			populations.append(sex)
-	elif 'current_sex' in answers:
-		sex = determine_sex(answers['current_sex'])
-		if sex:
-			populations.append(sex)
+	sex = get_gender(answers)
 	if sex and 'sex_partners' in answers and answers['sex_partners']:
 		pop = determine_sexual_orientation(sex,answers['sex_partners'])
 		if pop:
