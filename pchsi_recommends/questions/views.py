@@ -73,6 +73,11 @@ def recommendations_page(request):
 def answer_questions(request,question_id=False):
 	if request.method != 'POST':
 		return redirect(reverse(recommendations_page))
+	fields = []
+	if 'field_list' in request.POST:
+		fields = request.POST['field_list'].split(',')
+	if len(fields) < 1:
+		return redirect(reverse(recommendations_page))
 	if 'answers' not in request.session:
 		return redirect(reverse(initial_page))
 	answers = request.session['answers']
@@ -84,24 +89,25 @@ def answer_questions(request,question_id=False):
 	})
 	form = QuestionForm(request.POST)
 	for key,field in form.fields.items():
-		valid = False
-		value = field.widget.value_from_datadict(request.POST,True,str(key))
-		if value or (type(value) == list and len(value) < 1):
-			try:
-				clean = field.clean(value)
-				if type(key) == int and type(clean) == list:
-					new_clean = []
-					for item in clean:
-						new_clean.append(int(item))
-					clean = new_clean
-				if type(value) == list and len(value) < 1:
-					clean = [False]
-				answers[key] = clean
-				valid = True
-			except ValidationError:
-				valid = False
-		if not valid and (value or (type(value) == list and len(value) < 1)):
-			answers[key] = False
+		if str(key) in fields:
+			valid = False
+			value = field.widget.value_from_datadict(request.POST,True,str(key))
+			if value or (type(value) == list and len(value) < 1):
+				try:
+					clean = field.clean(value)
+					if type(key) == int and type(clean) == list:
+						new_clean = []
+						for item in clean:
+							new_clean.append(int(item))
+						clean = new_clean
+					if type(value) == list and len(value) < 1:
+						clean = [False]
+					answers[key] = clean
+					valid = True
+				except ValidationError:
+					valid = False
+			if not valid:
+				answers[key] = False
 	request.session['answers'] = remove_unneeded_answers(answers)
 	return redirect(reverse(recommendations_page))
 
@@ -140,6 +146,11 @@ def all_questions(request):
 	QuestionForm = make_form_for(questions = questions, settings = {
 		"form_action":reverse(answer_questions)
 	})
+	# funky that I need to set the answers here too
+	field_list = []
+	for key,field in questions:
+		field_list.append(str(key))
+	answers['field_list'] = ','.join(field_list)
 	form = QuestionForm(format_answers(answers))
 	return render_to_response('questions/change.html',{
 		'recommendations':False,

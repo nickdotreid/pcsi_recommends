@@ -1,6 +1,5 @@
 from django import forms
 from highlightselectwidget import HighlightedSelect
-from checkboxesandhidden import CheckboxSelectMultipleWithHidden
 from pchsi_recommends.questions.models import *
 from django.utils.datastructures import SortedDict
 
@@ -181,7 +180,7 @@ def get_question_field(key="",settings={}):
 	if key == 'sex_partners':
 		obj = get_static_question_object(key=key)
 		return forms.MultipleChoiceField(
-			widget = CheckboxSelectMultipleWithHidden,
+			widget = forms.CheckboxSelectMultiple,
 			label = obj.text,
 			choices = get_static_questions_choices(key=key),
 			required = True,
@@ -204,7 +203,7 @@ def question_to_field(question, populations=[], age=False, country=False):
 				)
 	if question.multiple_choice:
 		field = forms.MultipleChoiceField(
-					widget = CheckboxSelectMultipleWithHidden,
+					widget = forms.CheckboxSelectMultiple,
 					label = question.text,
 					choices = answers,
 					required = False,
@@ -223,6 +222,13 @@ def relation_matches_population(relation_query, populations=[], age=False, count
 	return False
 
 def make_form_for(questions=[],settings={}):
+	fields = []
+	for key,field in questions:
+		fields.append(str(key))
+	questions.append(('field_list',	forms.CharField(
+					widget = forms.HiddenInput,
+					initial = ','.join(fields),
+				)))
 	return make_question_form_from_fields(questions,settings)
 
 def make_question_form_from_fields(field_list,settings):
