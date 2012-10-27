@@ -59,12 +59,19 @@ def recommendations_page(request):
 			_answers.append(answer)
 	if len(form.fields) < 1:
 		form = False
-	return render_to_response('questions/responses.html',{
-		'answers': _answers,
-		'recommendations':fake_populations_to_recommendations(
+	recommendations = fake_populations_to_recommendations(
 			populations=get_populations(answers),
 			age = get_age(answers),
-			country = get_country(answers)),
+			country = get_country(answers))
+	recommendation_ids = []
+	for rec in recommendations:
+		recommendation_ids.append(str(rec.id))
+	print_url = reverse(print_recommendations)
+	print_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
+	return render_to_response('questions/responses.html',{
+		'answers': _answers,
+		'recommendations':recommendations,
+		'print_url':print_url,
 		'form':form,
 		'age':get_age(answers),
 		'gender':get_gender(answers),
@@ -155,6 +162,18 @@ def all_questions(request):
 	return render_to_response('questions/change.html',{
 		'recommendations':False,
 		'form':form,
+		},context_instance=RequestContext(request))
+
+def print_recommendations(request):
+	recommendations = []
+	if 'recommendations' in request.REQUEST:
+		rec_ids = request.REQUEST['recommendations'].split(',')
+		for id in rec_ids:
+			recommendation = get_object_or_None(Recommendation,id=id)
+			if recommendation:
+				recommendations.append(recommendation)
+	return render_to_response('recommendations/print.html',{
+		'recommendations':recommendations,
 		},context_instance=RequestContext(request))
 
 def format_answers(answers):

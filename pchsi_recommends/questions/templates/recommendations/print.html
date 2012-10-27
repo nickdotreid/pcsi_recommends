@@ -1,0 +1,16 @@
+{% extends 'base/print.html' %}
+
+{% block content %}
+{% for recommendation in recommendations %}
+	<div class="recommendation">
+		<h2>{{recommendation.screen.name}}</h2>
+		{% if recommendation.not_recommended %}
+		<p>Not Recommended</p>
+		{% else %}
+		{% if recommendation.frequency %}
+		<p class="frequency">{{recommendation.frequency}}</p>
+		{% endif %}
+		{% endif %}
+	</div>
+{% endfor %}
+{% endblock %}
