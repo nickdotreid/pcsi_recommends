@@ -241,9 +241,9 @@ def sms_recommendations(request):
 	if request.method == 'POST':
 		form = smsForm(request.POST)
 		if form.is_valid() and 'phone_number' in form.cleaned_data:
-			# SEND SMS
-			form = smsForm()
-			message = "Your message has been sent"
+			if send_recommendation_sms(form.cleaned_data['phone_number'],recommendations):
+				form = smsForm()
+				message = "Your message has been sent"
 	if 'answers' not in request.session:
 		return redirect(reverse(initial_page))
 	answers = request.session['answers']
@@ -276,6 +276,22 @@ def send_recommendation_email(email,recommendations):
 		"recommendations": recommendations,
 		})
 	send_mail(subject, message, 'no-reply@justasksf.org', [email], fail_silently=False)
+	return True
+
+def send_recommendation_sms(number,recommendations):
+	from twilio.rest import TwilioRestClient
+	from django.conf import settings
+	
+	if not settings.TWILIO_ACCOUNT or not settings.TWILIO_TOKEN or not settings.SMS_FROM_NUMBER:
+		return False
+	account = settings.TWILIO_ACCOUNT
+	token = settings.TWILIO_TOKEN
+	client = TwilioRestClient(account, token)
+	message = render_to_string("recommendations/sms.html",{
+		"recommendations": recommendations,
+		})
+	message = client.sms.messages.create(to="+15104100020", from_=settings.SMS_FROM_NUMBER,
+	                                     body=message)
 	return True
 
 def format_answers(answers):

@@ -147,9 +147,10 @@ LOGGING = {
 
 TWILIO_ACCOUNT = False
 TWILIO_TOKEN = False
-if 'TWILIO_ACCOUNT' in os.environ and 'TWILIO_TOKEN' in os.environ:
+if 'TWILIO_ACCOUNT' in os.environ and 'TWILIO_TOKEN' in os.environ and 'SMS_FROM_NUMBER' in os.environ:
 	TWILIO_ACCOUNT = os.environ['TWILIO_ACCOUNT']
 	TWILIO_TOKEN = os.environ['TWILIO_TOKEN']
+	SMS_FROM_NUMBER = os.environ['SMS_FROM_NUMBER']
 
 if 'PRODUCTION' in os.environ:
 	from production import *
