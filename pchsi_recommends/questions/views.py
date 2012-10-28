@@ -68,7 +68,7 @@ def recommendations_page(request):
 		recommendation_ids.append(str(rec.id))
 	print_url = reverse(print_recommendations)
 	print_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
-	email_url = reverse(print_recommendations)
+	email_url = reverse(email_recommendations)
 	email_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
 	return render_to_response('questions/responses.html',{
 		'answers': _answers,
@@ -181,7 +181,7 @@ def print_recommendations(request):
 		'recommendations':recommendations,
 		},context_instance=RequestContext(request))
 		
-def email_recommentaions(request):
+def email_recommendations(request):
 	if request.method != 'POST' or 'email' not in request.POST:
 		return redirect(reverse(recommendations_page))
 	recommendations = get_recommendations_from_(request)
