@@ -199,6 +199,7 @@ def email_recommendations(request):
 			populations=get_populations(answers),
 			age = get_age(answers),
 			country = get_country(answers))
+	print recommendations
 	return render_to_response('questions/recommendations-email.html',{
 		'recommendations':recommendations,
 		'form':form,

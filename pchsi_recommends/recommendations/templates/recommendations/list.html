@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {%	block content	%}
-
 {% for recommendation in recommendations %}
 	{% include "recommendations/list-item.html" with recommendation=recommendation %}
 {%  empty  %}
