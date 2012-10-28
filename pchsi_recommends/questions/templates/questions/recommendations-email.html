@@ -1,0 +1,17 @@
+{% extends 'recommendations/detail.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+	<div class="row-fluid">
+		<div class="span6">
+			{{ block.super }}
+		</div>
+		<div class="span6">
+			{% if message %}
+			<div class="alert alert-success">{{message}}</div>
+			{% endif %}
+			<h2>Email Recommendations</h2>
+			{% crispy form %}
+		</div>
+	</div>
+{% endblock %}

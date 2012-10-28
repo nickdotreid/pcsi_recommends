@@ -15,7 +15,7 @@ import itertools
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
-from forms import get_questions_for, make_form_for, get_static_question_object, get_static_questions_choices, remove_unneeded_answers
+from forms import get_questions_for, make_form_for, make_email_form, get_static_question_object, get_static_questions_choices, remove_unneeded_answers
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.recommendations.models import Recommendation
 from pchsi_recommends.notes.models import notes_for_screen
@@ -182,16 +182,37 @@ def print_recommendations(request):
 		},context_instance=RequestContext(request))
 		
 def email_recommendations(request):
-	if request.method != 'POST' or 'email' not in request.POST:
-		return redirect(reverse(recommendations_page))
+	message = False
+	emailForm = make_email_form()
+	form = emailForm()
 	recommendations = get_recommendations_from_(request)
+	if request.method == 'POST':
+		form = emailForm(request.POST)
+		if form.is_valid() and 'email' in form.cleaned_data:
+			if send_recommendation_email(form.cleaned_data['email'],recommendations):
+				form = emailForm()
+				message = "Your email has been sent"
+	if 'answers' not in request.session:
+		return redirect(reverse(initial_page))
+	answers = request.session['answers']
+	recommendations = fake_populations_to_recommendations(
+			populations=get_populations(answers),
+			age = get_age(answers),
+			country = get_country(answers))
+	return render_to_response('questions/recommendations-email.html',{
+		'recommendations':recommendations,
+		'form':form,
+		'message':message,
+		},context_instance=RequestContext(request))
+
+def send_recommendation_email(email,recommendations):
 	from django.core.mail import send_mail
 	subject = "Recommendations from JustAskSF" # lets not hard code this here
 	message = render_to_string("recommendations/email.html",{
 		"recommendations": recommendations,
 		})
-	send_mail(subject, message, 'no-reply@justasksf.org', [note.author.email], fail_silently=False)
-	return redirect(reverse(recommendations_page))
+	send_mail(subject, message, 'no-reply@justasksf.org', [email], fail_silently=False)
+	return True
 
 def format_answers(answers):
 	for key in answers:

@@ -251,3 +251,18 @@ def make_question_form_from_fields(field_list,settings):
 				self.helper.add_input(Submit('submit', 'Submit'))
 			super(QuestionForm, self).__init__(*args, **kwargs)
 	return QuestionForm
+	
+def make_email_form(settings={}):
+	class EmailForm(forms.Form):
+		def __init__(self, *args, **kwargs):
+			self.helper = FormHelper()
+			self.helper.form_method = 'post'
+			if 'form_action' in settings:
+				self.helper.form_action = settings['form_action']
+			if 'no_submit' not in settings:
+				self.helper.add_input(Submit('submit', 'Submit'))
+			super(EmailForm, self).__init__(*args, **kwargs)
+		email = forms.EmailField(
+			required = True
+		)
+	return EmailForm
