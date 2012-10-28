@@ -68,10 +68,13 @@ def recommendations_page(request):
 		recommendation_ids.append(str(rec.id))
 	print_url = reverse(print_recommendations)
 	print_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
+	email_url = reverse(print_recommendations)
+	email_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
 	return render_to_response('questions/responses.html',{
 		'answers': _answers,
 		'recommendations':recommendations,
 		'print_url':print_url,
+		'email_url':email_url,
 		'form':form,
 		'age':get_age(answers),
 		'gender':get_gender(answers),
@@ -163,18 +166,32 @@ def all_questions(request):
 		'recommendations':False,
 		'form':form,
 		},context_instance=RequestContext(request))
-
-def print_recommendations(request):
-	recommendations = []
+		
+def get_recommendations_from_(request):
 	if 'recommendations' in request.REQUEST:
 		rec_ids = request.REQUEST['recommendations'].split(',')
 		for id in rec_ids:
 			recommendation = get_object_or_None(Recommendation,id=id)
 			if recommendation:
-				recommendations.append(recommendation)
+				yield recommendation
+
+def print_recommendations(request):
+	recommendations = get_recommendations_from_(request)
 	return render_to_response('recommendations/print.html',{
 		'recommendations':recommendations,
 		},context_instance=RequestContext(request))
+		
+def email_recommentaions(request):
+	if request.method != 'POST' or 'email' not in request.POST:
+		return redirect(reverse(recommendations_page))
+	recommendations = get_recommendations_from_(request)
+	from django.core.mail import send_mail
+	subject = "Recommendations from JustAskSF" # lets not hard code this here
+	message = render_to_string("recommendations/email.html",{
+		"recommendations": recommendations,
+		})
+	send_mail(subject, message, 'no-reply@justasksf.org', [note.author.email], fail_silently=False)
+	return redirect(reverse(recommendations_page))
 
 def format_answers(answers):
 	for key in answers:

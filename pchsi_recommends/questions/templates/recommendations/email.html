@@ -1,0 +1,17 @@
+{% block content %}
+This document was generated from JustAskSF.org. The recommendations
+on this page are for preventative health screens and vaccinations,
+that were indicated by answers to questions on JustAskSF.org.
+
+{% for recommendation in recommendations %}
+
+{{recommendation.screen.name}}
+{% if recommendation.not_recommended %}
+Not Recommended
+{% else %}
+{% if recommendation.frequency %}
+{{recommendation.frequency}}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endblock %}
