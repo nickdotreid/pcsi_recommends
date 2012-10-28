@@ -3,6 +3,7 @@ from django.views.generic import ListView
 
 urlpatterns = patterns('pchsi_recommends.questions.views',
 	url(r'^$','initial_page'),
+	url(r'^recommendations/sms/$','sms_recommendations'),
 	url(r'^recommendations/print/$','print_recommendations'),
 	url(r'^recommendations/email/$','email_recommendations'),
 	url(r'^recommendations/(?P<recommendation_id>\d+)/$','recommendation_detail'),

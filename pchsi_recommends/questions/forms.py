@@ -1,4 +1,5 @@
 from django import forms
+from phonenumber_field.modelfields import PhoneNumberField
 from highlightselectwidget import HighlightedSelect
 from pchsi_recommends.questions.models import *
 from django.utils.datastructures import SortedDict
@@ -266,3 +267,16 @@ def make_email_form(settings={}):
 			required = True
 		)
 	return EmailForm
+	
+def make_sms_form(settings={}):
+	class SmsForm(forms.Form):
+		def __init__(self, *args, **kwargs):
+			self.helper = FormHelper()
+			self.helper.form_method = 'post'
+			if 'form_action' in settings:
+				self.helper.form_action = settings['form_action']
+			if 'no_submit' not in settings:
+				self.helper.add_input(Submit('submit', 'SMS'))
+			super(SmsForm, self).__init__(*args, **kwargs)
+		phone_number = PhoneNumberField()
+	return SmsForm

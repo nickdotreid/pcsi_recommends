@@ -144,6 +144,12 @@ LOGGING = {
     }
 }
 
+TWILIO_ACCOUNT = False
+TWILIO_TOKEN = False
+if 'TWILIO_ACCOUNT' in os.environ and 'TWILIO_TOKEN' in os.environ:
+	TWILIO_ACCOUNT = os.environ['TWILIO_ACCOUNT']
+	TWILIO_TOKEN = os.environ['TWILIO_TOKEN']
+
 if 'PRODUCTION' in os.environ:
 	from production import *
 else:

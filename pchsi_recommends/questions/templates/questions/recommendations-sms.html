@@ -1,0 +1,22 @@
+{% extends 'questions/page.html' %}
+{% load crispy_forms_tags %}
+
+{% block question-nav %}
+	<a href="/">Reset Form</a>
+	<a href="/recommendations/">Show Answers</a>
+{% endblock %}
+
+{% block question-content %}
+	<div class="row-fluid">
+		<div class="span6">
+			{% include "questions/responses-frame.html" %}
+		</div>
+		<div class="span6">
+			{% if message %}
+			<div class="alert alert-success">{{message}}</div>
+			{% endif %}
+			<h2>Text Recommendations</h2>
+			{% crispy form %}
+		</div>
+	</div>
+{% endblock %}

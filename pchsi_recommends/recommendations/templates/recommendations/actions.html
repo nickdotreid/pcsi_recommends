@@ -5,5 +5,7 @@
 	{% if email_url %}
 	<a class="btn button email" href="{{email_url}}"><i></i>Email<span class="screen-reader-text"> Recommendations</span></a>
 	{% endif %}
-	<a class="btn button text" href="#"><i></i>Text<span class="screen-reader-text"> Recommendations</span></a>
+	{% if sms_url %}
+	<a class="btn button sms" href="{{sms_url}}"><i></i>Text<span class="screen-reader-text"> Recommendations</span></a>
+	{% endif %}
 </div>
