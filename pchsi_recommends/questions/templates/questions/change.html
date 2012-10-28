@@ -1,7 +1,11 @@
-{% extends 'recommendations/list.html' %}
+{% extends 'questions/page.html' %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block question-nav %}
+	<a href="/">Reset Form</a>
+{% endblock %}
+
+{% block question-content %}
 	<div class="row-fluid">
 		<div class="span6">
 			<p>Reenter your information and we will recalculate your recommendations.</p>

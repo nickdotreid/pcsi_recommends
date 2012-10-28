@@ -130,12 +130,22 @@ def recommendation_detail(request,recommendation_id):
 	age = get_age(answers)
 	country = get_country(answers)
 	# should bounce if recomendation is not for user??
+	recommendations = fake_populations_to_recommendations(
+		populations=populations,
+		age = age,
+		country = country,
+		)
+	recommendation_ids = []
+	for rec in recommendations:
+		recommendation_ids.append(str(rec.id))
+	print_url = reverse(print_recommendations)
+	print_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
+	email_url = reverse(email_recommendations)
+	email_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
 	return render_to_response('questions/recommendation-detail.html',{
-		'recommendations':fake_populations_to_recommendations(
-			populations=populations,
-			age = age,
-			country = country,
-			),
+		'recommendations':recommendations,
+		'print_url':print_url,
+		'email_url':email_url,
 		'age':age,
 		'gender':get_gender(answers),
 		'recommendation':recommendation,
@@ -195,13 +205,21 @@ def email_recommendations(request):
 	if 'answers' not in request.session:
 		return redirect(reverse(initial_page))
 	answers = request.session['answers']
+	recommendation_ids = []
 	recommendations = fake_populations_to_recommendations(
 			populations=get_populations(answers),
 			age = get_age(answers),
 			country = get_country(answers))
-	print recommendations
+	for rec in recommendations:
+		recommendation_ids.append(str(rec.id))
+	print_url = reverse(print_recommendations)
+	print_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
+	email_url = reverse(email_recommendations)
+	email_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
 	return render_to_response('questions/recommendations-email.html',{
 		'recommendations':recommendations,
+		'print_url':print_url,
+		'email_url':email_url,
 		'form':form,
 		'message':message,
 		},context_instance=RequestContext(request))

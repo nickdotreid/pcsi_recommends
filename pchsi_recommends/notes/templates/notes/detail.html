@@ -1,4 +1,4 @@
 <div id="note-id" class="note {{note.type}}">
-	{% if note.title %}<h2>{{note.title}}</h2>{% endif %}
-	{{note.text}}
+	{% if note.title %}<h3>{{note.title}}</h3>{% endif %}
+	{{note.text|safe}}
 </div>

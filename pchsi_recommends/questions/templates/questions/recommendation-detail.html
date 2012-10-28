@@ -1,17 +1,24 @@
-{% extends 'recommendations/detail.html' %}
+{% extends 'questions/page.html' %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-	<div class="nav sticky">
-		<a href="/">Reset Form</a>
-		<a href="/recommendations">Show Answers</a>
-	</div>
+{% block question-nav %}
+	<a href="/">Reset Form</a>
+	<a href="/change">Show Answers</a>
+{% endblock %}
+
+{% block question-content %}
 	<div class="row-fluid">
 		<div class="span6">
 			{% include "questions/responses-frame.html" %}
 		</div>
 		<div class="span6">
-			{{ block.super }}
+			<h2 class="screen">{{recommendation.screen.name}}</h2>
+			{% if recommendation.frequency %}
+			<p class="frequency">{{recommendation.frequency}}</p>
+			{% endif %}
+			{% for note in notes %}
+				{% include 'notes/detail.html' %}
+			{% endfor %}
 		</div>
 	</div>
 {% endblock %}

@@ -2,15 +2,12 @@
 
 {%	block content	%}
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
-	<h1 class="screen">{{recommendation.screen.name}}</h1>
+	<h2 class="screen">{{recommendation.screen.name}}</h2>
 	{% if recommendation.frequency %}
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
 	{% for note in notes %}
-	<div id="note-{{note.id}}" class="note {{note.type}}">
-		{% if note.title %}<h2>{{note.title}}</h2>{% endif %}
-		{{note.text|safe}}
-	</div>
+	{% include 'notes/detial.html' %}
 	{% endfor %}
 </div>
 {%	endblock	%}
