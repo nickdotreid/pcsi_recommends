@@ -96,6 +96,7 @@ INSTALLED_APPS = (
 	'adminsortable',
 	'storages',
 	'crispy_forms',
+	'django.contrib.localflavor',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

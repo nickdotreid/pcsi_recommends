@@ -1,5 +1,5 @@
 from django import forms
-from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.localflavor.us.forms import USPhoneNumberField
 from highlightselectwidget import HighlightedSelect
 from pchsi_recommends.questions.models import *
 from django.utils.datastructures import SortedDict
@@ -278,5 +278,5 @@ def make_sms_form(settings={}):
 			if 'no_submit' not in settings:
 				self.helper.add_input(Submit('submit', 'SMS'))
 			super(SmsForm, self).__init__(*args, **kwargs)
-		phone_number = PhoneNumberField()
+		phone_number = USPhoneNumberField()
 	return SmsForm
