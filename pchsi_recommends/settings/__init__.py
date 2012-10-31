@@ -110,8 +110,8 @@ INSTALLED_APPS = (
 	'django_countries',
 	'south',
 	'pchsi_recommends.populations',
-	'pchsi_recommends.notes',
 	'pchsi_recommends.recommendations',
+	'pchsi_recommends.notes',
 	'pchsi_recommends.questions',
 	'pchsi_recommends.provider_form'
 )
