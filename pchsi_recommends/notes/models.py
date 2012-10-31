@@ -27,9 +27,13 @@ class Note(Sortable):
 	screen = models.ForeignKey(Screen, blank=True, null=True,related_name='notes')
 	
 	def __unicode__(self):
+		name = ""
 		if self.screen:
-			return "(%s) %s: %s" % (self.screen.name, self.subject.title,self.title)
-		return "%s: %s" % (self.subject.title,self.title)
+			name += "%s" % (self.screen.name)
+		if self.populations.count() > 0:
+			for pop in self.populations.all():
+				name += " (" + pop.__unicode__() + ")"
+		return name + "%s: %s" % (self.subject.title,self.title)
 		
 def notes_for_screen(screen, age=False, populations=[], country=False):
 	notes = []

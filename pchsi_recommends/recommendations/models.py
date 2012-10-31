@@ -42,6 +42,12 @@ class Recommendation(Sortable):
 	populations = generic.GenericRelation(Population_Relationship)
 
 	def __unicode__(self):
+		addition = ""
 		if self.not_recommended:
-			return self.screen.name + " NOT RECOMMENDED"
-		return self.screen.name + self.frequency
+			addition += " NOT RECOMMENDED"
+		if self.frequency and self.frequency != "":
+			addition += " " + self.frequency
+		if self.populations.count() > 0:
+			for pop in self.populations.all():
+				addition += " (" + pop.__unicode__() + ")"
+		return self.screen.name + addition

@@ -50,6 +50,27 @@ class Population_Relationship(models.Model):
 						return False
 				return True
 		return False
+		
+	def __unicode__(self):
+		name = ''
+		if self.populations.count() > 0:
+			if self.inclusive:
+				name += '&&'
+			shorts = []
+			for p in self.populations.all():
+				shorts.append(p.short)
+			name += ','.join(shorts)
+		if self.min_age or self.max_age:
+			name += '|| '
+			if self.min_age:
+				name += str(self.min_age)
+			name += '<'
+			if self.max_age:
+				name += str(self.max_age)
+			name += ' ||'
+		if self.country:
+			name += self.country.code
+		return name
 
 def age_in_range(age=False,min=False,max=False):
 	if not min and not max:
