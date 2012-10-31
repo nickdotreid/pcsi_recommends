@@ -18,3 +18,39 @@
 		}
 	}
 }
+
+.recommendations-actions{
+	border-top:1px solid @gray;
+	border-bottom:1px solid @gray;
+	background-color:@grayLighter;
+	padding:@gridGutterWidth/4 @gridGutterWidth/2;
+	.btn{
+		border-radius:0px;
+		i{
+			display:block;
+			float:left;
+			width:13px;
+			height:13px;
+			margin:@gridGutterWidth/8;
+			margin-right:@gridGutterWidth/4;
+			background-image:url('../../bootstrap/img/glyphicons-halflings.png');
+			background-repeat:no-repeat;
+			background-position:0px 0px;
+		}
+	}
+	.btn.print{
+		i{
+			background-position:-97px -49px;
+		}
+	}
+	.btn.email{
+		i{
+			background-position:-169px -25px;
+		}
+	}
+	.btn.text{
+		i{
+			background-position:-97px -49px;
+		}
+	}
+}

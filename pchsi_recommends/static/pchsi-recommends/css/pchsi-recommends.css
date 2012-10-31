@@ -4953,6 +4953,35 @@ form .control-group {
   padding: 5px 10px;
   margin-bottom: 0px;
 }
+.recommendations-actions {
+  border-top: 1px solid #555555;
+  border-bottom: 1px solid #555555;
+  background-color: #eeeeee;
+  padding: 5px 10px;
+}
+.recommendations-actions .btn {
+  border-radius: 0px;
+}
+.recommendations-actions .btn i {
+  display: block;
+  float: left;
+  width: 13px;
+  height: 13px;
+  margin: 2.5px;
+  margin-right: 5px;
+  background-image: url('../../bootstrap/img/glyphicons-halflings.png');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+.recommendations-actions .btn.print i {
+  background-position: -97px -49px;
+}
+.recommendations-actions .btn.email i {
+  background-position: -169px -25px;
+}
+.recommendations-actions .btn.text i {
+  background-position: -97px -49px;
+}
 .logo {
   overflow: hidden;
   text-indent: -10000px;
