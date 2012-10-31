@@ -4992,23 +4992,24 @@ form .control-group {
 }
 .logo-row {
   display: block;
-  height: 200px;
+  height: 100px;
   clear: both;
 }
 .logo-row .logo {
   display: block;
   float: left;
-  height: 200px;
+  height: 100px;
   width: 50px;
   overflow: hidden;
+  margin-right: 10px;
 }
 .logo-row .healthysf-logo {
   background-image: url('../i/logo-healthy-sf.jpg');
   width: 120px;
 }
 .logo-row .sfdph-logo {
-  background-image: url('../i/sf_seal_bw_200.jpg');
-  width: 200px;
+  background-image: url('../i/logo-sfseal-100.jpg');
+  width: 104px;
 }
 .logo-row .cdcp-logo {
   display: none;
