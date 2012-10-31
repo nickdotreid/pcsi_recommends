@@ -49,9 +49,11 @@ def recommendations_page(request):
 		"form_action":reverse(answer_questions)
 	})
 	form = QuestionForm()
+	from django.forms.util import ErrorList
+	form._errors = {}
 	for key,field in form.fields.items():
 		if key in answers and not answers[key]:
-			pass # this would be a good place to set an error message (this field is required, please give answer)
+			form._errors[key] = ErrorList([u"This field is required"])
 	_answers = []
 	for key,items in answers.items():
 		if items:
