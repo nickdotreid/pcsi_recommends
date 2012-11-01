@@ -46,6 +46,8 @@ def get_if_population_from_(pdict):
 def get_populations(answers):
 	populations = []
 	sex = get_gender(answers)
+	if sex:
+		populations.append(sex)
 	if sex and 'sex_partners' in answers and answers['sex_partners']:
 		pop = determine_sexual_orientation(sex,answers['sex_partners'])
 		if pop:
