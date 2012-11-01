@@ -4850,6 +4850,12 @@ body {
 a {
   text-decoration: underline;
 }
+.plateau {
+  font-size: 1.4em;
+  line-height: 1.4em;
+  padding: 0px 20px;
+  border-bottom: #eeeeee 1px solid;
+}
 .screen-reader-text {
   display: block;
   position: absolute;
