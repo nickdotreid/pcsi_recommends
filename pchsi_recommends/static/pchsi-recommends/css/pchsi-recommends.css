@@ -4946,7 +4946,8 @@ form .control-group {
   margin: 5px 10px;
 }
 .recommendations .recommendation .screen,
-.recommendations .recommendation .frequency {
+.recommendations .recommendation .frequency,
+.recommendations .recommendation .not-recommended {
   margin: 0px 10px;
 }
 .recommendations .recommendation .nav {

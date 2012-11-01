@@ -1,7 +1,7 @@
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
 	<h3 class="screen">{{recommendation.screen.name}}</h3>
 	{% if recommendation.not_recommended %}
-	<p>Not Recommended</p>
+	<p class="not-recommended">Not Recommended</p>
 	{% else %}
 	{% if recommendation.frequency %}
 	<p class="frequency">{{recommendation.frequency}}</p>
