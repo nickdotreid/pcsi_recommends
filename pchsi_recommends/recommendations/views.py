@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django import forms
 from django.template import RequestContext
 
+from pchsi_recommends.notes.models import notes_for_screen
 from pchsi_recommends.populations.models import *
 from pchsi_recommends.recommendations.models import *
 
@@ -20,7 +21,7 @@ def screen_detail(request,screen_id):
 			'application/json')
 	return render_to_response('screens/detail.html',{
 		'screen':screen,
-		'notes':screen.notes.all(),
+		'notes':notes_for_screen(screen),
 		'recommendations':screen.recommendation_set.all(),
 		},context_instance=RequestContext(request))
 

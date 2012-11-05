@@ -8,15 +8,14 @@
 			{% for note in notes %}
 			<div id="note-id" class="note {{note.type}}">
 				{% if note.title %}<h2>{{note.title}}</h2>{% endif %}
-				{{note.text}}
+				{{note.text|safe}}
 			</div>
 			{% endfor %}
 		</div>
 		<div class="span6">
-		<h2>Recommendation for Population</h2>
+		<h2>Recommendations</h2>
 		{% for recommendation in recommendations %}
-			<p>{{recommendation.frequency}}</p>
-			<!-- List population relationships -->
+		{% include 'recommendations/list-item-detailed.html' with recommendation=recommendation %}
 		{% endfor %}
 		</div>
 	</div>

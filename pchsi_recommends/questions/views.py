@@ -158,14 +158,6 @@ def recommendation_detail(request,recommendation_id):
 		country = country,
 		)
 	recommendation_ids = []
-	for rec in recommendations:
-		recommendation_ids.append(str(rec.id))
-	print_url = reverse(print_recommendations)
-	print_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
-	email_url = reverse(email_recommendations)
-	email_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
-	sms_url = reverse(sms_recommendations)
-	sms_url += '?' + 'recommendations=' + ','.join(recommendation_ids)
 	return render_to_response('questions/recommendation-detail.html',response_dict(
 		base_dict = {
 		'notes':notes_for_screen(recommendation.screen,
