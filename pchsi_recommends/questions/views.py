@@ -165,6 +165,7 @@ def recommendation_detail(request,recommendation_id):
 			country = country,
 			populations = populations,
 			),
+		'recommendation':recommendation,
 		},
 		answers = answers,
 		recommendations = recommendations,
