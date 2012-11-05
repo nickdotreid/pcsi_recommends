@@ -1,4 +1,4 @@
-Based on answers in JustAskSF.org, the San Francisco Department of Public Health recommends:
+Based on your answers at JustAskSF.org, the San Francisco Department of Public Health recommends:
 {% for recommendation in recommendations %}
 {{recommendation.screen.name}}{% if recommendation.not_recommended %} - Not Recommended{% else %}{% if recommendation.frequency %} - {{recommendation.frequency}}{% endif %}{% endif %}
 {% endfor %}

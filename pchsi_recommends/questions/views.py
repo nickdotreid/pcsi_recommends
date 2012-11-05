@@ -273,15 +273,16 @@ def send_recommendation_sms(number,recommendations):
 	from twilio.rest import TwilioRestClient
 	from django.conf import settings
 	
-	if not settings.TWILIO_ACCOUNT or not settings.TWILIO_TOKEN or not settings.SMS_FROM_NUMBER:
-		return False
-	account = settings.TWILIO_ACCOUNT
-	token = settings.TWILIO_TOKEN
-	client = TwilioRestClient(account, token)
+	client = False
+	
+	if settings.TWILIO_ACCOUNT and settings.TWILIO_TOKEN and settings.SMS_FROM_NUMBER:
+		account = settings.TWILIO_ACCOUNT
+		token = settings.TWILIO_TOKEN
+		client = TwilioRestClient(account, token)
 	message = render_to_string("recommendations/sms.html",{
 		"recommendations": recommendations,
 		})
-	message_length = 150
+	message_length = 140
 	messages = []
 	m = []
 	for letter in message:
@@ -291,9 +292,15 @@ def send_recommendation_sms(number,recommendations):
 			m = []
 	if len(m) > 0:
 		messages.append("".join(m))
+	num = 0
 	for message in messages:
-		message = client.sms.messages.create(to=number, from_=settings.SMS_FROM_NUMBER,
-		                                     body=message)
+		num += 1
+		message_count = '(Message '+str(num)+' of '+str(len(messages))+')'
+		if client:
+			message = client.sms.messages.create(to=number, from_=settings.SMS_FROM_NUMBER,
+			                                     body=message + message_count)
+		else:
+			print message
 	return True
 
 def format_answers(answers):
