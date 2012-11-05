@@ -20,6 +20,7 @@ def screen_detail(request,screen_id):
 				}),
 			'application/json')
 	return render_to_response('screens/detail.html',{
+		'screens':Screen.objects.all(),
 		'screen':screen,
 		'notes':screen.notes.all(),
 		'recommendations':screen.recommendation_set.all().reverse(),

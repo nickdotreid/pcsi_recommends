@@ -3,6 +3,15 @@
 {%	block content	%}
 <div class="screen screen-detail">
 	<div class="row-fluid">
+		<div class="span2">
+			{% for screen in screens %}
+				<div class="screen">
+					<a href="/screens/{{screen.id}}/">{{screen.name}}</a>
+				</div>
+			{%  empty  %}
+			<div class="alert">No Screens</div>
+			{% endfor %}
+		</div>
 		<div class="span6">
 			<h1 class="title">{{screen.name}}</h1>
 			{% for note in notes %}
@@ -19,7 +28,7 @@
 			</div>
 			{% endfor %}
 		</div>
-		<div class="span6">
+		<div class="span4">
 		<h2>Recommendations</h2>
 		<div class="recommendations recommendations-list list">
 		{% for recommendation in recommendations %}
