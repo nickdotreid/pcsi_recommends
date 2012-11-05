@@ -1,4 +1,5 @@
 <div class="population-relationships list-item">
+	{% if population_relationship.populations.count > 0 or population_relationship.inclusive %}
 	<div class="populations">
 		{% for population in population_relationship.populations.all %}
 		{% if forloop.last and forloop.counter > 1 %}
@@ -15,6 +16,7 @@
 		{% endif %}
 		{% endfor %}
 	</div>
+	{% endif %}
 	{% if population_rel.min_age or population_rel.max_age %}
 	<div class="age">
 		{% if population_rel.min_age and population_rel.max_age %}
@@ -24,6 +26,25 @@
 		{% elif population_rel.min_age %}
 		<p>Older than {{population_rel.min_age}}.</p>
 		{% endif %}
+	</div>
+	{% endif %}
+	{% if population_relationship.regions.count > 0 %}
+	<div class="regions">
+		{% for region_collection in population_relationship.regions.all %}
+		<div class="region-collection">
+			{% if region_collection.exclude %}Not in{% endif %}
+			{% for region in region_collection.regions.all %}
+			{% if forloop.last and forloop.counter > 1 %}
+			{% if population_relationship.inclusive %}
+			or
+			{% else %}
+			and
+			{% endif %}
+			{% endif %}
+			<span class="region">{%if region.name %}{{region.name}}{% else %}{{region.country}}{% endif %}{% if not forloop.last and forloop.counter > 1 %},&nbsp;{% endif %}</span>
+			{% endfor %}
+		</div>
+		{% endfor %}
 	</div>
 	{% endif %}
 </div>

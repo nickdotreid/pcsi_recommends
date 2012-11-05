@@ -58,8 +58,12 @@ class Population_Relationship(models.Model):
 	""" Relation model from populations to other types """
 	inclusive = models.BooleanField(default=False)
 	populations = models.ManyToManyField(Population,blank=True)
+	
 	min_age = models.IntegerField(blank=True, null=True)
 	max_age = models.IntegerField(blank=True, null=True)
+	
+	min_year = models.IntegerField(blank=True, null=True)
+	max_year = models.IntegerField(blank=True, null=True)	
 	
 	regions = models.ManyToManyField(RegionCollection, blank=True, null=True)
 
