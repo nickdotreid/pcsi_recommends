@@ -281,8 +281,19 @@ def send_recommendation_sms(number,recommendations):
 	message = render_to_string("recommendations/sms.html",{
 		"recommendations": recommendations,
 		})
-	message = client.sms.messages.create(to="+15104100020", from_=settings.SMS_FROM_NUMBER,
-	                                     body=message)
+	message_length = 150
+	messages = []
+	m = []
+	for letter in message:
+		m.append(letter)
+		if len(m) >= message_length:
+			messages.append("".join(m))
+			m = []
+	if len(m) > 0:
+		messages.append("".join(m))
+	for message in messages:
+		message = client.sms.messages.create(to=number, from_=settings.SMS_FROM_NUMBER,
+		                                     body=message)
 	return True
 
 def format_answers(answers):
