@@ -21,8 +21,8 @@ def screen_detail(request,screen_id):
 			'application/json')
 	return render_to_response('screens/detail.html',{
 		'screen':screen,
-		'notes':notes_for_screen(screen),
-		'recommendations':screen.recommendation_set.all(),
+		'notes':screen.notes.all(),
+		'recommendations':screen.recommendation_set.all().reverse(),
 		},context_instance=RequestContext(request))
 
 def recommendation_detail(request,recommendation_id):

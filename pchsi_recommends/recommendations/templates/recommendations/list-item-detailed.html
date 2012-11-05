@@ -1,21 +1,6 @@
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
-	{% for population_rel in recommendation.populations.all %}
-	<div class="population">
-		{% for population in population_rel.populations.all %}
-		<span class="pop {{population.short}}">{{population.name}}</span>
-		{% endfor %}
-	</div>
-	{% if population_rel.min_age or population_rel.max_age %}
-	<div class="age">
-		{% if population_rel.min_age and population_rel.max_age %}
-		<p>Between {{population_rel.min_age}} and {{population_rel.max_age}}.</p>
-		{% elif population_rel.max_age %}
-		<p>Younger than {{population_rel.max_age}}.</p>
-		{% elif population_rel.min_age %}
-		<p>Older than {{population_rel.min_age}}.</p>
-		{% endif %}
-	</div>
-	{% endif %}
+	{% for pop_rel in recommendation.populations.all %}
+	{% include 'population_relationships/list-item.html' with population_relationship=pop_rel %}
 	{% endfor %}
 	{% if recommendation.not_recommended %}
 	<p class="not-recommended">Not Recommended</p>
@@ -24,7 +9,4 @@
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
 	{% endif %}
-	<div class="nav">
-		<a href="#">View this recommendation</a>
-	</div>
 </div>

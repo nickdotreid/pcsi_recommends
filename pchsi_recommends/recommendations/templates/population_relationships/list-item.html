@@ -1,0 +1,29 @@
+<div class="population-relationships list-item">
+	<div class="populations">
+		{% for population in population_relationship.populations.all %}
+		{% if forloop.last and forloop.counter > 1 %}
+		{% if population_relationship.inclusive %}
+		or
+		{% else %}
+		and
+		{% endif %}
+		{% endif %}
+		<span class="pop {{population.short}}">{{population.name}}{% if not forloop.last and forloop.counter > 1 %},&nbsp;{% endif %}</span>
+		{% empty %}
+		{% if population_relationship.inclusive %}
+		<span class="pop everyone">Everyone</span>
+		{% endif %}
+		{% endfor %}
+	</div>
+	{% if population_rel.min_age or population_rel.max_age %}
+	<div class="age">
+		{% if population_rel.min_age and population_rel.max_age %}
+		<p>Between {{population_rel.min_age}} and {{population_rel.max_age}}.</p>
+		{% elif population_rel.max_age %}
+		<p>Younger than {{population_rel.max_age}}.</p>
+		{% elif population_rel.min_age %}
+		<p>Older than {{population_rel.min_age}}.</p>
+		{% endif %}
+	</div>
+	{% endif %}
+</div>
