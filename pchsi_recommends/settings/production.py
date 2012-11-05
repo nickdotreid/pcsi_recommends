@@ -16,6 +16,9 @@ if False not in ( 'STATIC_URL', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'A
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+if 'HIGHLIGHTED_COUNTRIES' in os.environ:
+	HIGHLIGHTED_COUNTRIES = os.environ['HIGHLIGHTED_COUNTRIES'].split(',')
+
 if 'SENDGRID_USERNAME' in os.environ and 'SENDGRID_PASSWORD' in os.environ:
 	EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']
 	EMAIL_HOST= 'smtp.sendgrid.net'

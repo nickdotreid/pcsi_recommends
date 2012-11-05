@@ -154,9 +154,16 @@ def get_question_field(key="",settings={}):
 	if key == 'birth_country':
 		obj = get_static_question_object(key=key)
 		choices = get_static_questions_choices(key=key)
+		from django.conf import settings as django_settings
+		preset_choices = []
+		try:
+			if django_settings.HIGHLIGHTED_COUNTRIES:
+				preset_choices = django_settings.HIGHLIGHTED_COUNTRIES
+		except:
+			pass
 		return forms.ChoiceField(
 			widget = HighlightedSelect( 
-				highlighted = get_objects_where_matches(choices,['US','HK'])),
+				highlighted = get_objects_where_matches(choices,preset_choices)),
 			label = obj.text,
 			choices = choices,
 			initial = "",

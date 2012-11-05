@@ -9,4 +9,6 @@ DATABASES = {'default': dj_database_url.config(default='sqlite:////' + os.getcwd
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
+HIGHLIGHTED_COUNTRIES = ['US','HK']
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
