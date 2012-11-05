@@ -4953,7 +4953,8 @@ form .control-group {
 }
 .recommendations .recommendation .screen,
 .recommendations .recommendation .frequency,
-.recommendations .recommendation .not-recommended {
+.recommendations .recommendation .not-recommended,
+.recommendations .recommendation .population-relationships {
   margin: 0px 10px;
 }
 .recommendations .recommendation .nav {
@@ -4986,6 +4987,13 @@ form .control-group {
 }
 .recommendations-actions .btn.text i {
   background-position: -97px -49px;
+}
+.note {
+  display: block;
+  margin-top: 20px;
+}
+.note .population-relationships {
+  background-color: #eeeeee;
 }
 .logo {
   overflow: hidden;

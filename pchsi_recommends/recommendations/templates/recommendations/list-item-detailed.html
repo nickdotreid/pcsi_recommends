@@ -1,7 +1,10 @@
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
+	<div class="population-relationships population-relationships-list list">
 	{% for pop_rel in recommendation.populations.all %}
 	{% include 'population_relationships/list-item.html' with population_relationship=pop_rel %}
 	{% endfor %}
+	</div>
+	<h3 class="screen">{{recommendation.screen.name}}</h3>
 	{% if recommendation.not_recommended %}
 	<p class="not-recommended">Not Recommended</p>
 	{% else %}
