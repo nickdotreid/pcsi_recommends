@@ -4876,6 +4876,9 @@ a {
   width: 200px;
   height: 195px;
 }
+.nav-right {
+  text-align: right;
+}
 .content {
   margin: 0px 49px;
 }
@@ -4918,12 +4921,6 @@ a {
 }
 .bottom.container .content {
   padding: 14px 0px;
-  border-top: #f5f5f5 2px solid;
-}
-.bottom .dph-logo {
-  float: left;
-  margin: 0px;
-  margin-right: 7px;
 }
 form .control-label {
   font-size: 1.2em;
@@ -5005,7 +5002,7 @@ form .control-group {
 }
 .logo-row {
   display: block;
-  height: 100px;
+  height: 200px;
   clear: both;
 }
 .logo-row .logo {
@@ -5016,22 +5013,30 @@ form .control-group {
   overflow: hidden;
   margin-right: 10px;
 }
+.logo-row .sections {
+  display: block;
+  float: left;
+}
+.logo-row .logo {
+  margin-top: 80px;
+}
+.logo-row .sections {
+  margin-top: 120px;
+}
 .logo-row .healthysf-logo {
   background-image: url('../i/logo-healthy-sf.jpg');
   width: 120px;
 }
 .logo-row .sfdph-logo {
-  background-image: url('../i/logo-sfseal-100.jpg');
-  width: 104px;
+  background-image: url('../i/logo-sfseal-200.jpg');
+  width: 200px;
+  height: 200px;
+  margin-top: 0px;
 }
-.logo-row .cdcp-logo {
-  display: none;
+.sections-list {
+  margin: 0px;
+  padding: 0px;
 }
-.logo-row .sfcc-logo {
-  background-image: url('../i/logo-sfcityclinic.jpg');
-  width: 250px;
-}
-.logo-row .sfhiv-logo {
-  background-image: url('../i/logo-sfhiv.jpg');
-  width: 150px;
+.sections-list li {
+  list-style-type: none;
 }
