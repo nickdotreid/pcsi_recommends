@@ -1,5 +1,6 @@
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
+from annoying.functions import get_object_or_None
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -20,9 +21,6 @@ def home_page(request):
 def make_population_form():
 	from django_countries.countries import COUNTRIES
 	
-	populations = []
-	for population in Population.objects.all():
-		populations.append((population.id,population.name))
 	fields = {}
 	fields['age'] = forms.IntegerField(
 		required = False,
@@ -34,12 +32,17 @@ def make_population_form():
 		choices = [("","Select a Country")] + list(COUNTRIES),
 		initial = "",
 	)
-	fields['populations'] = forms.MultipleChoiceField(
-		required = False,
-		label = 'Select Populations',
-		widget = forms.CheckboxSelectMultiple,
-		choices = populations
-		)
+	for catagory in PopulationCatagory.objects.all():
+		populations = []
+		if catagory.population_set.count() > 0:
+			for population in catagory.population_set.all():
+				populations.append((population.id,population.name))
+			fields[catagory.short] = forms.MultipleChoiceField(
+				required = False,
+				label = 'Select ' + catagory.name,
+				widget = forms.CheckboxSelectMultiple,
+				choices = populations
+				)
 	return type('PopulationForm',(forms.BaseForm,),{'base_fields':fields})
 	
 def population_test_form(request):
@@ -49,10 +52,12 @@ def population_test_form(request):
 		if form.is_valid():
 			answers = form.cleaned_data
 			populations = []
-			for pop_id in answers['populations']:
-				population = Population.objects.filter(id = pop_id)[0]
-				if population:
-					populations.append(population)
+			for catagory in PopulationCatagory.objects.all():
+				if answers[catagory.short]:
+					for pop_id in answers[catagory.short]:
+						population = get_object_or_None(Population,pk=pop_id)
+						if population:
+							populations.append(population)
 			age = False
 			if answers['age']:
 				age = answers['age']
