@@ -2,9 +2,14 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
+from adminsortable.models import Sortable
+
 from django_countries import CountryField
 
-class PopulationCatagory(models.Model):
+class PopulationCatagory(Sortable):
+	class Meta(Sortable.Meta):
+		pass
+	
 	short = models.CharField(max_length=25)
 	name = models.CharField(max_length=120)
 	
