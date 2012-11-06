@@ -4,11 +4,20 @@ from django.contrib.contenttypes import generic
 
 from django_countries import CountryField
 
+class PopulationCatagory(models.Model):
+	short = models.CharField(max_length=25)
+	name = models.CharField(max_length=120)
+	
+	def __unicode__(self):
+		return self.name
+
 class Population(models.Model):
 	""" Population model used to describe groups of people """
 	
 	short = models.CharField(max_length=25)
 	name = models.CharField(max_length=120)
+	
+	category = models.ForeignKey(PopulationCatagory, null=True, blank=True)
 
 	class Meta:
 		ordering = ['short']
