@@ -12,6 +12,14 @@
 			<div class="alert">No Screens</div>
 			{% endfor %}
 		</div>
+		<div class="span4">
+		<h2>Recommendations</h2>
+		<div class="recommendations recommendations-list list">
+		{% for recommendation in recommendations %}
+		{% include 'recommendations/list-item-detailed.html' with recommendation=recommendation %}
+		{% endfor %}
+		</div>
+		</div>
 		<div class="span6">
 			<h1 class="title">{{screen.name}}</h1>
 			{% for note in notes %}
@@ -27,14 +35,6 @@
 				{{note.text|safe}}
 			</div>
 			{% endfor %}
-		</div>
-		<div class="span4">
-		<h2>Recommendations</h2>
-		<div class="recommendations recommendations-list list">
-		{% for recommendation in recommendations %}
-		{% include 'recommendations/list-item-detailed.html' with recommendation=recommendation %}
-		{% endfor %}
-		</div>
 		</div>
 	</div>
 </div>
