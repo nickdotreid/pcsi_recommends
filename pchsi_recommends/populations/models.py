@@ -8,6 +8,8 @@ class PopulationCatagory(models.Model):
 	short = models.CharField(max_length=25)
 	name = models.CharField(max_length=120)
 	
+	multiple = models.BooleanField(default=True)
+	
 	def __unicode__(self):
 		return self.name
 

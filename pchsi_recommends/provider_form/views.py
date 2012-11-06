@@ -37,12 +37,20 @@ def make_population_form():
 		if catagory.population_set.count() > 0:
 			for population in catagory.population_set.all():
 				populations.append((population.id,population.name))
-			fields[catagory.short] = forms.MultipleChoiceField(
-				required = False,
-				label = 'Select ' + catagory.name,
-				widget = forms.CheckboxSelectMultiple,
-				choices = populations
-				)
+			if catagory.multiple:
+				fields[catagory.short] = forms.MultipleChoiceField(
+					required = False,
+					label = 'Select ' + catagory.name,
+					widget = forms.CheckboxSelectMultiple,
+					choices = populations
+					)
+			else:
+				fields[catagory.short] = forms.ChoiceField(
+					required = False,
+					label = 'Select ' + catagory.name,
+					widget = forms.RadioSelect,
+					choices = populations
+					)
 	return type('PopulationForm',(forms.BaseForm,),{'base_fields':fields})
 	
 def population_test_form(request):
