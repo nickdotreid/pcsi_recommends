@@ -2,9 +2,10 @@ from django.forms import Select
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.widgets import flatatt
+from django_select2.widgets import Select2Widget
 from itertools import chain
 
-class HighlightedSelect(Select):
+class HighlightedSelect(Select2Widget):
 	"""A widget that displays JSON Key Value Pairs
 	as a list of text input box pairs
 
