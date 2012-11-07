@@ -4866,18 +4866,18 @@ a {
   overflow: hidden;
   text-indent: -3000px;
 }
-.dph-logo {
+.address .line {
   display: block;
-  background-color: transparent;
-  background-image: url('../i/sf_seal_bw_200.jpg');
-  background-repeat: repeat-y;
-  background-position: center top;
-  position: relative;
-  width: 200px;
-  height: 195px;
+}
+.address .logo {
+  display: block;
+  float: left;
 }
 .nav-right {
   text-align: right;
+}
+.meta span {
+  font-style: italic;
 }
 .content {
   margin: 0px 49px;
@@ -5000,6 +5000,16 @@ form .control-group {
   background-repeat: no-repeat;
   background-position: center center;
 }
+.healthysf-logo {
+  background-image: url('../i/logo-healthy-sf.jpg');
+  width: 120px;
+}
+.sfdph-logo {
+  background-image: url('../i/logo-sfseal-200.jpg');
+  width: 200px;
+  height: 200px;
+  margin-top: 0px;
+}
 .logo-row {
   display: block;
   height: 200px;
@@ -5022,16 +5032,6 @@ form .control-group {
 }
 .logo-row .sections {
   margin-top: 120px;
-}
-.logo-row .healthysf-logo {
-  background-image: url('../i/logo-healthy-sf.jpg');
-  width: 120px;
-}
-.logo-row .sfdph-logo {
-  background-image: url('../i/logo-sfseal-200.jpg');
-  width: 200px;
-  height: 200px;
-  margin-top: 0px;
 }
 .sections-list {
   margin: 0px;

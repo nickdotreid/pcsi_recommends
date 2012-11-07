@@ -10,14 +10,10 @@
 
 {% block footer %}
 	<div class="printed meta">
-		Printed on : <span class="date"></span> from <span class="web-address">http://www.justasksf.org</span>
+		Printed on <span class="date">{% now "l, F jS Y" %}</span> from <span class="web-address">www.justasksf.org</span>
 	</div>
-	<div class="contact">
-		<span class="line">Contact Us:</span>
-		<span class="phone">(415) 555-5555</span>
-	</div>
-	<div class="address">
-		<i class="dph-logo logo"></i>
+	<div class="address address-logo">
+		<img class="sfdph-logo logo" src="{{STATIC_URL}}pchsi-recommends/i/logo-sfseal-100.jpg" />
 		<span class="line">San Francisco Department of Public Health</span>
 		<span class="line">Population Health and Prevention</span>
 		<span class="line">101 Grove Street</span>

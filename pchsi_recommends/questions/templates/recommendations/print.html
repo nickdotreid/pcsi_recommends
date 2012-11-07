@@ -1,7 +1,7 @@
 {% extends 'base/print.html' %}
 
 {% block content %}
-<p>According to the questions you answers at www.JustAskSF.org, the San Francisco Department of Public Health recommends.</p>
+<p>According to the questions you answers at www.JustAskSF.org, the San Francisco Department of Public Health recommends you get the following preventative tests and vaccinations.</p>
 {% for recommendation in recommendations %}
 	<div class="recommendation">
 		<h2>{{recommendation.screen.name}}</h2>

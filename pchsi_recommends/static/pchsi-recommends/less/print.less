@@ -1,3 +1,5 @@
+@import "variables";
+
 body{
 	background:#FFF;
 }
@@ -5,18 +7,36 @@ body{
 .container{
 	width:auto;
 	pargin:0.5cm;
+	.content{
+		margin:0px;
+	}
+}
+
+.recommendation{
+	padding:@spaceSize @spaceSize*2;
 }
 
 #footer{
 	color:#000;
-	.alert{
-		background-color:transparent;
-		color:#000;
-		border-radius:0px;
-		border-color:#000;
-		border-width:1px 0px 1px 0px;
-	}
-	.dph-logo,.nav{
-		display:none;	
+	font-size:1em;
+	margin-top:@spaceSize*2;
+	.address{
+		margin-top:@spaceSize;
+		&.address-logo{
+			position:relative;
+			padding-left:104px + @spaceSize;
+			padding-top:20px;
+			.sfdph-logo{
+				position:absolute;
+				top:0px;
+				left:0px;
+				background-image:url('../i/logo-sfseal-100.jpg');
+				width:104px;
+				height:104px;
+			}
+			img.sfdph-logo{
+				background-image:none;
+			}
+		}
 	}
 }
