@@ -1,11 +1,12 @@
 {% extends 'recommendations/list.html' %}
 {% load crispy_forms_tags %}
 
+{% block navigation %}
+<a href="/">Reset Form</a>
+<a href="/change">Change Answers</a>
+{% endblock %}
+
 {% block content %}
-	<div class="nav sticky">
-		<a href="/">Reset Form</a>
-		<a href="/change">Change Answers</a>
-	</div>
 	<div class="row-fluid">
 		<div class="span6">
 			{% for answer in answers %}

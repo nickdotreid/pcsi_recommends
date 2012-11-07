@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
-{%	block content	%}
-<div class="nav sticky">
+{% block navigation %}
 	{% block question-nav %}{% endblock %}
-</div>
+{% endblock %}
+
+{%	block content	%}
 {% block question-content %}
 {% endblock %}
 {% endblock  %}
