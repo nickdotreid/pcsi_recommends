@@ -14,6 +14,9 @@ class HighlightedSelect(Select):
 	                        key_attrs={'class':'large'}))
 
 	"""
+	
+	other_value = 'from select box'
+	hightlight_suffix = '_highlight'
 
 	def __init__(self, *args, **kwargs):
 		"""
@@ -27,16 +30,26 @@ class HighlightedSelect(Select):
 
 	def render(self, name, value, attrs=None, choices=()):
 		if value is None: value = ''
+		highlight_name = name+self.hightlight_suffix
 		highlight_vals = []
 		output = []
 		for val,label in self.highlighted:
 			highlight_vals.append(val)
-			output.append(self.render_radio_input(name+'_highlight',val,label,value,attrs))
+			output.append(self.render_radio_input(highlight_name,val,label,value,attrs))
 		for val,label in chain(self.choices,choices):
 			if val != '' and val not in highlight_vals and val == value:
 				highlight_vals.append(val)
-				output.append(self.render_radio_input(name+'_highlight',val,label,value,attrs))
-		final_attrs = self.build_attrs(attrs, name=name)		
+				output.append(self.render_radio_input(highlight_name,val,label,value,attrs))
+		final_attrs = self.build_attrs(attrs, name=name)
+		
+		other_attrs = attrs.copy()
+		for val,label in choices:
+			if val == value:
+				other_attrs['checked'] = 'checked'
+		other_label = 'Other'
+		if 'other_label' in attrs:
+			other_label = attrs['other_label']
+		output.append(self.render_radio_input(highlight_name,self.other_value,other_label,value,other_attrs))
 		output.append(u'<select%s>' % flatatt(final_attrs))
 		_choices = []
 		if len(choices) < 1:
@@ -61,6 +74,7 @@ class HighlightedSelect(Select):
 		"""
 		Look for _other in options 
 		"""
-		if name+'_highlight' in data:
-			return data.get(name+'_highlight', None)
+		highlight_name = name + self.hightlight_suffix
+		if highlight_name in data and data[highlight_name] != self.other_value:
+			return data.get(highlight_name, None)
 		return data.get(name, None)
