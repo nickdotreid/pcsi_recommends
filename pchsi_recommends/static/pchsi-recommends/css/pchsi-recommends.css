@@ -4850,6 +4850,9 @@ body {
 a {
   text-decoration: underline;
 }
+.line {
+  display: block;
+}
 .plateau {
   font-size: 1.4em;
   line-height: 1.4em;
@@ -4866,9 +4869,6 @@ a {
   overflow: hidden;
   text-indent: -3000px;
 }
-.address .line {
-  display: block;
-}
 .address .logo {
   display: block;
   float: left;
@@ -4881,6 +4881,11 @@ a {
 }
 .content {
   margin: 0px 49px;
+}
+.container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+  width: 900px;
 }
 #site-logo {
   background-color: transparent;
@@ -4902,15 +4907,57 @@ a {
   height: 100%;
   cursor: pointer;
 }
+.top.container {
+  height: 300px;
+}
 .top.container .navbar {
-  margin-top: 110px;
-  margin-bottom: 40px;
+  position: absolute;
+  z-index: 15;
+  top: 265px;
+  left: 0px;
+  width: 900px;
+  padding: 0px;
+  margin: 0px;
+}
+.top.container .navbar .navbar-inner {
+  background-color: transparent;
+  background-image: none;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px #000;
+  padding: 0px 80px;
+}
+.top.container .skyline {
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: -29px;
+  background-image: url('../i/skyline.png');
+  background-repeat: top left;
+  background-repeat: no-repeat;
+  width: 957px;
+  height: 220px;
 }
 .top.container #site-logo {
   position: absolute;
-  top: 20px;
-  left: 60px;
+  top: 145px;
+  left: 20px;
   z-index: 10;
+}
+.top.container .attribution {
+  position: absolute;
+  top: 0px;
+  left: 455px;
+  width: 450px;
+  margin: 10px 0px;
+  padding: 20px 0px 0px;
+}
+.top.container .attribution .logo {
+  position: absolute;
+  top: 0px;
+  left: 240px;
+}
+.top.container .attribution .line {
+  margin-right: 220px;
 }
 .bottom.container {
   padding: 7px 0px;

@@ -20,7 +20,14 @@
 <body>
 	<div id="header" class="top container">
 		{% block header %}
-		<div id="site-logo"><a href="/">Just Ask Dr.SF</a></div>
+		<div class="attribution dph">
+			<i class="logo sfdph-logo"></i>
+			<span class="line">City and Country of San Francisco</span>
+			<span class="line">Department of Public Health</span>
+			<span class="line">Population Health and Prevention</span>
+		</div>
+		<div class="skyline"></div>
+		<div id="site-logo"><a href="/">Just Ask SF</a></div>
 		<div class="navbar">
 			<div class="navbar-inner">
 				{% block navigation %}

@@ -20,14 +20,54 @@
 }
 
 .top.container{
+	height:300px;
 	.navbar{
-		margin-top:110px;
-		margin-bottom:40px;
+		position:absolute;
+		z-index:15;
+		top:265px;
+		left:0px;
+		width:900px;
+		padding:0px;
+		margin:0px;
+		.navbar-inner{
+			background-color:transparent;
+			background-image:none;
+			border-radius:0px;
+			box-shadow:0px 0px 0px #000;
+			padding:0px 80px;
+		}
+	}
+	.skyline{
+		display:block;
+		position:absolute;
+		top:60px;
+		left:-29px;
+		background-image:url('../i/skyline.png');
+		background-repeat:top left;
+		background-repeat:no-repeat;
+		width:957px;
+		height:220px;
 	}
 	#site-logo{
 		position:absolute;
-		top:20px;
-		left:60px;
+		top:145px;
+		left:20px;
 		z-index:10;
+	}
+	.attribution{
+		position:absolute;
+		top:0px;
+		left:455px;
+		width:450px;
+		margin:@spaceSize 0px;
+		padding:@spaceSize*2 0px 0px;
+		.logo{
+			position:absolute;
+			top:0px;
+			left:240px;
+		}
+		.line{
+			margin-right:220px;
+		}
 	}
 }
