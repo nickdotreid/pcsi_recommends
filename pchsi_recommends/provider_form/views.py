@@ -6,6 +6,8 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django.template import RequestContext
 
 from pchsi_recommends.populations.models import *
@@ -18,7 +20,7 @@ def home_page(request):
 		'screens':Screen.objects.all(),
 		},context_instance=RequestContext(request))
 
-def make_population_form():
+def make_population_form(settings={}):
 	from django_countries.countries import COUNTRIES
 	
 	fields = {}
@@ -51,7 +53,23 @@ def make_population_form():
 					widget = forms.RadioSelect,
 					choices = populations
 					)
-	return type('PopulationForm',(forms.BaseForm,),{'base_fields':fields})
+	PopulationForm = type('PopulationForm',(forms.BaseForm,),{'base_fields':fields})
+	class PopulationForm(PopulationForm):
+		def __init__(self, *args, **kwargs):
+			self.helper = FormHelper()
+			self.helper.form_method = 'post'
+			if 'form_id' in settings:
+				self.helper.form_id = settings['form_id']
+			if 'form_class' in settings:
+				self.helper.form_class = settings['form_class']
+			if 'form_action' in settings:
+				self.helper.form_action = settings['form_action']
+			if 'form_tag' in settings:
+				self.helper.form_tag = settings['form_tag']
+			if 'no_submit' not in settings:
+				self.helper.add_input(Submit('submit', 'Submit'))
+			super(PopulationForm, self).__init__(*args, **kwargs)
+	return PopulationForm
 	
 def population_test_form(request):
 	form = make_population_form()()
