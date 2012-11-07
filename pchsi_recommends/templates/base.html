@@ -19,70 +19,74 @@
 </head>
 <body>
 	<div id="header" class="top container">
-		{% block header %}
-		<div class="attribution dph">
-			<i class="logo sfdph-logo"></i>
-			<span class="line">City and Country of San Francisco</span>
-			<span class="line">Department of Public Health</span>
-			<span class="line">Population Health and Prevention</span>
-		</div>
-		<div class="skyline"></div>
-		<div id="site-logo"><a href="/">Just Ask SF</a></div>
-		<div class="navbar">
-			<div class="navbar-inner">
-				{% block navigation %}
-				
-				{% endblock %}
+		<div class="container-inner">
+			{% block header %}
+			<div class="attribution dph">
+				<i class="logo sfdph-logo"></i>
+				<span class="line">City and Country of San Francisco</span>
+				<span class="line">Department of Public Health</span>
+				<span class="line">Population Health and Prevention</span>
 			</div>
+			<div class="skyline"></div>
+			<div id="site-logo"><a href="/">Just Ask SF</a></div>
+			<div class="navbar">
+				<div class="navbar-inner">
+					{% block navigation %}
+				
+					{% endblock %}
+				</div>
+			</div>
+			{% endblock %}
 		</div>
-		{% endblock %}
 	</div>
 	<div class="container">
-		<div id="content" class="content">
+		<div id="content" class="content container-inner">
 			{% block content %}
 	
 			{% endblock %}
 		</div>
 	</div>
 	<div id="footer" class="container bottom">
-		{% block footer %}
-		<div class="footer-line"></div>
-		<div class="content">
-			<div class="logo-row">
-				<a href="http://www.healthysanfrancisco.org/" class="healthysf healthysf-logo logo">Healthy San Francisco</a>
-				<a href="http://www.sfdph.org" class="sfdph sfdph-logo logo">San Francisco Department of Public Health</a>
-				<ul class="sections sections-list">
-					<li class="section section-sfdph"><a href="http://www.sfdph.org" class="sfdph">San Francisco Department of Public Health</a></li>
-					<li class="section section-cdcp"><a href="http://www.sfcdcp.org" class="cdcp">San Francisco Communicable Disease Control and Prevention</a></li>
-					<li class="section section-sfcc"><a href="http://www.sfcityclinic.org/" class="sfcc">San Francisco City Clinic</a></li>
-					<li class="section section-sfhiv"><a href="http://www.sfhiv.org/" class="sfhiv">San Francisco HIV Prevention Section</a></li>
-				</ul>
-			</div>
-			<div class="row-fluid">
-				<div class="span4">
-					<div class="disclaimer address">
-					San Francisco Department of Public Health<br>
-					Population Health and Prevention<br>
-					101 Grove St<br>
-					San Francisco, CA 94102<br>
-					</div>
-				</div>
-				<div class="span4">
-					<div class="alert">
-						<p>Updated March 2012.</p>
-					</div>
-				</div>
-				<div class="span4">
-					<ul class="nav nav-right">
-						<li><a href="/"><i></i>Home</a></li>
-						<li><a href="/providers"><i></i>For Providers</a></li>
-						<li><a href="/developers"><i></i>For Developers</a></li>
-						<li><a href="/admin/"><i></i>Site Administration</a></li>
+		<div class="container-inner">
+			{% block footer %}
+			<div class="footer-line"></div>
+			<div class="content">
+				<div class="logo-row">
+					<a href="http://www.healthysanfrancisco.org/" class="healthysf healthysf-logo logo">Healthy San Francisco</a>
+					<a href="http://www.sfdph.org" class="sfdph sfdph-logo logo">San Francisco Department of Public Health</a>
+					<ul class="sections sections-list">
+						<li class="section section-sfdph"><a href="http://www.sfdph.org" class="sfdph">San Francisco Department of Public Health</a></li>
+						<li class="section section-cdcp"><a href="http://www.sfcdcp.org" class="cdcp">San Francisco Communicable Disease Control and Prevention</a></li>
+						<li class="section section-sfcc"><a href="http://www.sfcityclinic.org/" class="sfcc">San Francisco City Clinic</a></li>
+						<li class="section section-sfhiv"><a href="http://www.sfhiv.org/" class="sfhiv">San Francisco HIV Prevention Section</a></li>
 					</ul>
 				</div>
+				<div class="row-fluid">
+					<div class="span4">
+						<div class="disclaimer address">
+						San Francisco Department of Public Health<br>
+						Population Health and Prevention<br>
+						101 Grove St<br>
+						San Francisco, CA 94102<br>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="alert">
+							<p>Updated March 2012.</p>
+						</div>
+					</div>
+					<div class="span4">
+						<ul class="nav nav-right">
+							<li><a href="/"><i></i>Home</a></li>
+							<li><a href="/providers"><i></i>For Providers</a></li>
+							<li><a href="/developers"><i></i>For Developers</a></li>
+							<li><a href="/admin/"><i></i>Site Administration</a></li>
+						</ul>
+					</div>
+				</div>
 			</div>
+			{% endblock %}
 		</div>
-		{% endblock %}
 	</div>
 </body>
 </html>

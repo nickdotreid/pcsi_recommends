@@ -4887,6 +4887,17 @@ a {
 .navbar-fixed-bottom .container {
   width: 900px;
 }
+.container {
+  width: 940px;
+  background-image: url('../i/container-background-900.png');
+  background-color: transparent;
+  background-repeat: repeat-y;
+  background-position: top left;
+}
+.container .container-inner {
+  position: relative;
+  margin: 0px 30px;
+}
 #site-logo {
   background-color: transparent;
   background-image: url('../i/justask_logo.png');
@@ -4930,7 +4941,7 @@ a {
   display: block;
   position: absolute;
   top: 60px;
-  left: -29px;
+  left: -38px;
   background-image: url('../i/skyline.png');
   background-repeat: top left;
   background-repeat: no-repeat;
@@ -4946,10 +4957,10 @@ a {
 .top.container .attribution {
   position: absolute;
   top: 0px;
-  left: 455px;
+  left: 425px;
   width: 450px;
   margin: 10px 0px;
-  padding: 20px 0px 0px;
+  padding: 10px 0px 0px;
 }
 .top.container .attribution .logo {
   position: absolute;
@@ -4973,7 +4984,7 @@ a {
   display: block;
   position: absolute;
   top: 40px;
-  left: -29px;
+  left: -38px;
   z-index: 3;
   background-image: url('../i/footer-wrap.png');
   background-repeat: top left;
@@ -4988,7 +4999,7 @@ a {
   z-index: 5;
 }
 #footer .content {
-  padding-top: 200px;
+  padding-top: 220px;
 }
 form .control-label {
   font-size: 1.2em;
@@ -5104,7 +5115,7 @@ form .control-group {
   margin-top: 0px;
 }
 .logo-row .sections {
-  margin-top: 120px;
+  margin-top: 90px;
 }
 .sections-list {
   margin: 0px;
