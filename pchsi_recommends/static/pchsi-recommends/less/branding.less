@@ -6,21 +6,11 @@
 	background-repeat:no-repeat;
 	background-position:center center;
 }
-.healthysf-logo{
-	background-image:url('../i/logo-healthy-sf.jpg');
-	width:120px;
-}
-.sfdph-logo{
-	background-image:url('../i/logo-sfseal-200.jpg');
-	width:200px;
-	height:200px;
-	margin-top:0px;
-}
-
 .logo-row{
 	display:block;
 	height:200px;
 	clear:both;
+	margin:@spaceSize 0px;
 	.logo{
 		display:block;
 		float:left;
@@ -33,13 +23,30 @@
 		display:block;
 		float:left;
 	}
+}
+
+.healthysf-logo, .logo-row .healthysf-logo{
+	background-image:url('../i/logo-healthy-sf.jpg');
+	width:120px;
+}
+.sfdph-logo, .logo-row .sfdph-logo{
+	background-image:url('../i/logo-sfseal-200.jpg');
+	width:200px;
+	height:200px;
+}
+
+.logo-row{
 	.logo{
 		margin-top:80px;
+	}
+	.sfdph-logo{
+		margin-top:0px;
 	}
 	.sections{
 		margin-top:120px;
 	}
 }
+
 
 .sections-list{
 	margin:0px;

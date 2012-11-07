@@ -5000,20 +5000,11 @@ form .control-group {
   background-repeat: no-repeat;
   background-position: center center;
 }
-.healthysf-logo {
-  background-image: url('../i/logo-healthy-sf.jpg');
-  width: 120px;
-}
-.sfdph-logo {
-  background-image: url('../i/logo-sfseal-200.jpg');
-  width: 200px;
-  height: 200px;
-  margin-top: 0px;
-}
 .logo-row {
   display: block;
   height: 200px;
   clear: both;
+  margin: 10px 0px;
 }
 .logo-row .logo {
   display: block;
@@ -5027,8 +5018,22 @@ form .control-group {
   display: block;
   float: left;
 }
+.healthysf-logo,
+.logo-row .healthysf-logo {
+  background-image: url('../i/logo-healthy-sf.jpg');
+  width: 120px;
+}
+.sfdph-logo,
+.logo-row .sfdph-logo {
+  background-image: url('../i/logo-sfseal-200.jpg');
+  width: 200px;
+  height: 200px;
+}
 .logo-row .logo {
   margin-top: 80px;
+}
+.logo-row .sfdph-logo {
+  margin-top: 0px;
 }
 .logo-row .sections {
   margin-top: 120px;
