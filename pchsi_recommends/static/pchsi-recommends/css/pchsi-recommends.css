@@ -4969,6 +4969,27 @@ a {
 .bottom.container .content {
   padding: 14px 0px;
 }
+#footer .footer-line {
+  display: block;
+  position: absolute;
+  top: 40px;
+  left: -29px;
+  z-index: 3;
+  background-image: url('../i/footer-wrap.png');
+  background-repeat: top left;
+  background-repeat: no-repeat;
+  width: 957px;
+  height: 50px;
+}
+#footer .logo-row {
+  position: absolute;
+  top: 0px;
+  left: 40px;
+  z-index: 5;
+}
+#footer .content {
+  padding-top: 200px;
+}
 form .control-label {
   font-size: 1.2em;
 }
