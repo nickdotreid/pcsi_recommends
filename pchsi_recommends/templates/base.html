@@ -19,6 +19,7 @@
 </head>
 <body>
 	<div id="header" class="top container">
+		{% block header %}
 		<div id="site-logo"><a href="/">Just Ask Dr.SF</a></div>
 		<div class="navbar">
 			<div class="navbar-inner">
@@ -27,6 +28,7 @@
 				{% endblock %}
 			</div>
 		</div>
+		{% endblock %}
 	</div>
 	<div class="container">
 		<div id="content" class="content">
@@ -36,6 +38,7 @@
 		</div>
 	</div>
 	<div id="footer" class="container bottom">
+		{% block footer %}
 		<div class="content">
 			<div class="logo-row">
 				<a href="http://www.healthysanfrancisco.org/" class="healthysf healthysf-logo logo">Healthy San Francisco</a>
@@ -70,6 +73,7 @@
 				</div>
 			</div>
 		</div>
+		{% endblock %}
 	</div>
 </body>
 </html>
