@@ -131,12 +131,19 @@ def get_static_questions_choices(key=""):
 			('male','Male'),
 			('female','Female'),
 		]
-	if key == 'current_sex' or key == 'sex_partners':
+	if key == 'current_sex':
 		return [
 			('male','Male'),
 			('female','Female'),
-			('transmale','Transmale'),
-			('transfemale','Transfemale'),
+			('transmale','Trans Male'),
+			('transfemale','Trans Female'),
+		]
+	if key == 'sex_partners':
+		return [
+			('male','Men'),
+			('female','Women'),
+			('transmale','Trans Men'),
+			('transfemale','Trans Women'),
 		]
 	return []
 	
