@@ -113,8 +113,8 @@ INSTALLED_APPS = (
 	'pchsi_recommends.populations',
 	'pchsi_recommends.recommendations',
 	'pchsi_recommends.notes',
-	'pchsi_recommends.questions',
 	'pchsi_recommends.questions_ajax',
+	'pchsi_recommends.questions',
 	'pchsi_recommends.provider_form'
 )
 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block scripts %}
+{{block.super}}
+<script type="text/javascript" src="{{STATIC_URL}}lib/js/underscore.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}lib/js/backbone.js"></script>
+{% endblock %}
+
+{%	block content	%}
+<div class="row-fluid">
+	<div id="intro-column" class="column span6">
+		{% include 'questions/intro-text.html' %}
+	</div>
+	<div id="question-column" class="column span6">
+		<div class="alert alert-info">
+			<p>Get preventative health recommendations specifically for you by answering five quick questions.</p>
+		</div>
+		{% crispy form %}
+	</div>
+	<div id="recommendation-column" class="column span6">
+		
+	</div>
+	<div id="detail-column" class="column span6">
+		
+	</div>
+</div>
+{% endblock  %}
