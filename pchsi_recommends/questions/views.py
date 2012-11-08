@@ -78,7 +78,7 @@ def recommendations_page(request):
 	form._errors = {}
 	for key,field in form.fields.items():
 		if key in answers and not answers[key]:
-			form._errors[key] = ErrorList([u"This field is required"])
+			form._errors[key] = ErrorList([field.error_messages['required']])
 	_answers = []
 	for key,items in answers.items():
 		if items:

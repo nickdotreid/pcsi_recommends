@@ -146,6 +146,19 @@ def get_static_questions_choices(key=""):
 			('transfemale','Trans Women'),
 		]
 	return []
+
+def get_static_questions_errors(key=""):
+	if key == 'birth_year':
+		return "How old you are determines many risk factors"
+	if key == 'birth_country':
+		return "Knowing country of birth helps us determine what you might have been exposed to or vaccinated against"
+	if key == 'birth_sex':
+		return "We need to know your sex at birth"
+	if key == 'current_sex':
+		return "We need to know if your sex has changed"
+	if key == 'sex_partners':
+		return "In San Francisco, your sexual behavior can highly impact your risk"
+	return "This field is required"
 	
 def get_question_field(key="",settings={}):
 	if key == 'birth_year':
@@ -157,6 +170,9 @@ def get_question_field(key="",settings={}):
 			required = True,
 			max_value = now.year,
 			min_value = now.year - 120,
+			error_messages = {
+				'required': get_static_questions_errors(key)
+			},
 		)
 	if key == 'birth_country':
 		obj = get_static_question_object(key=key)
@@ -175,6 +191,9 @@ def get_question_field(key="",settings={}):
 			choices = choices,
 			initial = "",
 			required = True,
+			error_messages = {
+				'required': get_static_questions_errors(key)
+			},
 		)
 	if key == 'birth_sex':
 		obj = get_static_question_object(key=key)
@@ -182,7 +201,10 @@ def get_question_field(key="",settings={}):
 			widget = forms.RadioSelect,
 			label = obj.text,
 			choices = get_static_questions_choices(key=key),
-			required = True
+			required = True,
+			error_messages = {
+				'required': get_static_questions_errors(key)
+			},
 		)
 	if key == 'current_sex':
 		obj = get_static_question_object(key=key)
@@ -190,7 +212,10 @@ def get_question_field(key="",settings={}):
 			widget = forms.RadioSelect,
 			label = obj.text,
 			choices = get_static_questions_choices(key=key),
-			required = True
+			required = True,
+			error_messages = {
+				'required': get_static_questions_errors(key)
+			},
 		)
 	if key == 'sex_partners':
 		obj = get_static_question_object(key=key)
@@ -199,6 +224,9 @@ def get_question_field(key="",settings={}):
 			label = obj.text,
 			choices = get_static_questions_choices(key=key),
 			required = True,
+			error_messages = {
+				'required': get_static_questions_errors(key)
+			},
 		)
 	return False
 
