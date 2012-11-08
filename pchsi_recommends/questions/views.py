@@ -15,7 +15,7 @@ import itertools
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
-from forms import get_questions_for, make_form_for, make_email_form, make_sms_form, get_static_question_object, get_static_questions_choices, remove_unneeded_answers
+from forms import get_questions_for, sort_answers, make_form_for, make_email_form, make_sms_form, get_static_question_object, get_static_questions_choices, remove_unneeded_answers
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.recommendations.models import Recommendation
 from pchsi_recommends.notes.models import notes_for_screen
@@ -84,6 +84,7 @@ def recommendations_page(request):
 		if items:
 			answer = get_answered_question_object(key,items)
 			_answers.append(answer)
+	_answers = sort_answers(_answers)
 	if len(form.fields) < 1:
 		form = False
 	recommendations = fake_populations_to_recommendations(
@@ -346,8 +347,10 @@ def get_answered_question_object(key,answers):
 				_answers.append(answer_short)
 		answers = _answers
 	return {
+		'key':key,
 		'text':question.text,
 		'values':answers,
+		'order':question.order,
 	}
 			
 def fake_populations_to_recommendations(populations=[], age=False, country=False):

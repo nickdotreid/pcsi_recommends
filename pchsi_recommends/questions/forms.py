@@ -13,6 +13,20 @@ from crispy_forms.layout import Submit
 
 from logic import *
 
+def sort_answers(answers):
+	def cmp_answer_keys(a,b):
+		if (type(b['key']) == str and type(a['key']) == str) or (type(a['key']) == int and type(b['key']==int)):
+			if a['order'] < b['order']:
+				return -1
+			elif a['order'] > b['order']:
+				return 1
+		if type(a['key']) == str:
+			return -1
+		if type(b['key']) == str:
+			return 1
+		return 0
+	return sorted(answers,cmp_answer_keys)
+
 def get_questions_for(answers={},settings={}):
 	questions = []
 	if 'birth_year' not in answers or not answers['birth_year'] or 'include_answered' in settings:
@@ -100,26 +114,32 @@ def list_years(amount=10):
 	return years
 
 def get_static_question_object(key=""):
+	static_answer_order = ['birth_year','birth_country','birth_sex','current_sex','sex_partners']
 	if key == 'birth_year':
 		return Question(
-			text = 'What year were you born?'
+			text = 'What year were you born?',
+			order = static_answer_order.index(key) + 1
 		)
 	if key == 'birth_country':
 		return Question(
-			text = 'What country were you born in?'
+			text = 'What country were you born in?',
+			order = static_answer_order.index(key) + 1
 		)
 	if key == 'birth_sex':
 		return Question(
-			text = 'What sex were you assigned at birth?'
+			text = 'What sex were you assigned at birth?',
+			order = static_answer_order.index(key) + 1
 		)
 	if key == 'current_sex':
 		return Question(
-			text = 'What sex are you currently?'
+			text = 'What sex are you currently?',
+			order = static_answer_order.index(key) + 1
 		)
 	if key == 'sex_partners':
 		return Question(
 			text = 'What is the gender of your sex partners?',
 			description = 'Select all applicapable answers',
+			order = static_answer_order.index(key) + 1
 		)
 	return False
 
