@@ -118,7 +118,8 @@ def get_static_question_object(key=""):
 		)
 	if key == 'sex_partners':
 		return Question(
-			text = 'What is the gender of your sex partners?'
+			text = 'What is the gender of your sex partners?',
+			description = 'Select all applicapable answers',
 		)
 	return False
 
@@ -166,6 +167,7 @@ def get_question_field(key="",settings={}):
 		now = datetime.now()
 		return forms.IntegerField(
 			label = obj.text,
+			help_text = obj.description,
 			initial = "",
 			required = True,
 			max_value = now.year,
@@ -188,6 +190,7 @@ def get_question_field(key="",settings={}):
 			widget = HighlightedSelect( 
 				highlighted = get_objects_where_matches(choices,preset_choices)),
 			label = obj.text,
+			help_text = obj.description,
 			choices = choices,
 			initial = "",
 			required = True,
@@ -200,6 +203,7 @@ def get_question_field(key="",settings={}):
 		return forms.ChoiceField(
 			widget = forms.RadioSelect,
 			label = obj.text,
+			help_text = obj.description,
 			choices = get_static_questions_choices(key=key),
 			required = True,
 			error_messages = {
@@ -211,6 +215,7 @@ def get_question_field(key="",settings={}):
 		return forms.ChoiceField(
 			widget = forms.RadioSelect,
 			label = obj.text,
+			help_text = obj.description,
 			choices = get_static_questions_choices(key=key),
 			required = True,
 			error_messages = {
@@ -222,6 +227,7 @@ def get_question_field(key="",settings={}):
 		return forms.MultipleChoiceField(
 			widget = forms.CheckboxSelectMultiple,
 			label = obj.text,
+			help_text = obj.description,
 			choices = get_static_questions_choices(key=key),
 			required = True,
 			error_messages = {
@@ -242,12 +248,14 @@ def question_to_field(question, populations=[], age=False, country=False):
 	field = forms.ChoiceField(
 					widget = forms.RadioSelect,
 					label = question.text,
+					help_text = question.description,
 					choices = answers,
 				)
 	if question.multiple_choice:
 		field = forms.MultipleChoiceField(
 					widget = forms.CheckboxSelectMultiple,
 					label = question.text,
+					help_text = question.description,
 					choices = answers,
 					required = False,
 				)
