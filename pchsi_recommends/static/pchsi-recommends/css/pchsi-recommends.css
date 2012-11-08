@@ -4987,13 +4987,22 @@ a {
   background-repeat: top left;
   background-repeat: no-repeat;
   width: 957px;
-  height: 50px;
+  height: 80px;
 }
 #footer .logo-row {
   position: absolute;
   top: 0px;
   left: 40px;
   z-index: 5;
+}
+#footer .logo-row .logo {
+  margin-top: 100px;
+}
+#footer .logo-row .sfdph-logo {
+  margin-top: 0px;
+}
+#footer .logo-row .sections {
+  margin-top: 110px;
 }
 #footer .content {
   padding-top: 240px;
@@ -5104,15 +5113,6 @@ form .control-group {
   background-image: url('../i/logo-sfseal-200.png');
   width: 220px;
   height: 220px;
-}
-.logo-row .logo {
-  margin-top: 80px;
-}
-.logo-row .sfdph-logo {
-  margin-top: 0px;
-}
-.logo-row .sections {
-  margin-top: 90px;
 }
 .sections-list {
   margin: 0px;
