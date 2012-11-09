@@ -4905,7 +4905,7 @@ a {
   .container {
     margin: 0px auto;
     width: 760px;
-    background-image: url('../i/container-background-900.png');
+    background-image: url('../i/container-background-700.png');
     background-color: transparent;
     background-repeat: repeat-y;
     background-position: top left;
@@ -4917,7 +4917,7 @@ a {
     display: block;
     float: left;
     margin: 0px 10px;
-    width: 335px;
+    width: 325px;
   }
 }
 @media all and (min-width: 979px) {
