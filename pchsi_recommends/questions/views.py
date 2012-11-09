@@ -58,7 +58,8 @@ def initial_page(request):
 		'primary': True
 	})
 	QuestionForm = make_form_for(questions = questions, settings = {
-		"form_action":reverse(answer_questions)
+		"form_action":reverse(answer_questions),
+		'form_class':'questions',
 	})
 	form = QuestionForm()
 	return render_to_response('questions/form.html',{
@@ -113,18 +114,28 @@ def answer_questions(request,question_id=False):
 		return redirect(reverse(recommendations_page))
 	if 'answers' not in request.session:
 		return redirect(reverse(initial_page))
-	answers = request.session['answers']
+	answers = validate_answers(
+		answers = request.session['answers'],
+		new_answers = request.POST,
+		)
+	request.session['answers'] = remove_unneeded_answers(answers)
+	return redirect(reverse(recommendations_page))
+
+def validate_answers(new_answers={},answers={}):
 	questions = get_questions_for(answers, settings={
 		'include_answered':True,
 	})
 	QuestionForm = make_form_for(questions,{
 		"form_action":reverse(answer_questions)
 	})
-	form = QuestionForm(request.POST)
+	form = QuestionForm(new_answers)
+	fields = []
+	if 'field_list' in new_answers:
+		fields = new_answers['field_list'].split(',')
 	for key,field in form.fields.items():
 		if str(key) in fields:
 			valid = False
-			value = field.widget.value_from_datadict(request.POST,True,str(key))
+			value = field.widget.value_from_datadict(new_answers,True,str(key))
 			if value or (type(value) == list and len(value) < 1):
 				try:
 					clean = field.clean(value)
@@ -141,8 +152,7 @@ def answer_questions(request,question_id=False):
 					valid = False
 			if not valid:
 				answers[key] = False
-	request.session['answers'] = remove_unneeded_answers(answers)
-	return redirect(reverse(recommendations_page))
+	return answers
 
 def recommendation_detail(request,recommendation_id):
 	recommendation = get_object_or_404(Recommendation,pk=recommendation_id)
