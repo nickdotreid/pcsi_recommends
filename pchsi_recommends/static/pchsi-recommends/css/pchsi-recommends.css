@@ -5056,45 +5056,85 @@ a {
     left: 600px;
   }
 }
-.bottom.container {
+.container.bottom {
   padding: 7px 0px;
   font-size: 12px;
   line-height: 13px;
   color: #999;
-  clear: both;
 }
-.bottom.container .content {
-  padding: 14px 0px;
+.container.bottom .container-inner {
+  margin: 0px;
+  padding: 0px 10px;
 }
-#footer .footer-line {
+.container.bottom .footer-line {
   display: block;
   position: absolute;
   top: 40px;
-  left: -38px;
+  left: 0px;
   z-index: 3;
   background-image: url('../i/footer-wrap.png');
   background-repeat: top left;
-  background-repeat: no-repeat;
-  width: 957px;
+  background-repeat: repeat-x;
   height: 80px;
+  width: 100%;
 }
-#footer .logo-row {
-  position: absolute;
-  top: 0px;
-  left: 40px;
-  z-index: 5;
+@media all and (min-width: 767px) {
+  .container.bottom .container-inner {
+    padding-top: 240px;
+    margin: 0px 20px;
+  }
+  .container.bottom .footer-line {
+    left: -39px;
+    background-image: url('../i/footer-wrap-700.png');
+    background-repeat: no-repeat;
+    width: 771px;
+  }
+  .container.bottom .logo-row {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 200px;
+    padding: 0px;
+  }
+  .container.bottom .logo-row .healthysf-logo {
+    position: absolute;
+    top: 100px;
+    left: 10px;
+    z-index: 10;
+  }
+  .container.bottom .logo-row .sfdph-logo {
+    position: absolute;
+    top: 0px;
+    left: 120px;
+    z-index: 10;
+  }
+  .container.bottom .logo-row .sections {
+    margin: 110px 0px 0px 340px;
+    width: 340px;
+  }
 }
-#footer .logo-row .logo {
-  margin-top: 100px;
-}
-#footer .logo-row .sfdph-logo {
-  margin-top: 0px;
-}
-#footer .logo-row .sections {
-  margin-top: 110px;
-}
-#footer .content {
-  padding-top: 240px;
+@media all and (min-width: 979px) {
+  .container.bottom .container-inner {
+    padding-top: 240px;
+    margin: 0px 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .container.bottom .footer-line {
+    left: -41px;
+    background-image: url('../i/footer-wrap-900.png');
+    background-repeat: no-repeat;
+    width: 962px;
+  }
+  .container.bottom .logo-row .healthysf-logo {
+    left: 40px;
+  }
+  .container.bottom .logo-row .sfdph-logo {
+    left: 170px;
+  }
+  .container.bottom .logo-row .sections {
+    margin-left: 410px;
+  }
 }
 form .control-label {
   font-size: 1.2em;
@@ -5176,21 +5216,17 @@ form .control-group {
 }
 .logo-row {
   display: block;
-  height: 200px;
   clear: both;
   margin: 10px 0px;
 }
 .logo-row .logo {
   display: block;
-  float: left;
   height: 100px;
   width: 50px;
   overflow: hidden;
-  margin-right: 10px;
 }
 .logo-row .sections {
   display: block;
-  float: left;
 }
 .healthysf-logo,
 .logo-row .healthysf-logo {
