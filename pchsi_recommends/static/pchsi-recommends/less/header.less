@@ -5,8 +5,8 @@
 	background-position:top left;
 	position:relative;
 	display:block;
-	width:337px;
-	height:197px;
+	width:300px;
+	height:160px;
 	overflow:hidden;
 	text-indent:-3000px;
 	a{
@@ -20,51 +20,95 @@
 }
 
 .top.container{
-	height:300px;
-	.navbar{
-		position:absolute;
-		z-index:15;
-		top:265px;
-		left:0px;
-		width:900px;
-		padding:0px;
+	height:auto;
+	.container-inner{
 		margin:0px;
-		.navbar-inner{
-			background-color:transparent;
-			background-image:none;
-			border-radius:0px;
-			box-shadow:0px 0px 0px #000;
-			padding:@spaceSize 10*@spaceSize 0px;
-		}
+	}
+	.navbar .navbar-inner{
+		background-color:transparent;
+		background-image:none;
+		border-radius:0px;
+		box-shadow:0px 0px 0px #000;
+		padding:@spaceSize 10*@spaceSize 0px;
 	}
 	.skyline{
 		display:block;
 		position:absolute;
-		top:60px;
-		left:-38px;
-		background-image:url('../i/skyline.png');
-		background-repeat:top left;
-		background-repeat:no-repeat;
-		width:957px;
-		height:220px;
+		bottom:70px;
+		left:0px;
+		width:100%;
+		height:70px;
+		background-color:transparent;
+		background-image:url('../i/header-wrap-orange.png');
+		background-repeat:repeat-x;
+		background-position:top left;
 	}
 	#site-logo{
-		position:absolute;
-		top:125px;
-		left:0px;
-		z-index:10;
-	}
-	.logo{
-		position:absolute;
-		top:40px;
-		left:550px;
+		display:block;
+		left:@spaceSize;
 	}
 	.attribution{
-		position:absolute;
-		top:0px;
-		left:50px;
-		z-index:20;
-		margin:@spaceSize 0px;
+		display:block;
+		margin:@spaceSize;
 		padding:@spaceSize 0px 0px;
+	}
+}
+
+@media all and (min-width: @screenTablet) {
+	.top.container{
+		height:200px;
+		.container-inner{
+			margin:0px @spaceSize;
+		}
+		.navbar{
+			position:absolute;
+			top:130px;
+			left:0px;
+			z-index:20;
+			margin-bottom:0px;
+		}
+		.skyline{
+			width:771px;
+			top:70px;
+			left:-29px;
+			height:70px;
+			background-image:url('../i/header-wrap-orange-700.png');
+			background-repeat:no-repeat;
+		}
+		#site-logo{
+			position:absolute;
+			top:10px;
+			left:@spaceSize;
+		}
+		.attribution{
+			position:absolute;
+			top:20px;
+			left:400px;
+			z-index:15;
+			width:300px;
+			text-align:right;
+			margin:0px;
+			padding:0px;
+		}
+	}
+}
+
+@media all and (min-width: @screenNormal) {
+	.top.container{
+		.skyline{
+			left:-17px;
+			width:957px;
+			height:70px;
+			background-image:url('../i/header-wrap-orange-900.png');
+			background-repeat:no-repeat;
+		}
+		#site-logo{
+			left:@spaceSize*2;
+		}
+		.attribution{
+			position:absolute;
+			top:20px;
+			left:600px;
+		}
 	}
 }
