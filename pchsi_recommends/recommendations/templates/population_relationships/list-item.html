@@ -1,6 +1,6 @@
 <div class="population-relationships list-item">
 	{% if population_relationship.populations.count > 0 or population_relationship.inclusive %}
-	<div class="populations">
+	<span class="populations">
 		{% for population in population_relationship.populations.all %}
 		{% if forloop.last and forloop.counter > 1 %}
 		{% if population_relationship.inclusive %}
@@ -9,29 +9,29 @@
 		and
 		{% endif %}
 		{% endif %}
-		<span class="pop {{population.short}}">{{population.name}}{% if not forloop.last and forloop.counter > 1 %},&nbsp;{% endif %}</span>
+		<span class="pop {{population.short}}">{{population.name}}{% if not forloop.last and forloop.counter >= 1 %},&nbsp;{% endif %}</span>
 		{% empty %}
 		{% if population_relationship.inclusive %}
 		<span class="pop everyone">Everyone</span>
 		{% endif %}
 		{% endfor %}
-	</div>
+	</span>
 	{% endif %}
 	{% if population_relationship.min_age or population_relationship.max_age %}
-	<div class="age">
+	<span class="age">
 		{% if population_relationship.min_age and population_relationship.max_age %}
-		<p>Between {{population_relationship.min_age}} and {{population_relationship.max_age}}.</p>
+		Between {{population_relationship.min_age}} and {{population_relationship.max_age}}
 		{% elif population_relationship.max_age %}
-		<p>Younger than {{population_relationship.max_age}}.</p>
+		Younger than {{population_relationship.max_age}}
 		{% elif population_relationship.min_age %}
-		<p>Older than {{population_relationship.min_age}}.</p>
+		Older than {{population_relationship.min_age}}
 		{% endif %}
-	</div>
+	</span>
 	{% endif %}
 	{% if population_relationship.regions.count > 0 %}
-	<div class="regions">
+	<span class="regions">
 		{% for region_collection in population_relationship.regions.all %}
-		<div class="region-collection">
+		<span class="region-collection">
 			{% if region_collection.exclude %}Not in{% endif %}
 			{% for region in region_collection.regions.all %}
 			{% if forloop.last and forloop.counter > 1 %}
@@ -43,8 +43,8 @@
 			{% endif %}
 			<span class="region">{%if region.name %}{{region.name}}{% else %}{{region.country}}{% endif %}{% if not forloop.last and forloop.counter > 1 %},&nbsp;{% endif %}</span>
 			{% endfor %}
-		</div>
+		</span>
 		{% endfor %}
-	</div>
+	</span>
 	{% endif %}
 </div>
