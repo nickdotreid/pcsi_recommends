@@ -30,6 +30,7 @@
 	{% endif %}
 	{% if population_relationship.regions.count > 0 %}
 	<span class="regions">
+		<span class="regions-list-label">From the following region{% if populaiton_relationship.regions.count > 1%}s{% endif %}</span>
 		{% for region_collection in population_relationship.regions.all %}
 		<span class="region-collection">
 			{% if region_collection.exclude %}Not in{% endif %}
