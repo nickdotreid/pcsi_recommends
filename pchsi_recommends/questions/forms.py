@@ -128,7 +128,7 @@ def get_static_question_object(key=""):
 	if key == 'current_sex':
 		return Question(
 			text = 'What is your current gender?',
-			description = '(Check one)',
+			description = '(Check all that apply)',
 			order = static_answer_order.index(key) + 1
 		)
 	if key == 'birth_sex':
