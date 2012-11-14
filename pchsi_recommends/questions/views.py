@@ -84,7 +84,8 @@ def recommendations_page(request):
 	for key,items in answers.items():
 		if items:
 			answer = get_answered_question_object(key,items)
-			_answers.append(answer)
+			if answer:
+				_answers.append(answer)
 	_answers = sort_answers(_answers)
 	if len(form.fields) < 1:
 		form = False
