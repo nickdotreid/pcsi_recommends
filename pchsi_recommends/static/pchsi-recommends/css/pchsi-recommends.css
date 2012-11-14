@@ -4893,59 +4893,55 @@ a {
   display: block;
   margin: 10px 0px;
 }
-@media all and (min-width: 767px) {
-  .content {
-    margin: 0px 49px;
-  }
-  .container,
-  .navbar-fixed-top .container,
-  .navbar-fixed-bottom .container {
-    width: 720px;
-  }
-  .container {
-    margin: 0px auto;
-    width: 760px;
-    background-image: url('../i/container-background-700.png');
-    background-color: transparent;
-    background-repeat: repeat-y;
-    background-position: top left;
-  }
-  .container .container-inner {
-    margin: 0px 25px;
-  }
-  .container .column {
-    display: block;
-    float: left;
-    margin: 0px 10px;
-    width: 325px;
-  }
+.content {
+  margin: 0px 49px;
 }
-@media all and (min-width: 979px) {
-  .content {
-    margin: 0px 49px;
-  }
-  .container,
-  .navbar-fixed-top .container,
-  .navbar-fixed-bottom .container {
-    width: 900px;
-  }
-  .container {
-    width: 940px;
-    background-image: url('../i/container-background-900.png');
-    background-color: transparent;
-    background-repeat: repeat-y;
-    background-position: top left;
-  }
-  .container .container-inner {
-    position: relative;
-    margin: 0px 30px;
-  }
-  .container .column {
-    display: block;
-    float: left;
-    margin: 0px 10px;
-    width: 420px;
-  }
+.container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+  width: 720px;
+}
+.container {
+  margin: 0px auto;
+  width: 760px;
+  background-image: url('../i/container-background-700.png');
+  background-color: transparent;
+  background-repeat: repeat-y;
+  background-position: top left;
+}
+.container .container-inner {
+  margin: 0px 25px;
+}
+.container .column {
+  display: block;
+  float: left;
+  margin: 0px 10px;
+  width: 325px;
+}
+.content {
+  margin: 0px 49px;
+}
+.container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+  width: 900px;
+}
+.container {
+  width: 940px;
+  background-image: url('../i/container-background-900.png');
+  background-color: transparent;
+  background-repeat: repeat-y;
+  background-position: top left;
+}
+.container .container-inner {
+  position: relative;
+  margin: 0px 30px;
+}
+.container .column {
+  display: block;
+  float: left;
+  margin: 0px 10px;
+  width: 420px;
 }
 #site-logo {
   background-color: transparent;
@@ -5001,60 +4997,56 @@ a {
   margin: 10px;
   padding: 10px 0px 0px;
 }
-@media all and (min-width: 767px) {
-  .top.container {
-    height: 200px;
-  }
-  .top.container .container-inner {
-    margin: 0px 10px;
-  }
-  .top.container .navbar {
-    position: absolute;
-    top: 130px;
-    left: 0px;
-    z-index: 20;
-    margin-bottom: 0px;
-  }
-  .top.container .skyline {
-    width: 771px;
-    top: 70px;
-    left: -29px;
-    height: 70px;
-    background-image: url('../i/header-wrap-orange-700.png');
-    background-repeat: no-repeat;
-  }
-  .top.container #site-logo {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-  }
-  .top.container .attribution {
-    position: absolute;
-    top: 20px;
-    left: 400px;
-    z-index: 15;
-    width: 300px;
-    text-align: right;
-    margin: 0px;
-    padding: 0px;
-  }
+.top.container {
+  height: 200px;
 }
-@media all and (min-width: 979px) {
-  .top.container .skyline {
-    left: -17px;
-    width: 957px;
-    height: 70px;
-    background-image: url('../i/header-wrap-orange-900.png');
-    background-repeat: no-repeat;
-  }
-  .top.container #site-logo {
-    left: 20px;
-  }
-  .top.container .attribution {
-    position: absolute;
-    top: 20px;
-    left: 600px;
-  }
+.top.container .container-inner {
+  margin: 0px 10px;
+}
+.top.container .navbar {
+  position: absolute;
+  top: 130px;
+  left: 0px;
+  z-index: 20;
+  margin-bottom: 0px;
+}
+.top.container .skyline {
+  width: 771px;
+  top: 70px;
+  left: -29px;
+  height: 70px;
+  background-image: url('../i/header-wrap-orange-700.png');
+  background-repeat: no-repeat;
+}
+.top.container #site-logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.top.container .attribution {
+  position: absolute;
+  top: 20px;
+  left: 400px;
+  z-index: 15;
+  width: 300px;
+  text-align: right;
+  margin: 0px;
+  padding: 0px;
+}
+.top.container .skyline {
+  left: -17px;
+  width: 957px;
+  height: 70px;
+  background-image: url('../i/header-wrap-orange-900.png');
+  background-repeat: no-repeat;
+}
+.top.container #site-logo {
+  left: 20px;
+}
+.top.container .attribution {
+  position: absolute;
+  top: 20px;
+  left: 600px;
 }
 .container.bottom {
   padding: 7px 0px;
@@ -5078,63 +5070,59 @@ a {
   height: 80px;
   width: 100%;
 }
-@media all and (min-width: 767px) {
-  .container.bottom .container-inner {
-    padding-top: 240px;
-    margin: 0px 20px;
-  }
-  .container.bottom .footer-line {
-    left: -39px;
-    background-image: url('../i/footer-wrap-700.png');
-    background-repeat: no-repeat;
-    width: 771px;
-  }
-  .container.bottom .logo-row {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: 200px;
-    padding: 0px;
-  }
-  .container.bottom .logo-row .healthysf-logo {
-    position: absolute;
-    top: 100px;
-    left: 10px;
-    z-index: 10;
-  }
-  .container.bottom .logo-row .sfdph-logo {
-    position: absolute;
-    top: 0px;
-    left: 120px;
-    z-index: 10;
-  }
-  .container.bottom .logo-row .sections {
-    margin: 110px 0px 0px 340px;
-    width: 340px;
-  }
+.container.bottom .container-inner {
+  padding-top: 240px;
+  margin: 0px 20px;
 }
-@media all and (min-width: 979px) {
-  .container.bottom .container-inner {
-    padding-top: 240px;
-    margin: 0px 30px;
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-  .container.bottom .footer-line {
-    left: -41px;
-    background-image: url('../i/footer-wrap-900.png');
-    background-repeat: no-repeat;
-    width: 962px;
-  }
-  .container.bottom .logo-row .healthysf-logo {
-    left: 40px;
-  }
-  .container.bottom .logo-row .sfdph-logo {
-    left: 170px;
-  }
-  .container.bottom .logo-row .sections {
-    margin-left: 410px;
-  }
+.container.bottom .footer-line {
+  left: -39px;
+  background-image: url('../i/footer-wrap-700.png');
+  background-repeat: no-repeat;
+  width: 771px;
+}
+.container.bottom .logo-row {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 200px;
+  padding: 0px;
+}
+.container.bottom .logo-row .healthysf-logo {
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  z-index: 10;
+}
+.container.bottom .logo-row .sfdph-logo {
+  position: absolute;
+  top: 0px;
+  left: 120px;
+  z-index: 10;
+}
+.container.bottom .logo-row .sections {
+  margin: 110px 0px 0px 340px;
+  width: 340px;
+}
+.container.bottom .container-inner {
+  padding-top: 240px;
+  margin: 0px 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.container.bottom .footer-line {
+  left: -41px;
+  background-image: url('../i/footer-wrap-900.png');
+  background-repeat: no-repeat;
+  width: 962px;
+}
+.container.bottom .logo-row .healthysf-logo {
+  left: 40px;
+}
+.container.bottom .logo-row .sfdph-logo {
+  left: 170px;
+}
+.container.bottom .logo-row .sections {
+  margin-left: 410px;
 }
 form .control-label {
   font-size: 1.2em;
