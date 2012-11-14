@@ -1,9 +1,9 @@
 <!-- {{age}}{% for population in populations %} - {{population.name}}{% endfor %} -->
-<p>According to the answers you provided, the San Francisco Department of Public Health recommends the following screens and vaccinations.</p>
-<div class="description">
-	<p>Take your recommendations to your doctor by printing, emailing or texting this list to your self.</p>
-</div>
+<p>According to your answers, the San Francisco Department of Public Health recommends the following screens and vaccinations.</p>
 <div class="recommendations">
+	<div class="directions">
+		<p>Take your recommendations to your doctor by printing, emailing or texting this list to your self.</p>
+	</div>
 	{% include 'recommendations/actions.html' %}
 	{% for recommendation in recommendations %}
 		{% include "recommendations/list-item.html" with recommendation=recommendation %}
