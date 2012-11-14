@@ -101,9 +101,11 @@ def population_is_sex(population):
 
 def determine_sex(current_sex,birth_sex=False):
 	if current_sex and not birth_sex:
-		pop = Population.objects.get(short__iexact = current_sex)
+		pop = get_object_or_None(Population, short__iexact=current_sex)
 		if pop:
 			return pop
+	if current_sex == 'other':
+		return 'other'
 	sex_dict = get_population_sex_dict()
 	if birth_sex == 'male' and current_sex == 'male' and sex_dict['male']:
 		return sex_dict['male']

@@ -114,7 +114,7 @@ def list_years(amount=10):
 	return years
 
 def get_static_question_object(key=""):
-	static_answer_order = ['birth_year','birth_country','birth_sex','current_sex','sex_partners']
+	static_answer_order = ['birth_year','birth_country','current_sex','birth_sex','sex_partners']
 	if key == 'birth_year':
 		return Question(
 			text = 'What year were you born?',
@@ -128,7 +128,7 @@ def get_static_question_object(key=""):
 	if key == 'current_sex':
 		return Question(
 			text = 'What is your current gender?',
-			description = '(Check all that apply)',
+			description = '(Check one)',
 			order = static_answer_order.index(key) + 1
 		)
 	if key == 'birth_sex':
@@ -140,7 +140,7 @@ def get_static_question_object(key=""):
 	if key == 'sex_partners':
 		return Question(
 			text = 'What is the gender of your sex partners?',
-			description = 'Select all applicapable answers',
+			description = '(Check all that apply)',
 			order = static_answer_order.index(key) + 1
 		)
 	return False
@@ -158,8 +158,8 @@ def get_static_questions_choices(key=""):
 		return [
 			('male','Male'),
 			('female','Female'),
-			('transmale','Trans Male'),
-			('transfemale','Trans Female'),
+			('transmale','Transgender Male'),
+			('transfemale','Transgender Female'),
 			('other', 'Other'),
 		]
 	if key == 'sex_partners':
@@ -235,8 +235,8 @@ def get_question_field(key="",settings={}):
 		)
 	if key == 'current_sex':
 		obj = get_static_question_object(key=key)
-		return forms.MultipleChoiceField(
-			widget = forms.CheckboxSelectMultiple,
+		return forms.ChoiceField(
+			widget = forms.RadioSelect,
 			label = obj.text,
 			help_text = obj.description,
 			choices = get_static_questions_choices(key=key),
