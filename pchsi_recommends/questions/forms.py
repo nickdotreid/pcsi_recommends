@@ -33,10 +33,10 @@ def get_questions_for(answers={},settings={}):
 		questions.append(('birth_year',get_question_field('birth_year')))
 	if 'birth_country' not in answers or not answers['birth_country'] or 'include_answered' in settings:
 		questions.append(('birth_country',get_question_field('birth_country')))
-	if 'birth_sex' not in answers or not answers['birth_sex'] or 'include_answered' in settings:
-		questions.append(('birth_sex',get_question_field('birth_sex')))
 	if 'current_sex' not in answers or not answers['current_sex'] or 'include_answered' in settings:
 		questions.append(('current_sex',get_question_field('current_sex')))
+	if 'birth_sex' not in answers or not answers['birth_sex'] or 'include_answered' in settings:
+		questions.append(('birth_sex',get_question_field('birth_sex')))
 	if 'sex_partners' not in answers or not answers['sex_partners'] or 'include_answered' in settings:
 		questions.append(('sex_partners',get_question_field('sex_partners')))
 	
@@ -125,14 +125,16 @@ def get_static_question_object(key=""):
 			text = 'What country were you born in?',
 			order = static_answer_order.index(key) + 1
 		)
-	if key == 'birth_sex':
-		return Question(
-			text = 'What sex were you assigned at birth?',
-			order = static_answer_order.index(key) + 1
-		)
 	if key == 'current_sex':
 		return Question(
-			text = 'What sex are you currently?',
+			text = 'What is your current gender?',
+			description = '(Check all that apply)',
+			order = static_answer_order.index(key) + 1
+		)
+	if key == 'birth_sex':
+		return Question(
+			text = 'What was your sex at birth?',
+			description = '(Check one)',
 			order = static_answer_order.index(key) + 1
 		)
 	if key == 'sex_partners':
@@ -158,6 +160,7 @@ def get_static_questions_choices(key=""):
 			('female','Female'),
 			('transmale','Trans Male'),
 			('transfemale','Trans Female'),
+			('other', 'Other'),
 		]
 	if key == 'sex_partners':
 		return [
@@ -232,8 +235,8 @@ def get_question_field(key="",settings={}):
 		)
 	if key == 'current_sex':
 		obj = get_static_question_object(key=key)
-		return forms.ChoiceField(
-			widget = forms.RadioSelect,
+		return forms.MultipleChoiceField(
+			widget = forms.CheckboxSelectMultiple,
 			label = obj.text,
 			help_text = obj.description,
 			choices = get_static_questions_choices(key=key),
