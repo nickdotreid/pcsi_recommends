@@ -1,18 +1,13 @@
 {% extends 'base.html' %}
 
+{% block navigation %}
+	<a href="/screens/">Screens</a>
+{% endblock %}
+
 {%	block content	%}
 <div class="screen screen-detail">
 	<div class="row-fluid">
-		<div class="span2">
-			{% for screen in screens %}
-				<div class="screen">
-					<a href="/screens/{{screen.id}}/">{{screen.name}}</a>
-				</div>
-			{%  empty  %}
-			<div class="alert">No Screens</div>
-			{% endfor %}
-		</div>
-		<div class="span4">
+		<div class="span6">
 		<h2>Recommendations</h2>
 		<div class="recommendations recommendations-list list">
 		{% for recommendation in recommendations %}
