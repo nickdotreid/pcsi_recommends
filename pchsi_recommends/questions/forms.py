@@ -235,8 +235,8 @@ def get_question_field(key="",settings={}):
 		)
 	if key == 'current_sex':
 		obj = get_static_question_object(key=key)
-		return forms.ChoiceField(
-			widget = forms.RadioSelect,
+		return forms.MultipleChoiceField(
+			widget = forms.CheckboxSelectMultiple,
 			label = obj.text,
 			help_text = obj.description,
 			choices = get_static_questions_choices(key=key),

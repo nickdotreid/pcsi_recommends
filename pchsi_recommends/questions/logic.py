@@ -6,12 +6,14 @@ from pchsi_recommends.questions.models import *
 from pchsi_recommends.populations.models import Population
 
 def get_gender(answers):
+	if 'current_sex' in answers and len(answers['current_sex']) > 1:
+		return False
 	if 'birth_sex' in answers and 'current_sex' in answers:
-		sex = determine_sex(answers['current_sex'],answers['birth_sex'])
+		sex = determine_sex(answers['current_sex'][0],answers['birth_sex'])
 		if sex:
 			return sex
 	if 'current_sex' in answers:
-		sex = determine_sex(answers['current_sex'])
+		sex = determine_sex(answers['current_sex'][0])
 		if sex:
 			return sex
 	return False
