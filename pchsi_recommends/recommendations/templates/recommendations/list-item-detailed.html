@@ -4,7 +4,7 @@
 	{% include 'population_relationships/list-item.html' with population_relationship=pop_rel %}
 	{% endfor %}
 	</div>
-	<h3 class="screen">{{recommendation.screen.name}}</h3>
+	{% if not no_title %}<h3 class="screen">{{recommendation.screen.name}}</h3>{% endif %}
 	{% if recommendation.not_recommended %}
 	<p class="not-recommended">Not Recommended</p>
 	{% else %}
