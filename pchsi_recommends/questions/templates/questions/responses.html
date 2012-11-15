@@ -7,21 +7,19 @@
 {% endblock %}
 
 {% block content %}
-	<div class="row-fluid">
-		<div class="span6">
-			{% for answer in answers %}
-				{% include "questions/answered.html" with answer=answer %}
-			{% endfor %}
-			{% if form %}
-			{% crispy form %}
-			{% else %}
-			<div class="alert">
-				<p>We don’t have any more questions for you.</p>
-			</div>
-			{% endif %}
+	<div id="question-column" class="column">
+		{% for answer in answers %}
+			{% include "questions/answered.html" with answer=answer %}
+		{% endfor %}
+		{% if form %}
+		{% crispy form %}
+		{% else %}
+		<div class="alert">
+			<p>We don’t have any more questions for you.</p>
 		</div>
-		<div class="span6">
-			{% include "questions/responses-frame.html" %}
-		</div>
+		{% endif %}
+	</div>
+	<div id="recommendation-column" class="column">
+		{% include "questions/responses-frame.html" %}
 	</div>
 {% endblock %}

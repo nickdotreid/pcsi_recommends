@@ -6,12 +6,10 @@
 {% endblock %}
 
 {% block content %}
-	<div class="row-fluid">
-		<div class="span6">
-			<p>Reenter your information and we will recalculate your recommendations.</p>
-		</div>
-		<div class="span6">
-			{% crispy form %}
-		</div>
+	<div class="column">
+		<p>Reenter your information and we will recalculate your recommendations.</p>
+	</div>
+	<div id="question-column" class="column">
+		{% crispy form %}
 	</div>
 {% endblock %}

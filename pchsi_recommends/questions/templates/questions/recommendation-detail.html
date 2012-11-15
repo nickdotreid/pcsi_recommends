@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block content %}
-	<div class="row-fluid">
-		<div class="span6">
+		<div id="recommendation-column" class="column">
 			{% include "questions/responses-frame.html" %}
 		</div>
-		<div class="span6">
+		<div id="detail-column" class="column">
+			{% block detail-column %}
 			<h2 class="screen">{{recommendation.screen.name}}</h2>
 			{% if recommendation.frequency %}
 			<p class="frequency">{{recommendation.frequency}}</p>
@@ -19,6 +19,6 @@
 			{% for note in notes %}
 				{% include 'notes/detail.html' %}
 			{% endfor %}
+			{% endblock %}
 		</div>
-	</div>
 {% endblock %}

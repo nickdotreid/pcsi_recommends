@@ -2,15 +2,13 @@
 {% load crispy_forms_tags %}
 
 {%	block content	%}
-<div class="row-fluid">
-	<div class="span6">
+	<div id="intro-column" class="column">
 		{% include 'questions/intro-text.html' %}
 	</div>
-	<div class="span6">
+	<div id="question-column" class="column">
 		<div class="alert alert-info">
 			<p>Get personalized screening and vaccination recommendations by answering five quick questions.</p>
 		</div>
 		{% crispy form %}
 	</div>
-</div>
 {% endblock  %}

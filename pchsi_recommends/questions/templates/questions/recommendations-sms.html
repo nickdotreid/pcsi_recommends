@@ -1,17 +1,10 @@
 {% extends 'questions/recommendation-detail.html' %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-	<div class="row-fluid">
-		<div class="span6">
-			{% include "questions/responses-frame.html" %}
-		</div>
-		<div class="span6">
-			{% if message %}
-			<div class="alert alert-success">{{message}}</div>
-			{% endif %}
-			<h2>Text Recommendations</h2>
-			{% crispy form %}
-		</div>
-	</div>
+{% block detail-column %}
+	{% if message %}
+	<div class="alert alert-success">{{message}}</div>
+	{% endif %}
+	<h2>Text Recommendations</h2>
+	{% crispy form %}
 {% endblock %}
