@@ -6,16 +6,20 @@ from pchsi_recommends.questions.models import *
 from pchsi_recommends.populations.models import Population
 
 def get_gender(answers):
-	if 'current_sex' in answers and len(answers['current_sex']) > 1:
-		return False
-	if 'birth_sex' in answers and 'current_sex' in answers:
-		sex = determine_sex(answers['current_sex'][0],answers['birth_sex'])
-		if sex:
-			return sex
+	current = False
+	birth = False
 	if 'current_sex' in answers:
-		sex = determine_sex(answers['current_sex'][0])
-		if sex:
-			return sex
+		current = answers['current_sex']
+		if type(current) == list:
+			if len(current) > 1:
+				return False
+			if len(current) < 1:
+				current = False
+			current = current[0]
+	if 'birth_sex' in answers:
+		birth = answers['birth_sex']
+	if current or birth:
+		return determine_sex(current_sex=current,birth_sex=birth)
 	return False
 
 def get_country(answers):
@@ -101,7 +105,7 @@ def population_is_sex(population):
 			return True
 	return False
 
-def determine_sex(current_sex,birth_sex=False):
+def determine_sex(current_sex=False,birth_sex=False):
 	if current_sex and not birth_sex:
 		pop = get_object_or_None(Population, short__iexact=current_sex)
 		if pop:
@@ -109,9 +113,9 @@ def determine_sex(current_sex,birth_sex=False):
 	if current_sex == 'other':
 		return 'other'
 	sex_dict = get_population_sex_dict()
-	if birth_sex == 'male' and current_sex == 'male' and sex_dict['male']:
+	if ((birth_sex == 'male' and current_sex == 'male') or (not current_sex and birth_sex == 'male') ) and sex_dict['male']:
 		return sex_dict['male']
-	if birth_sex == 'female' and current_sex == 'female' and sex_dict['female']:
+	if ((birth_sex == 'female' and current_sex == 'female') or (not current_sex and birth_sex == 'female') )  and sex_dict['female']:
 		return sex_dict['female']
 	if sex_dict['transfemale'] and (current_sex == 'transfemale' or (current_sex == 'female' and birth_sex == 'male')):
 		return sex_dict['transfemale']
