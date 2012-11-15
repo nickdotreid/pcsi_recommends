@@ -4999,21 +4999,21 @@ a {
   padding: 10px 0px 0px;
 }
 .top.container {
-  height: 200px;
+  height: 230px;
 }
 .top.container .container-inner {
   margin: 0px 10px;
 }
 .top.container .navbar {
   position: absolute;
-  top: 130px;
+  top: 160px;
   left: 0px;
   z-index: 20;
   margin-bottom: 0px;
 }
 .top.container .skyline {
   width: 771px;
-  top: 70px;
+  top: 100px;
   left: -29px;
   height: 70px;
   background-image: url('../i/header-wrap-orange-700.png');
@@ -5021,13 +5021,13 @@ a {
 }
 .top.container #site-logo {
   position: absolute;
-  top: 10px;
+  top: 40px;
   left: 10px;
 }
 .top.container .attribution {
   position: absolute;
-  top: 20px;
-  left: 400px;
+  top: 30px;
+  left: 380px;
   z-index: 15;
   width: 300px;
   text-align: right;
@@ -5037,7 +5037,6 @@ a {
 .top.container .skyline {
   left: -17px;
   width: 957px;
-  height: 70px;
   background-image: url('../i/header-wrap-orange-900.png');
   background-repeat: no-repeat;
 }
@@ -5046,8 +5045,7 @@ a {
 }
 .top.container .attribution {
   position: absolute;
-  top: 20px;
-  left: 600px;
+  left: 585px;
 }
 .container.bottom {
   padding: 7px 0px;
