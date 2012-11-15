@@ -6,7 +6,7 @@
 	</div>
 	{% include 'recommendations/actions.html' %}
 	{% for recommendation in recommendations %}
-		{% include "recommendations/list-item.html" with recommendation=recommendation %}
+		{% include "recommendations/list-item.html" with recommendation=recommendation notes=recommendation.my_notes %}
 	{%  empty  %}
 	<div class="alert">No Recommendations</div>
 	{% endfor %}
