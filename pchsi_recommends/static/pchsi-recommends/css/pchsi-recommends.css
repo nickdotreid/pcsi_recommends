@@ -5166,11 +5166,15 @@ form .control-group {
   padding: 5px 10px;
 }
 .recommendations-actions .btn {
+  position: relative;
   border-radius: 0px;
+  padding-left: 30px;
 }
 .recommendations-actions .btn i {
   display: block;
-  float: left;
+  position: absolute;
+  top: 5px;
+  left: 5px;
   width: 13px;
   height: 13px;
   margin: 2.5px;
