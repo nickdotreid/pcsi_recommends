@@ -1,4 +1,4 @@
-<div id="note-id" class="note {{note.type}}">
+<div id="note-{{note.id}}" class="note {{note.type.short}}">
 	{% if note.title %}<h3>{{note.title}}</h3>{% endif %}
 	{{note.text|safe}}
 </div>
