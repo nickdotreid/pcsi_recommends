@@ -12,6 +12,6 @@ class NoteInline(SortableTabularInline):
 	extra = 1
 
 class NoteAdmin(SortableAdmin):
-	inlines = [PopulationRelationshipInline]
+	pass
 
 admin.site.register(Note,NoteAdmin)

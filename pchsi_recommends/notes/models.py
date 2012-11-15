@@ -5,7 +5,7 @@ from django.contrib.contenttypes import generic
 from adminsortable.models import Sortable
 
 from pchsi_recommends.populations.models import Population_Relationship
-from pchsi_recommends.recommendations.models import Screen
+from pchsi_recommends.recommendations.models import Screen, Recommendation
 
 class Subject(models.Model):
 	title = models.CharField(blank=True, max_length=100)
@@ -22,27 +22,27 @@ class Note(Sortable):
 	
 	subject = models.ForeignKey(Subject)
 		
-	populations = generic.GenericRelation(Population_Relationship)
-	
+	recommendation = models.ForeignKey(Recommendation, blank=True, null=True,related_name='notes')
 	screen = models.ForeignKey(Screen, blank=True, null=True,related_name='notes')
 	
 	def __unicode__(self):
-		name = ""
-		if self.screen:
-			name += "%s" % (self.screen.name)
-		if self.populations.count() > 0:
-			for pop in self.populations.all():
-				name += " (" + pop.__unicode__() + ")"
-		return name + "%s: %s" % (self.subject.title,self.title)
+		name = []
+		if self.recommendation:
+			name.append(str(self.recommendation))
+		elif self.screen:
+			name.append(self.screen.name)
+		name.append("%s: %s" % (self.subject.title,self.title))
+		return " - ".join(name)
 		
-def notes_for_screen(screen, age=False, populations=[], country=False):
+def notes_for(screen=False, recommendation=False):
 	notes = []
-	for note in screen.notes.all():
-		matches = False
-		for pop in note.populations.all():
-			if pop.matches(age=age, populations=populations, country=country):
-				matches = True
-		if matches or note.populations.count() < 1:
+	_notes = []
+	if screen:
+		_notes = screen.notes.all()
+	elif recommendation:
+		_notes = recommendation.notes.all()
+	for note in _notes:
+		if not note.recommendation or recommendation == note.recommendation:
 			found = False
 			for num,n in enumerate(notes):
 				if n.subject == note.subject:

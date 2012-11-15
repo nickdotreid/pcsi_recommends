@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django import forms
 from django.template import RequestContext
 
-from pchsi_recommends.notes.models import notes_for_screen
+from pchsi_recommends.notes.models import notes_for
 from pchsi_recommends.populations.models import *
 from pchsi_recommends.recommendations.models import *
 
@@ -19,11 +19,16 @@ def screen_detail(request,screen_id):
 				'name':screen.name,
 				}),
 			'application/json')
+	recommendations = screen.recommendation_set.all().reverse()
+	recommendation = False
+	if len(recommendations) > 0:
+		recommendation = recommendations[0]
 	return render_to_response('screens/detail.html',{
 		'screens':Screen.objects.all(),
 		'screen':screen,
-		'notes':screen.notes.all(),
-		'recommendations':screen.recommendation_set.all().reverse(),
+		'notes':notes_for(screen=screen,recommendation=recommendation),
+		'recommendation':recommendation,
+		'recommendations':recommendations,
 		},context_instance=RequestContext(request))
 
 def recommendation_detail(request,recommendation_id):

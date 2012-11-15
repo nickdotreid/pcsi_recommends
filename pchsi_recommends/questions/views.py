@@ -18,7 +18,7 @@ from django.template.loader import render_to_string
 from forms import get_questions_for, sort_answers, make_form_for, make_email_form, make_sms_form, get_static_question_object, get_static_questions_choices, remove_unneeded_answers
 from pchsi_recommends.questions.models import *
 from pchsi_recommends.recommendations.models import Recommendation
-from pchsi_recommends.notes.models import notes_for_screen
+from pchsi_recommends.notes.models import notes_for
 
 from logic import *
 
@@ -172,11 +172,7 @@ def recommendation_detail(request,recommendation_id):
 	recommendation_ids = []
 	return render_to_response('questions/recommendation-detail.html',response_dict(
 		base_dict = {
-		'notes':notes_for_screen(recommendation.screen,
-			age = age,
-			country = country,
-			populations = populations,
-			),
+		'notes':notes_for(screen = recommendation.screen, recommendation=recommendation),
 		'recommendation':recommendation,
 		},
 		answers = answers,
@@ -367,5 +363,5 @@ def get_answered_question_object(key,answers):
 def fake_populations_to_recommendations(populations=[], age=False, country=False):
 	recommendations = populations_to_recomendations(populations,age,country)
 	for rec in recommendations:
-		rec.notes = notes_for_screen(rec.screen,populations=populations,age=age,country=country)
+		rec.my_notes = notes_for(screen=rec.screen, recommendation=rec)
 	return recommendations	

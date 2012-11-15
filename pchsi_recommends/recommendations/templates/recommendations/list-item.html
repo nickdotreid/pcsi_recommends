@@ -8,7 +8,7 @@
 	{% endif %}
 	{% endif %}
 	<div class="nav">
-	{% for note in recommendation.notes %}
+	{% for note in recommendation.notes.all %}
 		<a href="/recommendations/{{recommendation.id}}/#note-{{note.id}}">{{note.title}}</a>
 	{% endfor %}
 	</div>

@@ -10,8 +10,8 @@
 		<div class="span6">
 		<h2>Recommendations</h2>
 		<div class="recommendations recommendations-list list">
-		{% for recommendation in recommendations %}
-		{% include 'recommendations/list-item-detailed.html' with recommendation=recommendation no_title="True" %}
+		{% for rec in recommendations %}
+		{% include 'recommendations/list-item-detailed.html' with recommendation=rec no_title="True" %}
 		{% endfor %}
 		</div>
 		</div>
@@ -19,13 +19,6 @@
 			<h1 class="title">{{screen.name}}</h1>
 			{% for note in notes %}
 			<div id="note-id" class="note {{note.type}}">
-				<div class="population-relationships list">
-				{% for pop_rel in note.populations.all %}
-				{% include 'population_relationships/list-item.html' with population_relationship=pop_rel %}
-				{% empty %}
-				<span class="population pop everyone">Everyone</span>
-				{% endfor %}
-				</div>
 				{% if note.title %}<h2>{{note.title}}</h2>{% endif %}
 				{{note.text|safe}}
 			</div>
