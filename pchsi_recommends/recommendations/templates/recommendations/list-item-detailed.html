@@ -1,4 +1,8 @@
+{% if link %}
+<a style="display:block;" ref="{{link}}" id="recommendation-recommendation.id" class="recommendation">
+{% else %}
 <div id="recommendation-{{recommendation.id}}" class="recommendation">
+{% endif %}
 	<div class="population-relationships population-relationships-list list">
 	{% for pop_rel in recommendation.populations.all %}
 	{% include 'population_relationships/list-item.html' with population_relationship=pop_rel %}
@@ -12,4 +16,8 @@
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
 	{% endif %}
+{% if link %}
+</a>
+{% else %}
 </div>
+{% endif %}

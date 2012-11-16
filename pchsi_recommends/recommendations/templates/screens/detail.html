@@ -11,7 +11,7 @@
 		<h2>Recommendations</h2>
 		<div class="recommendations recommendations-list list">
 		{% for rec in recommendations %}
-		{% include 'recommendations/list-item-detailed.html' with recommendation=rec no_title="True" %}
+		{% include 'recommendations/list-item-detailed.html' with recommendation=rec no_title="True" link="screens/{{screen.id}}/{{rec.id}}/" %}
 		{% endfor %}
 		</div>
 		</div>
