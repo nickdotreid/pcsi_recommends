@@ -11,7 +11,7 @@ from pchsi_recommends.notes.models import notes_for
 from pchsi_recommends.populations.models import *
 from pchsi_recommends.recommendations.models import *
 
-def screen_detail(request,screen_id):
+def screen_detail(request,screen_id,recommendation_id=False):
 	screen = get_object_or_404(Screen,pk=screen_id)
 	if request.is_ajax():
 		return HttpResponse(
@@ -23,6 +23,8 @@ def screen_detail(request,screen_id):
 	recommendation = False
 	if len(recommendations) > 0:
 		recommendation = recommendations[0]
+	if recommendation_id:
+		recommendation = get_object_or_404(Recommendation,pk=recommendation_id)
 	return render_to_response('screens/detail.html',{
 		'screens':Screen.objects.all(),
 		'screen':screen,

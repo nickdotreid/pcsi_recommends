@@ -10,5 +10,6 @@ urlpatterns = patterns('pchsi_recommends.recommendations.views',
 			context_object_name="screen_list",
 			template_name="screens/list.html",
 		)),
+	url(r'^screens/(?P<screen_id>\d+)/(?P<recommendation_id>\d+)/$','screen_detail'),
 	url(r'^screens/(?P<screen_id>\d+)/$','screen_detail'),
 )
