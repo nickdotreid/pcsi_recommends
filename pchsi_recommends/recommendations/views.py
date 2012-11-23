@@ -1,6 +1,7 @@
 from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -21,10 +22,15 @@ def screen_detail(request,screen_id,recommendation_id=False):
 			'application/json')
 	recommendations = screen.recommendation_set.all().reverse()
 	recommendation = False
-	if len(recommendations) > 0:
-		recommendation = recommendations[0]
+	for rec in recommendations:
+		rec.url = reverse(screen_detail,kwargs={
+			'recommendation_id':rec.id,
+			'screen_id':rec.screen.id,
+		})
 	if recommendation_id:
 		recommendation = get_object_or_404(Recommendation,pk=recommendation_id)
+	elif len(recommendations) > 0:
+		recommendation = recommendations[0]	
 	return render_to_response('screens/detail.html',{
 		'screens':Screen.objects.all(),
 		'screen':screen,
