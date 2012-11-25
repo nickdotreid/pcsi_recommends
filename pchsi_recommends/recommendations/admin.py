@@ -3,12 +3,12 @@ from pchsi_recommends.populations.admin import PopulationRelationshipInline
 from pchsi_recommends.notes.admin import NoteInline
 
 from django.contrib import admin
-from adminsortable.admin import SortableAdmin,SortableTabularInline
 
-class RecommendationInline(SortableTabularInline):
+class RecommendationInline(admin.TabularInline):
 	model = Recommendation
-	fields = ("frequency","not_recommended")
+	fields = ("frequency","not_recommended","position")
 	extra = 1
+	sortable_field_name = "position"
 
 class ScreenAdmin(admin.ModelAdmin):
 	inlines = [RecommendationInline,NoteInline]
@@ -16,7 +16,7 @@ class ScreenAdmin(admin.ModelAdmin):
 
 admin.site.register(Screen,ScreenAdmin)
 
-class RecommendationAdmin(SortableAdmin):
+class RecommendationAdmin(admin.ModelAdmin):
 	inlines = [PopulationRelationshipInline]
 
 admin.site.register(Recommendation,RecommendationAdmin)
