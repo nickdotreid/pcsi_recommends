@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
-from adminsortable.models import Sortable
-
 from pchsi_recommends.populations.models import Population_Relationship
 from pchsi_recommends.recommendations.models import Screen, Recommendation
 
@@ -13,9 +11,9 @@ class Subject(models.Model):
 	def __unicode__(self):
 		return self.title
 
-class Note(Sortable):
-	class Meta(Sortable.Meta):
-		pass
+class Note(models.Model):
+	class Meta:
+		ordering = ['position']
 
 	title = models.CharField(blank=True, max_length=100)
 	text = models.TextField(blank=True)
@@ -24,6 +22,8 @@ class Note(Sortable):
 		
 	recommendation = models.ForeignKey(Recommendation, blank=True, null=True,related_name='notes')
 	screen = models.ForeignKey(Screen, blank=True, null=True,related_name='notes')
+	
+	position = models.PositiveSmallIntegerField(blank=True, null=True)
 	
 	def __unicode__(self):
 		name = []

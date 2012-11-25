@@ -1,17 +1,17 @@
 from pchsi_recommends.notes.models import Note,Subject
-from adminsortable.admin import SortableAdmin,SortableTabularInline
 from pchsi_recommends.populations.admin import PopulationRelationshipInline
 
 from django.contrib import admin
 
 admin.site.register(Subject)
 
-class NoteInline(SortableTabularInline):
+class NoteInline(admin.TabularInline):
 	model = Note
-	fields = ("title","subject","text")
+	fields = ("title","subject","text","position")
+	sortable_field_name = "position"
 	extra = 1
 
-class NoteAdmin(SortableAdmin):
+class NoteAdmin(admin.ModelAdmin):
 	pass
 
 admin.site.register(Note,NoteAdmin)
