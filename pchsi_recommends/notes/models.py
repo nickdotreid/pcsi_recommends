@@ -47,7 +47,7 @@ def notes_for(screen=False, recommendation=False):
 			for num,n in enumerate(notes):
 				if n.subject == note.subject:
 					found = True
-					if note.order < n.order:
+					if note.position < n.position:
 						notes[num] = note
 			if not found:
 				notes.append(note)
