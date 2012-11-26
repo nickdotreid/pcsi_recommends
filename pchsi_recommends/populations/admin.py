@@ -1,7 +1,6 @@
 from pchsi_recommends.populations.models import PopulationCatagory, Population, Population_Relationship, Region, RegionCollection
 from django.contrib import admin
 from django.contrib.contenttypes.generic import GenericTabularInline, GenericStackedInline
-from adminsortable.admin import SortableAdmin
 
 admin.site.register(Population)
 admin.site.register(RegionCollection)
@@ -12,7 +11,7 @@ class PopulationInline(admin.TabularInline):
 	fields = ('short','name')
 	extra = 1
 
-class PopulationCatagoryAdmin(SortableAdmin):
+class PopulationCatagoryAdmin(admin.ModelAdmin):
 	inlines = [PopulationInline]
 	
 admin.site.register(PopulationCatagory,PopulationCatagoryAdmin)

@@ -2,18 +2,18 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
-from adminsortable.models import Sortable
-
 from django_countries import CountryField
 
-class PopulationCatagory(Sortable):
-	class Meta(Sortable.Meta):
-		pass
+class PopulationCatagory(models.Model):
+	class Meta:
+		ordering = ['position']
 	
 	short = models.CharField(max_length=25)
 	name = models.CharField(max_length=120)
 	
 	multiple = models.BooleanField(default=True)
+	
+	position = models.PositiveSmallIntegerField(blank=True, null=True)
 	
 	def __unicode__(self):
 		return self.name
