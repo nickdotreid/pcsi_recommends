@@ -357,7 +357,7 @@ def get_answered_question_object(key,answers):
 		'key':key,
 		'text':question.text,
 		'values':answers,
-		'order':question.order,
+		'order':question.position,
 	}
 			
 def fake_populations_to_recommendations(populations=[], age=False, country=False):
