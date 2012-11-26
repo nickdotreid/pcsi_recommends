@@ -118,30 +118,30 @@ def get_static_question_object(key=""):
 	if key == 'birth_year':
 		return Question(
 			text = 'What year were you born?',
-			order = static_answer_order.index(key) + 1
+			position = static_answer_order.index(key) + 1
 		)
 	if key == 'birth_country':
 		return Question(
 			text = 'What country were you born in?',
-			order = static_answer_order.index(key) + 1
+			position = static_answer_order.index(key) + 1
 		)
 	if key == 'current_sex':
 		return Question(
 			text = 'What is your current gender?',
 			description = '(Check all that apply)',
-			order = static_answer_order.index(key) + 1
+			position = static_answer_order.index(key) + 1
 		)
 	if key == 'birth_sex':
 		return Question(
 			text = 'What was your sex at birth?',
 			description = '(Check one)',
-			order = static_answer_order.index(key) + 1
+			position = static_answer_order.index(key) + 1
 		)
 	if key == 'sex_partners':
 		return Question(
 			text = 'What is the gender of your sex partners?',
 			description = '(Check all that apply)',
-			order = static_answer_order.index(key) + 1
+			position = static_answer_order.index(key) + 1
 		)
 	return False
 
