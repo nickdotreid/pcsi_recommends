@@ -4,7 +4,7 @@ from pchsi_recommends.notes.admin import NoteInline
 
 from django.contrib import admin
 
-class RecommendationInline(admin.TabularInline):
+class RecommendationInline(admin.StackedInline):
 	model = Recommendation
 	fields = ("frequency","not_recommended","position")
 	extra = 1

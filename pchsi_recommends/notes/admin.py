@@ -5,7 +5,7 @@ from django.contrib import admin
 
 admin.site.register(Subject)
 
-class NoteInline(admin.TabularInline):
+class NoteInline(admin.StackedInline):
 	model = Note
 	fields = ("title","subject","text","position")
 	sortable_field_name = "position"
