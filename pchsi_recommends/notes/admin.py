@@ -7,7 +7,7 @@ admin.site.register(Subject)
 
 class NoteInline(admin.StackedInline):
 	model = Note
-	fields = ("title","subject","text","position")
+	fields = ("title","subject","text","position","recommendation")
 	sortable_field_name = "position"
 	extra = 1
 
