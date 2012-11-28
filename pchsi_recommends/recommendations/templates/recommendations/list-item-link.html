@@ -1,4 +1,4 @@
-<a style="display:block;" href="{{recommendation.url}}" id="recommendation-recommendation.id" class="recommendation">
+<div id="recommendation-{{recommendation.id}}" class="recommendation">
 	<div class="population-relationships population-relationships-list list">
 	{% for pop_rel in recommendation.populations.all %}
 	{% include 'population_relationships/list-item.html' with population_relationship=pop_rel %}
@@ -12,4 +12,7 @@
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
 	{% endif %}
-</a>
+	<div class="nav">
+		<a href="{{recommendation.url}}">View</a>
+	</div>
+</div>
