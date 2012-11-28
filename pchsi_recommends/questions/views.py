@@ -294,17 +294,17 @@ def send_recommendation_sms(number,recommendations):
 	message_length = 140
 	messages = []
 	m = []
-	for letter in message:
-		m.append(letter)
-		if len(m) >= message_length:
+	for line in message.split("\n"):
+		if len(m) + len(line) >= message_length:
 			messages.append("".join(m))
 			m = []
+		m.append(line)
 	if len(m) > 0:
 		messages.append("".join(m))
 	num = 0
 	for message in messages:
 		num += 1
-		message_count = '(Message '+str(num)+' of '+str(len(messages))+')'
+		message_count = '\n(Message '+str(num)+' of '+str(len(messages))+')'
 		if client:
 			message = client.sms.messages.create(to=number, from_=settings.SMS_FROM_NUMBER,
 			                                     body=message + message_count)
