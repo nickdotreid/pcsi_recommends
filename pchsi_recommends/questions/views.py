@@ -87,7 +87,7 @@ def recommendations_page(request):
 			if answer:
 				_answers.append(answer)
 	_answers = sort_answers(_answers)
-	if len(form.fields) < 1:
+	if len(questions) <= 1: # first question is field list
 		form = False
 	recommendations = fake_populations_to_recommendations(
 			populations=get_populations(answers),
