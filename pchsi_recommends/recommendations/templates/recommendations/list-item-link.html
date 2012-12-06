@@ -15,4 +15,9 @@
 	<div class="nav">
 		<a href="{{recommendation.url}}">View</a>
 	</div>
+	{% if user.is_staff %}
+	<div class="nav nav-admin">
+		<a href="/admin/recommendations/recommendation/{{recommendation.id}}/">Edit Recommendation</a>
+	</div>
+	{% endif %}
 </div>
