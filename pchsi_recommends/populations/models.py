@@ -97,7 +97,14 @@ class Population_Relationship(models.Model):
 					if self.inclusive:
 						return True
 			return True
-		if age_in_range(age,self.min_age,self.max_age):
+		age_match = True
+		if not age_in_range(age,self.min_age,self.max_age) and (self.min_age or self.max_age):
+			age_match = False
+		if (self.min_year or self.max_year):
+			this_year = 2012
+			if not age_in_range(age,(this_year - self.max_year),(this_year - self.min_year)):
+				age_match = False
+		if age_match:
 			relationship_populations = self.populations.all()
 			if len(relationship_populations)<1:
 				return True
