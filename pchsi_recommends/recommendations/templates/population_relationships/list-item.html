@@ -28,6 +28,17 @@
 		{% endif %}
 	</span>
 	{% endif %}
+	{% if population_relationship.min_year or population_relationship.max_year %}
+	<span class="year">
+		{% if population_relationship.min_year and population_relationship.max_year %}
+		Born between {{population_relationship.min_year}} and {{population_relationship.max_year}}
+		{% elif population_relationship.max_year %}
+		Younger than {{population_relationship.max_year}}
+		{% elif population_relationship.min_year %}
+		Older than {{population_relationship.min_year}}
+		{% endif %}
+	</span>
+	{% endif %}
 	{% if population_relationship.regions.count > 0 %}
 	<span class="regions">
 		<span class="regions-list-label">From the following region{% if populaiton_relationship.regions.count > 1%}s{% endif %}</span>

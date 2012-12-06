@@ -129,6 +129,14 @@ class Population_Relationship(models.Model):
 			if self.max_age:
 				name += str(self.max_age)
 			name += ' ||'
+		if self.min_year or self.max_year:
+			name += '|| '
+			if self.min_year:
+				name += str(self.min_year)
+			name += '<'
+			if self.max_year:
+				name += str(self.max_year)
+			name += ' ||'
 		# list regions here?
 		return name
 
