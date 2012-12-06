@@ -1,4 +1,9 @@
 <div id="note-{{note.id}}" class="note {{note.type.short}}">
 	{% if note.title %}<h3>{{note.title}}</h3>{% endif %}
 	{{note.text|safe}}
+	{% if user.is_staff %}
+	<div class="nav nav-admin">
+		<a href="/admin/notes/note/{{note.id}}/">Edit Note</a>
+	</div>
+	{% endif %}
 </div>
