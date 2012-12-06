@@ -13,8 +13,3 @@ class QuestionAdmin(admin.ModelAdmin):
 	inlines = [AnswerInline,PopulationRelationshipInline]
 	
 admin.site.register(Question,QuestionAdmin)
-
-class AnswerAdmin(admin.ModelAdmin):
-	inlines = [PopulationRelationshipInline]
-
-admin.site.register(Answer,AnswerAdmin)
