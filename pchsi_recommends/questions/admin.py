@@ -4,7 +4,7 @@ from pchsi_recommends.populations.admin import PopulationRelationshipInline
 from django.contrib import admin
 
 
-class AnswerInline(admin.TabularInline):
+class AnswerInline(admin.StackedInline):
 	model = Answer
 	extra = 2
 	fields = ("populations","text","position")
