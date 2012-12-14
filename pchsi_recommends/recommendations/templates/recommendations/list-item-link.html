@@ -1,4 +1,4 @@
-<div id="recommendation-{{recommendation.id}}" class="recommendation">
+<div id="recommendation-{{recommendation.id}}" class="recommendation {% if recommendation = selected_recommendation %}recommendation-selected{% endif %}">
 	<div class="population-relationships population-relationships-list list">
 	{% for pop_rel in recommendation.populations.all %}
 	{% include 'population_relationships/list-item.html' with population_relationship=pop_rel %}
@@ -12,9 +12,11 @@
 	<p class="frequency">{{recommendation.frequency}}</p>
 	{% endif %}
 	{% endif %}
+	{% if recommendation != selected_recommendation %}
 	<div class="nav">
 		<a href="{{recommendation.url}}">View</a>
 	</div>
+	{% endif %}
 	{% if user.is_staff %}
 	<div class="nav nav-admin">
 		<a href="/admin/recommendations/recommendation/{{recommendation.id}}/">Edit Recommendation</a>
