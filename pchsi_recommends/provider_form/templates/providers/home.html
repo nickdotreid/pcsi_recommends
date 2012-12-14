@@ -3,12 +3,12 @@
 {%	block content	%}
 <div class="row-fluid">
 	<div class="span6">
-		<h2>Online Form</h2>
-		<p>To ease medical providers duties while working with clients, we made <a href="/providers/form/">a web form for providers</a> to use while screening clients for treatment.</p>
+		<h2><a href="/providers/form/">Online Form</a></h2>
+		<p>Use our online form to look at different demographics and what we recommend for them.</p>
 	</div>
 	<div class="span6">
-		<h2>Screens and Vaccines</h2>
-		<p>Find out more about each screen and vaccine that we recommend on this website.</p>
+		<h2><a href="/screens/">Screens and Vaccines</a></h2>
+		<p>Find out more about each screen and vaccine that we recommend to San Franciscans on this website.</p>
 		<ul>
 		{% for screen in screens %}
 		<li class="screen screen-list"><a href="/screens/{{screen.id}}">{{screen.name}}</a></li>
