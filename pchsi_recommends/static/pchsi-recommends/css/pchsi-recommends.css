@@ -5159,6 +5159,9 @@ form .control-group {
   padding: 5px 10px;
   margin-bottom: 0px;
 }
+.recommendations .recommendation.recommendation-selected {
+  background-color: #eeeeee;
+}
 .recommendations-actions {
   background-color: #d5d5d5;
   padding: 5px 10px;
